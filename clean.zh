@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+rm -rf *.der *.pem *.txt *.attr serial
+rm -rf *.old
+ls -laG
