@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #   Created on 03.01.2020
-#   Edited on 08.01.20
+#   Edited on 20.01.20
 #   CHANGELOG:
 #   Added file extensions for compatibility
 #   20.01.2020:
@@ -10,7 +10,7 @@
 #   Daniel D, Jamsin Infotech
 
 if [ ! $# -eq 0 ]; then
-if [ $1 -eq 's' ]; then
+if [ "$1" = "s" ]; then
 #####################################################################################################
 #                                                                                                   #
 #                                   Secured Boot                                                    #
@@ -24,6 +24,8 @@ if [ ! -e ../u-boot-dtb.imx ]; then
 echo ""
 echo "Copy the \"u-boot-dtb.imx\" to the relese folder"
 echo ""
+rm -rf ../u-boot
+
 exit 1
 fi
 cp ../u-boot-dtb.imx ./
@@ -65,7 +67,14 @@ File= "../crts/IMG1_1_sha256_1024_65537_v3_usr_crt.pem"
 # Key slot index used to authenticate the image data
 Verification index = 2
 # 	        Address    Offset 	Length 	   Data_File_Path
-Blocks = 0x877ff400 0x00000000 0x00081c00 "u-boot-dtb.imx" # Update as generated
+Blocks = 0x877ff400 0x00000000 0x00081c00 "u-boot-dtb.imx"  # Update as generated
+
+# Optional
+[Authenticate Data]
+# Key slot index used to authenticate the image data
+Verification index = 2
+# 	        Address    Offset 	Length 	   Data_File_Path
+Blocks = 0x00910000 0x0000002c 0x000001e8 "u-boot-dtb.imx"  # Update as generated
 EOT
 
 echo ""
@@ -75,6 +84,12 @@ echo ""
 cat <<EOT >habimagegen.sh
 #!/bin/bash
 
+###########################################
+#   Automatically created by gen_ubot.sh  #
+###########################################
+
+# Removing old data, if any
+rm -f  u-boot_csf.bin u-boot-signed.imx
 
 echo ""
 echo "generating csf binary..."
@@ -83,7 +98,7 @@ echo ""
 ../linux64/bin/cst --o u-boot_csf.bin --i u-boot.csf    # Updated as generated
 
 echo ""
-echo "merge image and csf data..."
+echo "Merging image and csf data..."
 echo ""
 
 cat u-boot-dtb.imx u-boot_csf.bin > u-boot-signed.imx    # Updated as generated
@@ -103,7 +118,7 @@ bash habimagegen.sh
 # TODO: Update scripts and values
 #
 
-elif [ $1 -eq 'e' ]; then
+elif [ "$1" = "e" ]; then
 #####################################################################################################
 #                                                                                                   #
 #                                   Secured & Encrypted Boot                                        #
@@ -200,6 +215,11 @@ EOT
 
 echo "Building uImage"
 bash habUimagegen.sh
+else
+echo ""
+echo "Usage: Provide s for secure boot or e for encrypted boot"
+echo ""
+exit 1
 fi
 
 else
