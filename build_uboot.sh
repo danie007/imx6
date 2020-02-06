@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 echo ""
 echo "Running build_uboot.sh..."
@@ -31,28 +31,28 @@ else
     make O=$1 ARCH=arm CROSS_COMPILE=$toolchain menuconfig
     make O=$1 ARCH=arm CROSS_COMPILE=$toolchain 2>&1 | tee $1/$LOG_FILE
 
-    mkdir $1/build_files
-    shopt -s extglob
-    # mv !(*.log|*.imx) $1/build_files/ 2> /dev/null
-    # mv !(*.log|*.imx|*.sh) build_files/ 2> /dev/null
-
-    echo ""
-    echo "U-Boot dump:"
+    echo "" 2>&1 | tee $1/$LOG_FILE
+    echo "U-Boot dump:" 2>&1 | tee $1/$LOG_FILE
     # od -X -N 0x20 $1/u-boot-dtb.imx
 
-    echo "IVT Header: 0x$(hexdump -e '/4 "%X""\n"' -s 0 -n 4 $1/u-boot-dtb.imx)"
-    echo "U-Boot entry point: 0x$(hexdump -e '/4 "%X""\n"' -s 4 -n 4 $1/u-boot-dtb.imx)"
-    echo "DCD PTR: 0x$(hexdump -e '/4 "%X""\n"' -s 12 -n 4 $1/u-boot-dtb.imx)"
-    echo "Boot Data PTR: 0x$(hexdump -e '/4 "%X""\n"' -s 16 -n 4 $1/u-boot-dtb.imx)"
+    echo "IVT Header: 0x$(hexdump -e '/4 "%X""\n"' -s 0 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee $1/$LOG_FILE
+    echo "U-Boot entry point: 0x$(hexdump -e '/4 "%X""\n"' -s 4 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee $1/$LOG_FILE
+    echo "DCD PTR: 0x$(hexdump -e '/4 "%X""\n"' -s 12 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee $1/$LOG_FILE
+    echo "Boot Data PTR: 0x$(hexdump -e '/4 "%X""\n"' -s 16 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee $1/$LOG_FILE
 
     IVT_SELF=$(hexdump -e '/4 "%X""\n"' -s 20 -n 4 $1/u-boot-dtb.imx)
-    echo "IVT Self Address: 0x$IVT_SELF"
+    echo "IVT Self Address: 0x$IVT_SELF" 2>&1 | tee $1/$LOG_FILE
 
     CSF_PTR=$(hexdump -e '/4 "%X""\n"' -s 24 -n 4 $1/u-boot-dtb.imx)
-    echo "CSF PTR: 0x$CSF_PTR"
+    echo "CSF PTR: 0x$CSF_PTR" 2>&1 | tee $1/$LOG_FILE
 
-    echo ""
+    echo "" 2>&1 | tee $1/$LOG_FILE
     IMG_LEN=$(printf '%X\n' $((0x$CSF_PTR - 0x$IVT_SELF)))
-    echo "Image length: CSF PTR – IVT Self = 0x$IMG_LEN"
+    echo "Image length: CSF PTR – IVT Self = 0x$IMG_LEN" 2>&1 | tee $1/$LOG_FILE
+
+    mkdir $1/build_files
+    mv $1/* $1/build_files/ 2> /dev/null
+    mv $1/build_files/*.log $1/ && mv $1/build_files/*.imx $1/ && mv $1/build_files/*.sh $1/
+    cp $1/u-boot-dtb.imx $1/u-boot-dtb.imx.orig
     echo ""
 fi
