@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #   Created on 03.01.2020
-#   Edited on 03.02.20
+#   Edited on 06.02.20
 #   CHANGELOG:
 #   Added file extensions for compatibility
 #   20.01.2020:
@@ -84,7 +84,7 @@ echo "Creating secure U-Boot image generation script"
 echo ""
 
 cat << EOT >habimagegen.sh
-#!/usr/bin/env bash
+#!/bin/bash
 
 #############################################
 #   Automatically created by sign_uboot.sh  #
