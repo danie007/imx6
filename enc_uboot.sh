@@ -2,7 +2,7 @@
 
 #   enc_uboot.sh
 #   Created on 27.01.2020
-#   Updated on 29.01.20
+#   Updated on 11.02.20
 #
 #   Daniel D, Jamsin Infotech
 
@@ -14,7 +14,20 @@
 
 CST=~/Documents/release
 
+
+YELLOW='\e[1;33m'
+NC='\e[0m'
+echo -e "${YELLOW}**WARNING** Script contains hard coded file names/directories, update them before execution.${NC}"
+
 echo "Running enc_uboot.sh..."
+
+if [ ! -e u-boot-dtb.imx ]; then
+echo ""
+echo "Copy the \"u-boot-dtb.imx\" to  the folder"
+echo "Aborting..."
+
+exit 1
+fi
 
 rm -rf enc_uboot
 mkdir enc_uboot
@@ -22,35 +35,79 @@ cd enc_uboot
 
 echo "Copying u-boot-dtb.imx..."
 cp ../u-boot-dtb.imx ./
+cp u-boot-dtb.imx u-boot-dtb.imx.orig
 
-if [ ! -e ../u-boot-dtb.imx ]; then
-echo ""
-echo "Copy the \"u-boot-dtb.imx\" to  parent folder"
-echo "Aborting..."
-rm -rf ../enc_uboot
-
-exit 1
-fi
-
-echo "Creating csf_enc_uBoot.txt..."
+echo "Creating csf_enc.txt & csf_sign_enc.txt ..."
 
 IVT_start=$(hexdump -e '/4 "%x""\n"' -s 20 -n 4 u-boot-dtb.imx)
-IVT_start_decimal=$(echo $((16#$IVT_start)))
-echo "IVT start address: 0x$IVT_start"
 
-UBOOT_SIZE_decimal=$(expr $(stat -c%s "u-boot-dtb.imx"))
-echo "SIZE of u-boot: 0x$(hexdump u-boot-dtb.imx | tail -n 1)"
+UBOOT_SIZE=$(hexdump u-boot-dtb.imx | tail -n 1)
+dcd_size=c00
+boot_size=$(printf "%x\n" $((0x$UBOOT_SIZE - 0x$dcd_size)))
 
-# CSF padded size 0x2000
-CSF_pad_size=8192
-DEK_BLOB_addr_decimal=$(expr $IVT_start_decimal + $UBOOT_SIZE_decimal + $CSF_pad_size)
+CSF_pad_size=8192   # CSF padded size 0x2000
+UBOOT_SIZE_d=$(expr $(stat -c%s "u-boot-dtb.imx"))
+IVT_start_d=$(echo $((16#$IVT_start)))
+DEK_BLOB_addr_d=$(expr $IVT_start_d + $UBOOT_SIZE_d + $CSF_pad_size)
 
-DEK_BLOB_addr=$(printf '%x\n' $DEK_BLOB_addr_decimal)
-echo ""
-# DEK blob address in CSF = IVT start address + SIZE of u-boot + Padded CSF (0x2000)
-echo "DEK blob address in CSF: 0x$DEK_BLOB_addr"
+DEK_BLOB_addr=$(printf '%x\n' $DEK_BLOB_addr_d)
 
-cat << EOT >csf_enc_uBoot.txt
+entry_pt=$(hexdump -e '/4 "%X""\n"' -s 4 -n 4 u-boot-dtb.imx)
+
+MAC_bytes=16
+
+cat << EOT >csf_enc.txt
+[Header]
+Version = 4.2
+Hash Algorithm = sha256
+Engine = CAAM
+Engine Configuration = 0
+Certificate Format = X509
+Signature Format = CMS
+
+[Install SRK]
+# Index of the key location in the SRK table to be installed
+File = "$CST/crts/SRK_1_2_3_4_table.bin"
+Source index = 0
+
+[Install CSFK]
+# Key used to authenticate the CSF data
+File = "$CST/crts/CSF1_1_sha256_1024_65537_v3_usr_crt.pem"
+[Authenticate CSF]
+
+[Install Key]
+# Key slot index used to authenticate the key to be installed
+Verification index = 0
+# Target key slot in HAB key store where key will be installed
+Target index = 2
+# Key to install
+File= "$CST/crts/IMG1_1_sha256_1024_65537_v3_usr_crt.pem"
+[Authenticate Data]
+# Key slot index used to authenticate the image data
+Verification index = 2
+# This Authenticate Data command covers the IVT and DCD Data
+# The image file referenced will remain unmodified by CST
+Blocks = 0x$IVT_start 0x00 0x$dcd_size "u-boot-dtb.imx"
+
+[Install Secret Key]
+# Install the blob
+Verification index = 0
+Target index = 0
+Key = "dek.bin"
+Key Length = 128
+# Start address + padding(0x2000) + length
+Blob Address = 0x$DEK_BLOB_addr # 0x878a8000
+
+[Decrypt Data]
+# The decrypt data command below causes CST to modify the input
+# file and encrypt the specified block of data. This image file
+# is a copy of the file used for the authentication command above
+Verification index = 0
+Mac Bytes = $MAC_bytes
+Blocks = 0x$entry_pt 0x$dcd_size 0x$boot_size "u-boot-enc.imx"
+EOT
+
+cat << EOT >csf_sign_enc.txt
 [Header]
 Version = 4.2
 Hash Algorithm = sha256
@@ -79,24 +136,31 @@ Target index = 2
 File= "$CST/crts/IMG1_1_sha256_1024_65537_v3_usr_crt.pem"
 
 [Authenticate Data]
+# This Authenticate Data command covers both clear and encrypted data.
+# The image file referenced will remain unmodified by CST.
 # Key slot index used to authenticate the image data
 Verification index = 2
-# 	        Address    Offset 	Length 	   Data_File_Path
-Blocks = 0x877ff400 0x00000000 0xc00 "u-boot-dtb.imx"
+#       Address Offset Length File
+Blocks = 0x$IVT_start 0x00 0x$UBOOT_SIZE "u-boot-enc.imx"
 
-# Encrypt the boot image and create a DEK
 [Install Secret Key]
+# Install the blob - This will manage a new key that will not be used in
+# the final image, so the file name has to be different
 Verification index = 0
 Target index = 0
-Key = "dek.bin"
-Key Length = 128
+Key = "dek.bin.dummy"
+key Length = 128
+# Start address + padding(0x2000) + length
 Blob Address = 0x$DEK_BLOB_addr # 0x878a8000
 
 [Decrypt Data]
+# The decrypt Data command is a place holder to ensure the
+# CSF includes the decrypt data command from the first pass.
+# The file that CST will encrypt will not be used, so the file
+# name has to be different.
 Verification index = 0
-Mac Bytes = 16
-# 	      Address  Offset  Length 	 Data_File_Path
-Blocks = 0x87800000 0xc00 0xa6000 "u-boot-dtb.imx"
+Mac Bytes = $MAC_bytes
+Blocks = 0x$entry_pt 0x$dcd_size 0x$boot_size "u-boot-dtb.imx.dummy"
 EOT
 
 echo ""
@@ -110,34 +174,35 @@ cat << EOT > gen_dek.sh
 ###############################################
 
 # Removing old data, if any
-rm -rf *.bin *.imx
+rm -rf *.bin *.imx *.dummy
 
 echo "Copying u-boot-dtb.imx..."
-cp ../u-boot-dtb.imx ./
+cp u-boot-dtb.imx.orig u-boot-dtb.imx
+cp u-boot-dtb.imx.orig u-boot-enc.imx
+cp u-boot-dtb.imx.orig u-boot-dtb.imx.dummy
 
 if [ ! -e u-boot-dtb.imx ]; then
 echo ""
 echo "Copy the \"u-boot-dtb.imx\" to the folder"
 echo "Aborting..."
+rm -rf u-boot-dtb.imx u-boot-enc.imx u-boot-dtb.imx.dummy
 
 exit 1
 fi
 
-echo "Generating CSF binary..."
-$CST/linux64/bin/cst --o csf_enc_uBoot.bin --i csf_enc_uBoot.txt
+echo "Generating encrypted CSF binary..."
+$CST/linux64/bin/cst -i csf_enc.txt -o csf_enc.bin
 echo "\"dek.bin\" successfully created"
-echo ""
 
+echo ""
 echo "Paste the \"dek.bin\" to SD Card's boot folder"
-
 echo ""
-echo "Issue the following commands in i.MX6 EVK"
+echo "Issue the following commands in i.MX6UL EVK U-boot"
 echo ""
-echo "=> fatload mmc 1:1 0x87870000 dek.bin"
-echo "=> dek_blob 0x87870000 0x87871000 128"
-echo "=> fatwrite mmc 1:1 0x87871000 dek_blob.bin 0x48"
+echo "=> fatload mmc 1:1 0x80800000 dek.bin"
+echo "=> dek_blob 0x80800000 0x80801000 128"
+echo "=> fatwrite mmc 1:1 0x80801000 dek_blob.bin 0x48"
 echo ""
-
 echo "Paste the \"dek_blob.bin\" from SD Card's boot folder & run uboot_encryptor.sh"
 EOT
 
@@ -150,48 +215,56 @@ cat << EOT > uboot_encryptor.sh
 
 if [ ! -e dek_blob.bin ]; then
 echo "Paste dek_blob.bin from SD Card to continue"
-
 echo ""
 echo "Steps to create dek_blob.bin:"
 echo "  Issue the following command in i.MX6 EVK"
 echo ""
-echo "=> fatload mmc 1:1 0x87870000 dek.bin"
-echo "=> dek_blob 0x87870000 0x87871000 128"
-echo "=> fatwrite mmc 1:1 0x87871000 dek_blob.bin 0x48"
+echo "=> fatload mmc 1:1 0x80800000 dek.bin"
+echo "=> dek_blob 0x80800000 0x80801000 128"
+echo "=> fatwrite mmc 1:1 0x80801000 dek_blob.bin 0x48"
 echo ""
-
 echo "Stopping..."
-
 exit 1
 fi
 
 # Removing old data, if any
-rm -f csf_enc_uBoot_pad.bin uboot_encrypted.imx uBoot_encrypted_no_dek.bin uBoot_encrypted_no_dek_padded.bin 2> /dev/null
+rm -f csf_enc_pad.bin uboot_encrypted.imx uBoot_encrypted_no_dek.bin uBoot_encrypted_no_dek_padded.bin
 
 print_len() {
     echo "Length of \"\$1\": 0x\$(hexdump \$1 | tail -n 1)"
 }
 
+echo "Signing the encrypted CSF binary..."
+$CST/linux64/bin/cst -i csf_sign_enc.txt -o csf_sign_enc.bin
+
+# Removing the dummy files
+rm -rf *.dummy
+
+nonce_mac_size=\$((12 + MAC_bytes + 8)) # Nonce/MAC size (bytes) = Nonce size + MAC bytes + CSF header for Nonce/Mac
+csf_enc_size=\$(du -b csf_enc.bin | cut -f1)
+mac_offset=\$((\$csf_enc_size - \$nonce_mac_size)) # MAC offset = csf_enc.bin size - Nonce/MAC size
+
+echo "Replacing the nonce..."
+dd if=csf_enc.bin of=noncemac.bin bs=1 skip=\$mac_offset count=\$nonce_mac_size
+dd if=noncemac.bin of=csf_sign_enc.bin bs=1 skip=\$mac_offset count=\$nonce_mac_size
+
 print_len dek_blob.bin
 
 echo "Padding CSF to 0x2000..."
-objcopy -I binary -O binary --pad-to 0x2000 --gap-fill=0xff csf_enc_uBoot.bin csf_enc_uBoot_pad.bin
-
-print_len csf_enc_uBoot_pad.bin
+objcopy -I binary -O binary --pad-to 0x2000 --gap-fill=0xff csf_sign_enc.bin csf_sign_enc_padded.bin
+print_len csf_enc_pad.bin
 
 echo "Merging image and csf data..."
-cat u-boot-dtb.imx csf_enc_uBoot_pad.bin > uBoot_encrypted_no_dek.bin
-
-print_len uBoot_encrypted_no_dek.bin
+cat u-boot-enc.imx csf_sign_enc_padded.bin > u-boot_encrypted_no_dek.bin
+print_len u-boot_encrypted_no_dek.bin
 
 # Pad binary
 echo "Ensuring image size from zero padding..."
-objcopy -I binary -O binary --pad-to 0xa8c00 --gap-fill=0x00 uBoot_encrypted_no_dek.bin uBoot_encrypted_no_dek_padded.bin
-
+objcopy -I binary -O binary --pad-to 0x$(printf "%x\n" $((0x$UBOOT_SIZE + 0x2000))) --gap-fill=0x00 u-boot_encrypted_no_dek.bin u-boot_encrypted_no_dek_padded.bin
 print_len uBoot_encrypted_no_dek_padded.bin
 
 echo "Concatenating u-boot binary and dek_blob..."
-cat uBoot_encrypted_no_dek_padded.bin dek_blob.bin > uboot_encrypted.imx
+cat u-boot_encrypted_no_dek_padded.bin dek_blob.bin > u-boot_encrypted.bin
 
 echo "\"uboot_encrypted.imx\" is ready"
 print_len uboot_encrypted.imx
@@ -199,7 +272,7 @@ print_len uboot_encrypted.imx
 # Download to SD card
 echo ""
 echo "Paste the encrypted u-boot in SD Card"
-echo "$ sudo dd if=uboot_encrypted.imx of=/dev/sdc bs=512 seek=2 conv=fsync"
+echo "$ sudo dd if=u-boot_encrypted.bin of=/dev/sdc bs=1K seek=1 && sync"
 EOT
 
 echo "Running Device Encryption Key(DEK) generation script..."
