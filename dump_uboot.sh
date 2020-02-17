@@ -1,6 +1,6 @@
-#! /usr/bin/env bash
+#!/bin/bash
 
-FILE=u-boot_encrypted_no_dek.bin
+FILE=u-boot-dtb.imx
 
 echo ""
 echo "U-Boot dump:"
