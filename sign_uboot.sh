@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #   Created on 03.01.2020
-#   Edited on 06.02.20
+#   Edited on 14.02.20
 #   CHANGELOG:
 #   Added file extensions for compatibility
 #   20.01.2020:
@@ -17,29 +17,32 @@
 
 CST=~/Documents/release
 
+OP_DIR=signed_uboot
+BOOT_IMG=u-boot-dtb.imx
+
 echo ""
 echo "Running sign_uboot.sh..."
 echo ""
 
-if [ ! -e u-boot-dtb.imx ]; then
+if [ ! -e $BOOT_IMG ]; then
 echo ""
-echo "Copy the \"u-boot-dtb.imx\" to the folder"
+echo "Copy the \"$BOOT_IMG\" to the folder"
 echo ""
 echo "Stopping..."
 
 exit 1
 fi
 
-rm -rf signed_uboot
-mkdir signed_uboot
-cd signed_uboot
+rm -rf $OP_DIR
+mkdir $OP_DIR
+cd $OP_DIR
 
-cp ../u-boot-dtb.imx ./
+cp ../$BOOT_IMG ./
 
-addr=$(hexdump -e '/4 "%X""\n"' -s 20 -n 4 u-boot-dtb.imx)
+addr=$(hexdump -e '/4 "%X""\n"' -s 20 -n 4 $BOOT_IMG)
 offst=00
 
-CSF_PTR=$(hexdump -e '/4 "%X""\n"' -s 24 -n 4 u-boot-dtb.imx)
+CSF_PTR=$(hexdump -e '/4 "%X""\n"' -s 24 -n 4 $BOOT_IMG)
 size=$(printf '%X\n' $((0x$CSF_PTR - 0x$addr)))
 
 echo "Creating csf_uBoot.txt"
@@ -77,7 +80,7 @@ File= "$CST/crts/IMG1_1_sha256_1024_65537_v3_usr_crt.pem"
 # Key slot index used to authenticate the image data
 Verification index = 2
 # 	     Address  Offset   Length  Data_File_Path
-Blocks = 0x$addr 0x$offst 0x$size "u-boot-dtb.imx"
+Blocks = 0x$addr 0x$offst 0x$size "$BOOT_IMG"
 EOT
 
 echo "Creating secure U-Boot image generation script"
@@ -93,7 +96,7 @@ cat << EOT >habimagegen.sh
 # Removing old data, if any
 rm -f csf_uBoot.bin uboot_signed.imx
 
-echo "Length of u-boot-dtb.imx: \$(hexdump ../u-boot-dtb.imx | tail -n 1)"
+echo "Length of $BOOT_IMG: \$(hexdump ../$BOOT_IMG | tail -n 1)"
 echo ""
 
 echo "Generating CSF binary..."
@@ -102,7 +105,7 @@ echo "Length of CSF binary: \$(hexdump csf_uBoot.bin | tail -n 1)"
 echo ""
 
 echo "Merging image and csf data..."
-cat u-boot-dtb.imx csf_uBoot.bin > uboot_signed.imx
+cat $BOOT_IMG csf_uBoot.bin > uboot_signed.imx
 echo ""
 
 echo \"uboot_signed.imx\" is ready
@@ -112,8 +115,6 @@ echo ""
 if [[ -d "/media/$(whoami)/boot" ]]; then
     echo "Copying the U-boot to SD Card"
     sudo dd if=uboot_signed.imx of=/dev/sdc bs=1K seek=1 && sync
-
-    sudo umount /media/$(whoami)/*
 else
     echo "Command to copy U-boot to SD Card:"
     echo "sudo dd if=uboot_signed.imx of=/dev/sdc bs=1K seek=1 && sync"
