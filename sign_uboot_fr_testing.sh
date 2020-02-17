@@ -1,7 +1,8 @@
 #!/bin/bash
 
+#   Filename: sign_uboot_fr_testing.sh
 #   Created on 03.01.2020
-#   Edited on 05.02.20
+#   Edited on 17.02.20
 #   CHANGELOG:
 #   Added file extensions for compatibility
 #   20.01.2020:
@@ -24,11 +25,11 @@ echo "Running sign_uboot.sh..."
 echo ""
 
 if [ ! -e u-boot-dtb.imx ]; then
-echo ""
-echo "Copy the \"u-boot-dtb.imx\" to the folder to continue"
-echo "Stopping..."
+    echo ""
+    echo "Copy the \"u-boot-dtb.imx\" to the folder to continue"
+    echo "Stopping..."
 
-exit 1
+    exit 1
 fi
 
 rm -rf signed_uboot_fr_tst
@@ -47,11 +48,11 @@ echo "Creating uboot.csf"
 echo ""
 
 for ((srk_idx = 0; srk_idx < 4; srk_idx++)); do
-for csf_pos in 1 2 3 4; do
-for ver_idx in 0 2 3 4; do
-for tar_idx in 2 3 4; do
-for img_pos in 1 2 3 4; do
-cat << EOT > uboot.$srk_idx$csf_pos$ver_idx$tar_idx$img_pos.csf 2> /dev/null
+    for csf_pos in 1 2 3 4; do
+        for ver_idx in 0 2 3 4; do
+            for tar_idx in 2 3 4; do
+                for img_pos in 1 2 3 4; do
+                    cat <<EOT >uboot.$srk_idx$csf_pos$ver_idx$tar_idx$img_pos.csf 2>/dev/null
 [Header]
 Version = 4.2
 Hash Algorithm = sha256
@@ -78,17 +79,21 @@ File= "$CST/crts/IMG${img_pos}_1_sha256_1024_65537_v3_usr_crt.pem"
 Verification index = $tar_idx
 Blocks = 0x$addr 0x$offst 0x$size "u-boot-dtb.imx"
 EOT
-done; done; done; done; done
+                done
+            done
+        done
+    done
+done
 
 echo "Creating secure U-Boot image generation script"
 echo ""
 
-cat << EOT >signed_uboot_generator.sh
+cat <<EOT >signed_uboot_generator.sh
 #!/bin/bash
 
-#############################################
-#   Automatically created by sign_uboot.sh  #
-#############################################
+########################################################
+#   Automatically created by sign_uboot_fr_testing.sh  #
+########################################################
 
 rm -rf signed_uboot
 ls uboot.*.csf > csf.list
