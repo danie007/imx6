@@ -1,171 +1,206 @@
-#!/usr/bin/env bash
-
-#   enc_uboot.sh
-#   Created on 27.01.2020
-#
-#   Daniel D, Jamsin Infotech
-
-#####################################################################################################
-#                                                                                                   #
-#                                   Encrypted & Secured Boot                                        #
-#                                                                                                   #
-#####################################################################################################
-
-CST=~/Documents/release
-
-echo ""
-echo "Running enc_uboot.sh"
-echo ""
-
-rm -rf enc_uboot
-mkdir enc_uboot
-cd enc_uboot
-
-if [ ! -e ../u-boot-dtb.imx ]; then
-echo ""
-echo "Copy the \"u-boot-dtb.imx\" to the folder"
-echo "Aborting..."
-rm -rf ../enc_uboot
-
-exit 1
-fi
-
-echo "Creating csf_enc_uBoot.txt"
-echo ""
-
-cat <<EOT >cal_blob_addr.sh
-#! /bin/bash
-
-IVT_start=$(hexdump -e '/4 "%x""\n"' -s 20 -n 4 ../u-boot-dtb.imx)
-IVT_start_decimal=$(echo $((16#$IVT_start)))
-echo "IVT start address: $IVT_start"
-
-UBOOT_SIZE_decimal=$(expr $(stat -c%s "../u-boot-dtb.imx"))
-echo "SIZE of u-boot: \$(hexdump ../u-boot-dtb.imx | tail -n 1)"
-
-# CSF padded size 0x2000
-CSF_pad_size=8192
-DEK_BLOB_addr_decimal=$(expr $IVT_start_decimal + $UBOOT_SIZE_decimal + $CSF_pad_size)
-
-DEK_BLOB_addr=$(printf '%x\n' $DEK_BLOB_addr_decimal)
-echo ""
-# DEK blob address in CSF = IVT start address + SIZE of u-boot + Padded CSF (0x2000)
-echo "DEK blob address in CSF: $DEK_BLOB_addr"
-
-EOT
-
-cat <<EOT >csf_enc_uBoot.txt
-[Header]
-Version = 4.2
-Hash Algorithm = sha256
-Engine = CAAM
-Engine Configuration = 0
-Certificate Format = X509
-Signature Format = CMS
-
-[Install SRK]
-# Index of the key location in the SRK table to be installed
-File = "$CST/crts/SRK_1_2_3_4_table.bin"
-Source index = 0
-
-[Install CSFK]
-# Key used to authenticate the CSF data
-File = "$CST/crts/CSF1_1_sha256_1024_65537_v3_usr_crt.pem"
-
-[Authenticate CSF]
-
-[Install Key]
-# Key slot index used to authenticate the key to be installed
-Verification index = 0
-# Target key slot in HAB key store where key will be installed
-Target index = 2
-# Key to install
-File= "$CST/crts/IMG1_1_sha256_1024_65537_v3_usr_crt.pem"
-
-[Authenticate Data]
-# Key slot index used to authenticate the image data
-Verification index = 2
-# 	        Address    Offset 	Length 	   Data_File_Path
-Blocks = 0x877ff400 0x00000000 0xc00 "../u-boot-dtb.imx"
-
-[Install Secret Key]
-Verification index = 0
-Target index = 0
-Key = "dek.bin"
-Key Length = 192
-Blob Address = 0x878a8000
-
-[Decrypt Data]
-Verification index = 0
-Mac Bytes = 16
-# 	      Address  Offset  Length 	 Data_File_Path
-Blocks = 0x87800000 0xc00 0xa6000 "../u-boot-dtb.imx"
-EOT
-
-echo "Creating secure U-Boot image generation script"
-echo ""
-
-cat <<EOT >hab_enc_image_gen.sh
 #!/bin/bash
 
-###########################################
-#   Automatically created by gen_ubot.sh  #
-###########################################
+# Filename: build_uboot_new.sh
+# Author: Daniel Selvan
 
-# Removing old data, if any
-rm -rf *.bin *.imx
+############################ USAGE ######################################
+#                                                                       #
+#   bash build_uboot_new.sh build_directory [build_option]              #
+#                                                                       #
+#   build_option:                                                       #
+#   -s, --secure    Support i.MX HAB features                           #
+#   -e, --encrypt   Support the 'dek_blob' command                      #
+#   If no option specified build the default configuration of U-boot    #
+#                                                                       #
+#   -h, --help      Displays this help message and exit                 #
+#                                                                       #
+#########################################################################
 
-echo "Generating csf binary..."
-~/Documents/jan24/enc_boot/uboot-imx/enc_build/cst_enc/cst-3.3.0/linux64/bin/cst --o csf_enc_uBoot.bin --i csf_enc_uBoot.txt
+DEFCONF=mx6ul_14x14_evk_defconfig
+toolchain=~/tools/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- # ARM Cross compiler
 
-echo "Padding CSF to 0x2000..."
-echo ""
-objcopy -I binary -O binary --pad-to 0x2000 --gap-fill=0xff csf_enc_uBoot.bin csf_enc_uBoot_pad.bin
+LOG_FILE=$1/build_$(date '+%y%^b%d_%H%M%S').log # output log format: build_yymmmdd_HHMMSS.log
+boot_mode="default"
 
-echo "Length of padded CSF binary: \$(hexdump csf_enc_uBoot_pad.bin | tail -n 1)"
-echo ""
+YELLOW='\e[1;33m'
+RED='\e[1;31m'
+NC='\e[0m'
+echo -e "${YELLOW}**WARNING** Script contains hard coded file names/directories, update them before execution.${NC}"
 
-echo "Merging image and csf data..."
-echo ""
-cat ../u-boot-dtb.imx csf_enc_uBoot_pad.bin > uBoot_encrypted_no_dek.bin
+usage() {
+    echo -e "\n${RED}Usage: $0 build_directory [build_option]${NC}\n"
+    echo "build_option:"
+    echo "-s, --secure    Support i.MX HAB features"
+    echo "-e, --encrypt   Support the 'dek_blob' command"
+    echo "If no option specified build the default configuration of U-boot"
+    echo ""
+    echo "-h, --help      Displays this help message and exit"
 
-echo "Length of encrypted U-boot: \$(hexdump uBoot_encrypted_no_dek.bin | tail -n 1)"
-echo ""
+    exit 1
+}
 
-echo "Filling encrypted U-boot"
-echo ""
-objcopy -I binary -O binary --pad-to 0xa6c00 --gap-fill=0x00 uBoot_encrypted_no_dek.bin uBoot_encrypted_no_dek_padded.bin
-
-echo "Length of encrypted, padded U-boot: \$(hexdump uBoot_encrypted_no_dek_padded.bin | tail -n 1)"
-echo ""
-
-if [ ! -e dek.bin ]; then
-echo "dek.bin is not generated, check the CST"
-echo "Aborting..."
-rm -rf ../enc_uboot
-
-exit 1
+if [ $# -eq 0 ]; then
+    usage
+elif [ "$(printf '%s' "$1" | cut -c1)" != "-" ]; then
+    case $2 in
+    -s | --secure)
+        boot_mode="secured"
+        ;;
+    -e | --encrypt)
+        boot_mode="encrypted"
+        ;;
+    esac
+else
+    usage
 fi
 
-echo "Length of DEK blob: \$(hexdump dek.bin | tail -n 1)"
-echo ""
+echo "Boot mode: $boot_mode"
 
-echo "Concatenate u-boot binary and dek"
-echo ""
-cat uBoot_encrypted_no_dek_padded.bin dek.bin > uboot_encrypted.imx
+make distclean
+make mrproper
 
-echo \"uboot_encrypted.imx\" is ready
-echo "Length of signed u-boot: \$(hexdump uboot_encrypted.imx | tail -n 1)"
-echo ""
+# Deletes the existing dir, if present
+if [ -d $1 ]; then
+    echo "$1 already present, removing..."
+    rm -rf $1
+fi
 
-# Download to SD card
-# sudo dd if=uboot_encrypted.imx of=/dev/sdc bs=512 seek=2 conv=fsync
+make O=$1 ARCH=arm CROSS_COMPILE=$toolchain distclean 2>&1 | tee -a $LOG_FILE
+make O=$1 ARCH=arm CROSS_COMPILE=$toolchain mrproper 2>&1 | tee -a $LOG_FILE
+make O=$1 ARCH=arm CROSS_COMPILE=$toolchain $DEFCONF 2>&1 | tee -a $LOG_FILE
 
+if [ "$boot_mode" == "encrypted" ]; then
+    echo "Enabling encryption settings..."
+    echo "ARM architecture -> Support i.MX HAB features"
+    echo "ARM architecture -> Support the 'dek_blob' command"
+
+    cat <<EOT >encrypt.patch
+--- normal.txt	2020-02-13 09:44:11.691279385 +0530
++++ encr.txt	2020-02-13 09:46:03.788224928 +0530
+@@ -152,7 +152,7 @@
+ # CONFIG_ARCH_ASPEED is not set
+ CONFIG_SYS_TEXT_BASE=0x87800000
+ CONFIG_SYS_MALLOC_F_LEN=0x400
+-# CONFIG_SECURE_BOOT is not set
++CONFIG_SECURE_BOOT=y
+ CONFIG_MX6=y
+ CONFIG_MX6UL=y
+ CONFIG_LDO_BYPASS_CHECK=y
+@@ -247,10 +247,11 @@
+ # CONFIG_IMX_BOOTAUX is not set
+ # CONFIG_USE_IMXIMG_PLUGIN is not set
+ CONFIG_CMD_BMODE=y
+-# CONFIG_CMD_DEKBLOB is not set
+-# CONFIG_IMX_CAAM_DEK_ENCAP is not set
++CONFIG_CMD_DEKBLOB=y
++CONFIG_IMX_CAAM_DEK_ENCAP=y
+ # CONFIG_IMX_OPTEE_DEK_ENCAP is not set
+ # CONFIG_IMX_SECO_DEK_ENCAP is not set
++CONFIG_CMD_PRIBLOB=y
+ # CONFIG_CMD_HDMIDETECT is not set
+ # CONFIG_DBG_MONITOR is not set
+ # CONFIG_NXP_BOARD_REVISION is not set
+@@ -737,9 +738,11 @@
+ # Hardware crypto devices
+ #
+ # CONFIG_CAAM_KB_SELF_TEST is not set
+-# CONFIG_FSL_CAAM is not set
++CONFIG_FSL_CAAM=y
++CONFIG_SYS_FSL_HAS_SEC=y
+ CONFIG_SYS_FSL_SEC_COMPAT_4=y
+ # CONFIG_SYS_FSL_SEC_BE is not set
++CONFIG_SYS_FSL_SEC_COMPAT=4
+ CONFIG_SYS_FSL_SEC_LE=y
+ # CONFIG_IMX8M_DRAM is not set
+ # CONFIG_IMX8M_LPDDR4 is not set
+@@ -1365,7 +1368,8 @@
+ #
+ # CONFIG_SHA1 is not set
+ # CONFIG_SHA256 is not set
+-# CONFIG_SHA_HW_ACCEL is not set
++CONFIG_SHA_HW_ACCEL=y
++# CONFIG_SHA_PROG_HW_ACCEL is not set
+ 
+ #
+ # Compression Support
 EOT
+    patch -u -b $1/.config -i encrypt.patch 2>&1 | tee -a $LOG_FILE
+    rm -f encrypt.patch
 
-# bash cal_blob_addr.sh
+elif [ "$boot_mode" == "secured" ]; then
 
-echo "Running secure U-Boot image generation script..."
+    echo "Adding ARM architecture -> Support i.MX HAB features"
+
+    cat <<EOT >secure.patch
+--- normal.txt	2020-02-13 09:44:11.691279385 +0530
++++ auth.txt	2020-02-13 09:45:15.811829236 +0530
+@@ -152,7 +152,7 @@
+ # CONFIG_ARCH_ASPEED is not set
+ CONFIG_SYS_TEXT_BASE=0x87800000
+ CONFIG_SYS_MALLOC_F_LEN=0x400
+-# CONFIG_SECURE_BOOT is not set
++CONFIG_SECURE_BOOT=y
+ CONFIG_MX6=y
+ CONFIG_MX6UL=y
+ CONFIG_LDO_BYPASS_CHECK=y
+@@ -251,6 +251,7 @@
+ # CONFIG_IMX_CAAM_DEK_ENCAP is not set
+ # CONFIG_IMX_OPTEE_DEK_ENCAP is not set
+ # CONFIG_IMX_SECO_DEK_ENCAP is not set
++# CONFIG_CMD_PRIBLOB is not set
+ # CONFIG_CMD_HDMIDETECT is not set
+ # CONFIG_DBG_MONITOR is not set
+ # CONFIG_NXP_BOARD_REVISION is not set
+@@ -737,9 +738,11 @@
+ # Hardware crypto devices
+ #
+ # CONFIG_CAAM_KB_SELF_TEST is not set
+-# CONFIG_FSL_CAAM is not set
++CONFIG_FSL_CAAM=y
++CONFIG_SYS_FSL_HAS_SEC=y
+ CONFIG_SYS_FSL_SEC_COMPAT_4=y
+ # CONFIG_SYS_FSL_SEC_BE is not set
++CONFIG_SYS_FSL_SEC_COMPAT=4
+ CONFIG_SYS_FSL_SEC_LE=y
+ # CONFIG_IMX8M_DRAM is not set
+ # CONFIG_IMX8M_LPDDR4 is not set
+@@ -1365,7 +1368,8 @@
+ #
+ # CONFIG_SHA1 is not set
+ # CONFIG_SHA256 is not set
+-# CONFIG_SHA_HW_ACCEL is not set
++CONFIG_SHA_HW_ACCEL=y
++# CONFIG_SHA_PROG_HW_ACCEL is not set
+ 
+ #
+ # Compression Support
+EOT
+    patch -u -b $1/.config -i secure.patch 2>&1 | tee -a $LOG_FILE
+    rm -f secure.patch
+fi
+make -j4 O=$1 ARCH=arm CROSS_COMPILE=$toolchain 2>&1 | tee -a $LOG_FILE
+
+echo "" 2>&1 | tee -a $LOG_FILE
+echo "U-Boot dump:" 2>&1 | tee -a $LOG_FILE
+# od -X -N 0x20 $1/u-boot-dtb.imx
+
+echo "IVT Header: 0x$(hexdump -e '/4 "%X""\n"' -s 0 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee -a $LOG_FILE
+echo "U-Boot entry point: 0x$(hexdump -e '/4 "%X""\n"' -s 4 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee -a $LOG_FILE
+echo "DCD PTR: 0x$(hexdump -e '/4 "%X""\n"' -s 12 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee -a $LOG_FILE
+echo "Boot Data PTR: 0x$(hexdump -e '/4 "%X""\n"' -s 16 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee -a $LOG_FILE
+
+IVT_SELF=$(hexdump -e '/4 "%X""\n"' -s 20 -n 4 $1/u-boot-dtb.imx)
+echo "IVT Self Address: 0x$IVT_SELF" 2>&1 | tee -a $LOG_FILE
+
+CSF_PTR=$(hexdump -e '/4 "%X""\n"' -s 24 -n 4 $1/u-boot-dtb.imx)
+echo "CSF PTR: 0x$CSF_PTR" 2>&1 | tee -a $LOG_FILE
+
+echo "" 2>&1 | tee -a $LOG_FILE
+IMG_LEN=$(printf '%X\n' $((0x$CSF_PTR - 0x$IVT_SELF)))
+echo "Image length: CSF PTR – IVT Self = 0x$IMG_LEN" 2>&1 | tee -a $LOG_FILE
+
+mkdir $1/_build_files
+mv $1/* $1/_build_files/ 2>/dev/null
+mv $1/_build_files/source $1/ && mv $1/_build_files/*.log $1/ && mv $1/_build_files/*.imx $1/ && mv $1/_build_files/*.sh $1/ 2>/dev/null
+cp $1/u-boot-dtb.imx $1/u-boot-dtb.imx.orig
 echo ""
-
-bash hab_enc_image_gen.sh
