@@ -21,7 +21,7 @@
 
 DEFCONF=mx6ul_14x14_evk_defconfig
 toolchain=~/tools/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- # ARM Cross compiler
-err_str=Error                                                                             # Error keyword to be searched in the log file.
+err_str=Error   # Error keyword to be searched in the log file.
 
 reqcc=arm-linux-gnueabihf-gcc
 requiredver="6.2.0"
