@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Filename: build_uboot.sh
-# Description: Build script for uboot-imx 
+# Description: Build script for uboot-imx
 #              git clone https://source.codeaurora.org/external/imx/uboot-imx -b imx_v2019.04_4.19.35_1.1.0
 # Author: Daniel Selvan
 # Updated on Mar 16 2020
@@ -33,7 +33,6 @@ GREEN='\e[1;32m'
 YELLOW='\e[1;33m'
 RED='\e[1;31m'
 NC='\e[0m'
-echo -e "${YELLOW}**WARNING** Script contains hard coded file names/directories, update them before execution.${NC}"
 
 usage() {
     echo -e "\n${RED}Usage: $0 build_directory [build_option]${NC}\n"
@@ -47,8 +46,10 @@ usage() {
     exit 1
 }
 
+# Argument Parser
 if [ $# -eq 0 ]; then
     usage
+# 1st paramater is mandatory, 2nd parameter is optional
 elif [ "$(printf '%s' "$1" | cut -c1)" != "-" ]; then
     case $2 in
     -s | --secure)
@@ -58,12 +59,16 @@ elif [ "$(printf '%s' "$1" | cut -c1)" != "-" ]; then
         boot_mode="encrypted"
         ;;
     " " | "") ;;
-
+        # If second paramter is not present, pass
+    *)
+        usage
+        ;;
     esac
-
 else
     usage
 fi
+
+echo -e "${YELLOW}**WARNING** Script contains hard coded file names/directories, update them before execution.${NC}"
 
 echo -n "Checking dependencies... "
 for dep in make bison flex; do
