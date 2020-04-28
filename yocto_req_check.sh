@@ -15,12 +15,14 @@
 #                                                                       #
 #########################################################################
 
-OS_MIN_VERSION=14
+OS_MIN_VERSION=14   # For Ubuntu
+MIN_SPACE=50200000  # 50.2GB in KB
 
 # Exit Status
 ES_SUCCESS=0    # Success
 ES_PERM_ERR=1   # Permission Error
-ES_VER_MM_ER=2  # Version MisMatch Error
+ES_VER_MM_ERR=2 # Version MisMatch Error
+ES_NO_SPC_ERR=3 # NO SPaCe Error
 
 # Check for root previlages
 if [[ $EUID -ne 0 ]]; then
@@ -40,12 +42,21 @@ if [ "$OS_NAME" = "Ubuntu" ]; then
         # ERR
         # TODO colorise
         echo "The minimum version supported in $OS_MIN_VERSION. Kindly update your OS and try again."
-        exit $ES_VER_MM_ER
+        exit $ES_VER_MM_ERR
     fi
 else
     # Warning
     # TODO colorise
     echo "Kindly check https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#detailed-supported-distros for $OS_NAME support before proceed"
+fi
+
+# Checking for minimum space requirements
+if [[ "$(df -Pk . | awk 'NR==2 {print $4}')" -lt $MIN_SPACE ]]; then
+    # ERR
+    # TODO colorise
+    echo "50 GB is not available in current disk($(df -Pk . | awk 'NR==2 {print $1}'))."
+    echo "Update storage or try in different disk to proceed"
+    exit $ES_NO_SPC_ERR
 fi
 # DEFCONF=mx6ul_14x14_evk_defconfig
 # toolchain=~/tools/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- # ARM Cross compiler
