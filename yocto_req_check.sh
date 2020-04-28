@@ -78,7 +78,6 @@ if [ "$OS_NAME" = "Ubuntu" ]; then
     
     # Comparing major version
     if [ "$(echo $HOSTNAME | cut -d' ' -f2 | cut -d. -f1)" -lt $k_OS_MIN_VERSION ]; then
-    # if [[ "$(echo $HOSTNAME | cut -d' ' -f2 | cut -d. -f1)" -lt $k_OS_MIN_VERSION ]]; then
         # ERR
         # TODO colorise
         echo "The minimum version supported in $k_OS_MIN_VERSION. Kindly update your OS and try again."
@@ -91,7 +90,7 @@ else
 fi
 
 # Checking for minimum space requirements
-if [[ "$(df -Pk . | awk 'NR==2 {print $4}')" -lt $k_MIN_SPACE ]]; then
+if [ "$(df -Pk . | awk 'NR==2 {print $4}')" -lt $k_MIN_SPACE ]; then
     # ERR
     # TODO colorise
     echo "50 GB is not available in current disk ($(df -Pk . | awk 'NR==2 {print $1}'))"
