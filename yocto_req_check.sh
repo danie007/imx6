@@ -17,18 +17,56 @@
 
 k_OS_MIN_VERSION=14   # Minimum supported version in Ubuntu
 k_MIN_SPACE=50200000  # 50.2GB in KB
+# k_MIN_SPACE=20200000  # Testing - 20.2GB in KB
+
+# Dependiences of Yocto build
+k_DEPEN_LIST=(
+    gawk
+    wget
+    git-core
+    diffstat
+    unzip
+    texinfo
+    gcc-multilib
+    build-essential
+    chrpath
+    socat
+    cpio
+    python3
+    python3-pip
+    python3-pexpect
+    xz-utils
+    debianutils
+    iputils-ping
+    python3-git
+    python3-jinja2
+    libegl1-mesa
+    libsdl1.2-dev
+    pylint3
+    xterm
+    make
+    xsltproc
+    docbook-utils
+    fop
+    dblatex
+    xmlto
+)
 
 # Exit Status
-ES_SUCCESS=0    # Success
-ES_PERM_ERR=1   # Permission Error
-ES_VER_MM_ERR=2 # Version MisMatch Error
-ES_NO_SPC_ERR=3 # NO SPaCe Error
+ES_SUCCESS=0            # Success
+ES_PERM_ERR=1           # Permission Error
+ES_VER_MM_ERR=2         # Version MisMatch Error
+ES_NO_SPC_ERR=3         # NO SPaCe Error
+ES_UNMET_DEPEN_ERR=4    # UNMET DEPENdencies ERRor
 
 # Check for root previlages
 if [[ $EUID -ne 0 ]]; then
     echo "run the ${!#} as root"
     exit $ES_PERM_ERR
 fi
+
+# ping site to check internet connection
+TEST_SITE=google.com
 
 # Getting the static hostname of runtime
 HOSTNAME=$(hostnamectl | grep -i "operating system" | cut -d' ' -f5-)
@@ -38,7 +76,8 @@ OS_NAME="$(echo $HOSTNAME | cut -d' ' -f1)"
 if [ "$OS_NAME" = "Ubuntu" ]; then
     
     # Comparing major version
-    if [[ "$(echo $HOSTNAME | cut -d' ' -f2 | cut -d. -f1)" -lt $k_OS_MIN_VERSION ]]; then
+    if [ "$(echo $HOSTNAME | cut -d' ' -f2 | cut -d. -f1)" -lt $k_OS_MIN_VERSION ]; then
+    # if [[ "$(echo $HOSTNAME | cut -d' ' -f2 | cut -d. -f1)" -lt $k_OS_MIN_VERSION ]]; then
         # ERR
         # TODO colorise
         echo "The minimum version supported in $k_OS_MIN_VERSION. Kindly update your OS and try again."
@@ -58,6 +97,71 @@ if [[ "$(df -Pk . | awk 'NR==2 {print $4}')" -lt $k_MIN_SPACE ]]; then
     echo "Update storage or try in different disk to proceed"
     exit $ES_NO_SPC_ERR
 fi
+
+update_depen=()
+for dependency in "${k_DEPEN_LIST[@]}"; do
+
+    # Checking for dependencies
+    which dependency &> /dev/null
+    if [ $? -ne 0 ]; then
+        # Filtering the dependiences to install
+        update_depen+=( $dependency )
+    fi
+done
+
+depen_count=${#update_depen[@]}
+
+# Updating dependency count based on repo
+which dependency &> /dev/null
+if [ $? -ne 0 ]; then
+    ((depen_count++))
+fi
+
+if [ "$depen_count" -ne 0 ];then
+
+    # Checking for internet connection
+    if ping -q -c 1 -W 1 $TEST_SITE &> /dev/null; then
+
+        Downloading and installing repo tool
+        run-in-user-session mkdir ~/bin 2> /dev/null
+        run-in-user-session curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+        run-in-user-session chmod a+x ~/bin/repo
+
+        run-in-user-session PATH=${PATH}:~/bin
+        run-in-user-session source /etc/environment && export PATH
+
+        echo "Updating repositories"
+        apt update
+        apt install -y "${update_depen[@]}"
+    else
+        # ERR
+        # TODO colorise
+        echo "No internet connection is available."
+        echo "Unable to update following dependencies:"
+        for dependency in "${update_depen[@]}"; do
+            echo $dependency
+        done
+
+        echo "Enable internet or manually install the dependencies to continue"
+
+        exit $ES_UNMET_DEPEN_ERR
+    fi
+fi
+
+# function to automatically detect the user and environment of a current session
+function run-in-user-session() {
+    _display_id=":$(find /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"
+    _username=$(who | grep "\(${_display_id}\)" | awk '{print $1}')
+    _user_id=$(id -u "$_username")
+    _environment=("DISPLAY=$_display_id" "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$_user_id/bus")
+    sudo -Hu "$_username" env "${_environment[@]}" "$@"
+}
+
+# Downloading and installing repo tool
+# mkdir ~/bin 2> /dev/null
+# curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+# chmod a+x ~/bin/repo
+
 # DEFCONF=mx6ul_14x14_evk_defconfig
 # toolchain=~/tools/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- # ARM Cross compiler
 # err_str=Error   # Error keyword to be searched in the log file.
@@ -147,156 +251,5 @@ fi
 #     echo "$1 already present, removing..."
 #     rm -rf $1
 # fi
-
-# make O=$1 ARCH=arm CROSS_COMPILE=$toolchain distclean
-# make O=$1 ARCH=arm CROSS_COMPILE=$toolchain mrproper 2>&1 | tee -a $LOG_FILE
-# make O=$1 ARCH=arm CROSS_COMPILE=$toolchain $DEFCONF 2>&1 | tee -a $LOG_FILE
-
-# if [ "$boot_mode" == "encrypted" ]; then
-#     echo "Enabling encryption settings..."
-#     echo "ARM architecture -> Support i.MX HAB features"
-#     echo "ARM architecture -> Support the 'dek_blob' command"
-
-#     cat <<EOT >encrypt.patch
-# --- normal.txt	2020-02-13 09:44:11.691279385 +0530
-# +++ encr.txt	2020-02-13 09:46:03.788224928 +0530
-# @@ -152,7 +152,7 @@
-#  # CONFIG_ARCH_ASPEED is not set
-#  CONFIG_SYS_TEXT_BASE=0x87800000
-#  CONFIG_SYS_MALLOC_F_LEN=0x400
-# -# CONFIG_SECURE_BOOT is not set
-# +CONFIG_SECURE_BOOT=y
-#  CONFIG_MX6=y
-#  CONFIG_MX6UL=y
-#  CONFIG_LDO_BYPASS_CHECK=y
-# @@ -247,10 +247,11 @@
-#  # CONFIG_IMX_BOOTAUX is not set
-#  # CONFIG_USE_IMXIMG_PLUGIN is not set
-#  CONFIG_CMD_BMODE=y
-# -# CONFIG_CMD_DEKBLOB is not set
-# -# CONFIG_IMX_CAAM_DEK_ENCAP is not set
-# +CONFIG_CMD_DEKBLOB=y
-# +CONFIG_IMX_CAAM_DEK_ENCAP=y
-#  # CONFIG_IMX_OPTEE_DEK_ENCAP is not set
-#  # CONFIG_IMX_SECO_DEK_ENCAP is not set
-# +CONFIG_CMD_PRIBLOB=y
-#  # CONFIG_CMD_HDMIDETECT is not set
-#  # CONFIG_DBG_MONITOR is not set
-#  # CONFIG_NXP_BOARD_REVISION is not set
-# @@ -737,9 +738,11 @@
-#  # Hardware crypto devices
-#  #
-#  # CONFIG_CAAM_KB_SELF_TEST is not set
-# -# CONFIG_FSL_CAAM is not set
-# +CONFIG_FSL_CAAM=y
-# +CONFIG_SYS_FSL_HAS_SEC=y
-#  CONFIG_SYS_FSL_SEC_COMPAT_4=y
-#  # CONFIG_SYS_FSL_SEC_BE is not set
-# +CONFIG_SYS_FSL_SEC_COMPAT=4
-#  CONFIG_SYS_FSL_SEC_LE=y
-#  # CONFIG_IMX8M_DRAM is not set
-#  # CONFIG_IMX8M_LPDDR4 is not set
-# @@ -1365,7 +1368,8 @@
-#  #
-#  # CONFIG_SHA1 is not set
-#  # CONFIG_SHA256 is not set
-# -# CONFIG_SHA_HW_ACCEL is not set
-# +CONFIG_SHA_HW_ACCEL=y
-# +# CONFIG_SHA_PROG_HW_ACCEL is not set
- 
-#  #
-#  # Compression Support
-# EOT
-#     patch -u -b $1/.config -i encrypt.patch 2>&1 | tee -a $LOG_FILE
-#     rm -f encrypt.patch
-
-# elif [ "$boot_mode" == "secured" ]; then
-
-#     echo "Adding ARM architecture -> Support i.MX HAB features"
-
-#     cat <<EOT >secure.patch
-# --- normal.txt	2020-02-13 09:44:11.691279385 +0530
-# +++ auth.txt	2020-02-13 09:45:15.811829236 +0530
-# @@ -152,7 +152,7 @@
-#  # CONFIG_ARCH_ASPEED is not set
-#  CONFIG_SYS_TEXT_BASE=0x87800000
-#  CONFIG_SYS_MALLOC_F_LEN=0x400
-# -# CONFIG_SECURE_BOOT is not set
-# +CONFIG_SECURE_BOOT=y
-#  CONFIG_MX6=y
-#  CONFIG_MX6UL=y
-#  CONFIG_LDO_BYPASS_CHECK=y
-# @@ -251,6 +251,7 @@
-#  # CONFIG_IMX_CAAM_DEK_ENCAP is not set
-#  # CONFIG_IMX_OPTEE_DEK_ENCAP is not set
-#  # CONFIG_IMX_SECO_DEK_ENCAP is not set
-# +# CONFIG_CMD_PRIBLOB is not set
-#  # CONFIG_CMD_HDMIDETECT is not set
-#  # CONFIG_DBG_MONITOR is not set
-#  # CONFIG_NXP_BOARD_REVISION is not set
-# @@ -737,9 +738,11 @@
-#  # Hardware crypto devices
-#  #
-#  # CONFIG_CAAM_KB_SELF_TEST is not set
-# -# CONFIG_FSL_CAAM is not set
-# +CONFIG_FSL_CAAM=y
-# +CONFIG_SYS_FSL_HAS_SEC=y
-#  CONFIG_SYS_FSL_SEC_COMPAT_4=y
-#  # CONFIG_SYS_FSL_SEC_BE is not set
-# +CONFIG_SYS_FSL_SEC_COMPAT=4
-#  CONFIG_SYS_FSL_SEC_LE=y
-#  # CONFIG_IMX8M_DRAM is not set
-#  # CONFIG_IMX8M_LPDDR4 is not set
-# @@ -1365,7 +1368,8 @@
-#  #
-#  # CONFIG_SHA1 is not set
-#  # CONFIG_SHA256 is not set
-# -# CONFIG_SHA_HW_ACCEL is not set
-# +CONFIG_SHA_HW_ACCEL=y
-# +# CONFIG_SHA_PROG_HW_ACCEL is not set
- 
-#  #
-#  # Compression Support
-# EOT
-#     patch -u -b $1/.config -i secure.patch 2>&1 | tee -a $LOG_FILE
-#     rm -f secure.patch
-# fi
-# make O=$1 ARCH=arm CROSS_COMPILE=$toolchain -j$(nproc) 2>&1 | tee -a $LOG_FILE
-
-# # Checking for build errors
-# if grep -q $err_str $LOG_FILE; then
-#     echo -e "\n${RED}Build error has occurred. Look into $LOG_FILE for more details.${NC}\n" 2>&1 | tee -a $LOG_FILE
-#     exit 1
-# fi
-
-# echo "" 2>&1 | tee -a $LOG_FILE
-# echo -e "${GREEN}*** U-Boot dump ***${NC}" 2>&1 | tee -a $LOG_FILE
-# # od -X -N 0x20 $1/u-boot-dtb.imx
-
-# echo "IVT Header:         0x$(hexdump -e '/4 "%X""\n"' -s 0 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee -a $LOG_FILE
-# echo "U-Boot entry point: 0x$(hexdump -e '/4 "%X""\n"' -s 4 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee -a $LOG_FILE
-# echo "DCD PTR:            0x$(hexdump -e '/4 "%X""\n"' -s 12 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee -a $LOG_FILE
-# echo "Boot Data PTR:      0x$(hexdump -e '/4 "%X""\n"' -s 16 -n 4 $1/u-boot-dtb.imx)" 2>&1 | tee -a $LOG_FILE
-
-# IVT_SELF=$(hexdump -e '/4 "%X""\n"' -s 20 -n 4 $1/u-boot-dtb.imx)
-# echo "IVT Self Address:   0x$IVT_SELF" 2>&1 | tee -a $LOG_FILE
-
-# CSF_PTR=$(hexdump -e '/4 "%X""\n"' -s 24 -n 4 $1/u-boot-dtb.imx)
-# echo "CSF PTR:            0x$CSF_PTR" 2>&1 | tee -a $LOG_FILE
-
-# echo "" 2>&1 | tee -a $LOG_FILE
-# if [ "$boot_mode" == "default" ]; then
-#     echo "Image length:       0x$(hexdump $1/u-boot-dtb.imx | tail -n 1)" 2>&1 | tee -a $LOG_FILE
-# else
-#     IMG_LEN=$(printf '%X\n' $((0x$CSF_PTR - 0x$IVT_SELF)))
-#     echo "Image length: CSF PTR – IVT Self = 0x$IMG_LEN" 2>&1 | tee -a $LOG_FILE
-# fi
-
-# mkdir $1/build_files
-# mv $1/.* $1/build_files/ 2>/dev/null
-# mv $1/* $1/build_files/ 2>/dev/null # Moving all files to the build_files directory
-# mv $1/build_files/*.log $1/ && mv $1/build_files/*.imx $1/ && mv $1/build_files/*.sh $1/ 2>/dev/null
-# cp $1/u-boot-dtb.imx $1/u-boot-dtb.imx.orig
-# echo ""
 
 exit $ES_SUCCESS
