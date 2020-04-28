@@ -32,6 +32,7 @@ k_DEPEN_LIST=(
     chrpath
     socat
     cpio
+    python
     python3
     python3-pip
     python3-pexpect
@@ -117,22 +118,30 @@ if [ $? -ne 0 ]; then
     ((depen_count++))
 fi
 
+# function to automatically detect the user and environment of a current session
+function run-in-user-session() {
+    _display_id=":$(find /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"
+    _username=$(who | grep "\(${_display_id}\)" | awk '{print $1}')
+    _user_id=$(id -u "$_username")
+    _environment=("DISPLAY=$_display_id" "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$_user_id/bus")
+    sudo -Hu "$_username" env "${_environment[@]}" "$@"
+}
+
 if [ "$depen_count" -ne 0 ];then
 
     # Checking for internet connection
     if ping -q -c 1 -W 1 $TEST_SITE &> /dev/null; then
-
-        # Downloading and installing repo tool
-        run-in-user-session mkdir /home/$(sudo -u $SUDO_USER whoami)/bin 2> /dev/null
-        run-in-user-session curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /home/$(sudo -u $SUDO_USER whoami)/bin
-        run-in-user-session chmod a+x /home/$(sudo -u $SUDO_USER whoami)/bin
-
-        run-in-user-session PATH=${PATH}:/home/$(sudo -u $SUDO_USER whoami)/bin
-        run-in-user-session source /etc/environment && export PATH
-
         echo "Updating repositories"
         apt update
         apt install -y "${update_depen[@]}"
+
+        # Downloading and installing repo tool
+        run-in-user-session mkdir /home/$(sudo -u $SUDO_USER whoami)/bin 2> /dev/null
+        run-in-user-session curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /home/$(sudo -u $SUDO_USER whoami)/bin/repo
+        chmod a+x /home/$(sudo -u $SUDO_USER whoami)/bin/repo
+
+        run-in-user-session PATH=${PATH}:/home/$(sudo -u $SUDO_USER whoami)/bin
+        run-in-user-session echo "PATH=$PATH" > /etc/environment && source /etc/environment
     else
         # ERR
         # TODO colorise
@@ -147,15 +156,6 @@ if [ "$depen_count" -ne 0 ];then
         exit $ES_UNMET_DEPEN_ERR
     fi
 fi
-
-# function to automatically detect the user and environment of a current session
-function run-in-user-session() {
-    _display_id=":$(find /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"
-    _username=$(who | grep "\(${_display_id}\)" | awk '{print $1}')
-    _user_id=$(id -u "$_username")
-    _environment=("DISPLAY=$_display_id" "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$_user_id/bus")
-    sudo -Hu "$_username" env "${_environment[@]}" "$@"
-}
 
 # DEFCONF=mx6ul_14x14_evk_defconfig
 # toolchain=~/tools/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- # ARM Cross compiler
