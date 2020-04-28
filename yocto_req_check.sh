@@ -16,8 +16,8 @@
 #########################################################################
 
 k_OS_MIN_VERSION=14   # Minimum supported version in Ubuntu
-# k_MIN_SPACE=50200000  # 50.2GB in KB
-k_MIN_SPACE=20200000  # Testing - 20.2GB in KB
+k_MIN_SPACE=50200000  # 50.2GB in KB
+# k_MIN_SPACE=20200000  # Testing - 20.2GB in KB
 
 # Dependiences of Yocto build
 k_DEPEN_LIST=(
