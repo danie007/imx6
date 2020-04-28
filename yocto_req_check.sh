@@ -16,8 +16,8 @@
 #########################################################################
 
 k_OS_MIN_VERSION=14   # Minimum supported version in Ubuntu
-k_MIN_SPACE=50200000  # 50.2GB in KB
-# k_MIN_SPACE=20200000  # Testing - 20.2GB in KB
+# k_MIN_SPACE=50200000  # 50.2GB in KB
+k_MIN_SPACE=20200000  # Testing - 20.2GB in KB
 
 # Dependiences of Yocto build
 k_DEPEN_LIST=(
@@ -122,12 +122,12 @@ if [ "$depen_count" -ne 0 ];then
     # Checking for internet connection
     if ping -q -c 1 -W 1 $TEST_SITE &> /dev/null; then
 
-        Downloading and installing repo tool
-        run-in-user-session mkdir ~/bin 2> /dev/null
-        run-in-user-session curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-        run-in-user-session chmod a+x ~/bin/repo
+        # Downloading and installing repo tool
+        run-in-user-session mkdir /home/$(sudo -u $SUDO_USER whoami)/bin 2> /dev/null
+        run-in-user-session curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /home/$(sudo -u $SUDO_USER whoami)/bin
+        run-in-user-session chmod a+x /home/$(sudo -u $SUDO_USER whoami)/bin
 
-        run-in-user-session PATH=${PATH}:~/bin
+        run-in-user-session PATH=${PATH}:/home/$(sudo -u $SUDO_USER whoami)/bin
         run-in-user-session source /etc/environment && export PATH
 
         echo "Updating repositories"
@@ -156,11 +156,6 @@ function run-in-user-session() {
     _environment=("DISPLAY=$_display_id" "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$_user_id/bus")
     sudo -Hu "$_username" env "${_environment[@]}" "$@"
 }
-
-# Downloading and installing repo tool
-# mkdir ~/bin 2> /dev/null
-# curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-# chmod a+x ~/bin/repo
 
 # DEFCONF=mx6ul_14x14_evk_defconfig
 # toolchain=~/tools/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- # ARM Cross compiler
