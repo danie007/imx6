@@ -54,7 +54,7 @@ fi
 if [[ "$(df -Pk . | awk 'NR==2 {print $4}')" -lt $MIN_SPACE ]]; then
     # ERR
     # TODO colorise
-    echo "50 GB is not available in current disk($(df -Pk . | awk 'NR==2 {print $1}'))."
+    echo "50 GB is not available in current disk ($(df -Pk . | awk 'NR==2 {print $1}'))"
     echo "Update storage or try in different disk to proceed"
     exit $ES_NO_SPC_ERR
 fi
