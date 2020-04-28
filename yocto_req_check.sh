@@ -134,13 +134,17 @@ if [ "$depen_count" -ne 0 ];then
         apt update
         apt install -y "${update_depen[@]}"
 
-        # Downloading and installing repo tool
-        run-in-user-session mkdir /home/$(sudo -u $SUDO_USER whoami)/bin 2> /dev/null
-        run-in-user-session curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /home/$(sudo -u $SUDO_USER whoami)/bin/repo
-        chmod a+x /home/$(sudo -u $SUDO_USER whoami)/bin/repo
+        REPO_PATH=/home/$(sudo -u $SUDO_USER whoami)/bin
 
-        run-in-user-session PATH=${PATH}:/home/$(sudo -u $SUDO_USER whoami)/bin
-        run-in-user-session echo "PATH=$PATH" > /etc/environment && source /etc/environment
+        # Downloading and installing repo tool
+        run-in-user-session mkdir $REPO_PATH 2> /dev/null
+        run-in-user-session curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > $REPO_PATH/repo
+        chmod a+x $REPO_PATH/repo
+
+        grep "$REPO_PATH" /etc/environment > /dev/null
+        if [ $? -ne 0 ]; then
+            sed -i "s|$|:${REPO_PATH}|" /etc/environment && source /etc/environment
+        fi
     else
         # ERR
         # TODO colorise
