@@ -29,23 +29,24 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Getting the static hostname of runtime
-S_HOSTNAME=$(hostnamectl | grep -i "operating system" | cut -d' ' -f5-)
+HOSTNAME=$(hostnamectl | grep -i "operating system" | cut -d' ' -f5-)
 
-# echo "HOstname $S_HOSTNAME"
-# echo "$(echo $S_HOSTNAME | cut -d' ' -f1)"
-
-if [ "$(echo $S_HOSTNAME | cut -d' ' -f1)" = "Ubuntu" ]; then
-    # echo "Ubuntu"
-    # echo "Version: $(echo $S_HOSTNAME | cut -d' ' -f2)"
+# Retrieving Operating System
+OS_NAME="$(echo $HOSTNAME | cut -d' ' -f1)"
+if [ "$OS_NAME" = "Ubuntu" ]; then
+    
     # Comparing major version
-    if [[ "$(echo $S_HOSTNAME | cut -d' ' -f2 | cut -d. -f1)" -ge $OS_MIN_VERSION ]]; then
-        echo "satisfied"
-    else
+    if [[ "$(echo $HOSTNAME | cut -d' ' -f2 | cut -d. -f1)" -lt $OS_MIN_VERSION ]]; then
+        # ERR
+        # TODO colorise
         echo "The minimum version supported in $OS_MIN_VERSION. Kindly update your OS and try again."
         exit $ES_VER_MM_ER
     fi
+else
+    # Warning
+    # TODO colorise
+    echo "Kindly check https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#detailed-supported-distros for $OS_NAME support before proceed"
 fi
-echo "Hello"
 # DEFCONF=mx6ul_14x14_evk_defconfig
 # toolchain=~/tools/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- # ARM Cross compiler
 # err_str=Error   # Error keyword to be searched in the log file.
