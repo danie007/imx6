@@ -50,6 +50,7 @@ k_DEPEN_LIST=(
     fop
     dblatex
     xmlto
+    u-boot-tools
 )
 
 # Exit Status
@@ -108,7 +109,7 @@ update_depen=()
 for dependency in "${k_DEPEN_LIST[@]}"; do
 
     # Checking for dependencies
-    which dependency &> /dev/null
+    dpkg --list | grep $dependency > /dev/null
     if [ $? -ne 0 ]; then
         # Filtering the dependiences to install
         update_depen+=( $dependency )
@@ -118,7 +119,7 @@ done
 depen_count=${#update_depen[@]}
 
 # Updating dependency count based on repo
-which dependency &> /dev/null
+which repo &> /dev/null
 if [ $? -ne 0 ]; then
     ((depen_count++))
 fi
