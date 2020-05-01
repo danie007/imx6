@@ -16,13 +16,12 @@ k_OS_MIN_VERSION=16     # Minimum supported version in Ubuntu
 k_RECOM_SPACE=120000000 # 120 GB in KB - REcommended Space in Ubuntu 
 k_MIN_SPACE=50200000    # 50.2GB in KB - Minumum required space
 k_KB_TO_GB_CON=1000000  # Constant to convert KB to GB (KB/1000000)
-# k_MIN_SPACE=20200000  # Testing - 20.2GB in KB
 
 # Dependiences of Yocto build
 k_DEPEN_LIST=(
     gawk
     wget
-    git-core
+    git
     diffstat
     unzip
     texinfo
@@ -51,6 +50,7 @@ k_DEPEN_LIST=(
     dblatex
     xmlto
     u-boot-tools
+    repo
 )
 
 # Exit Status
@@ -108,70 +108,43 @@ if [ "$available_space" -lt $k_RECOM_SPACE ]; then
     echo -e "\n${YW}It is recommended to have $(($k_RECOM_SPACE/$k_KB_TO_GB_CON))GB for hassle free build, but $(($available_space/$k_KB_TO_GB_CON))GB is just sufficient.${NC}\n"
 fi
 
-update_depen=()
-for dependency in "${k_DEPEN_LIST[@]}"; do
+update_dependencies() {
+    echo -ne "\n${IN}Checking dependencies...${NC} "
 
-    # Checking for dependencies
-    dpkg --list | grep $dependency > /dev/null
-    if [ $? -ne 0 ]; then
-        # Filtering the dependiences to install
-        update_depen+=( $dependency )
-    fi
-done
+    update_depen=()
+    for dependency in "${k_DEPEN_LIST[@]}"; do
 
-depen_count=${#update_depen[@]}
-
-# Updating dependency count based on repo
-which repo &> /dev/null
-if [ $? -ne 0 ]; then
-    ((depen_count++))
-fi
-
-# function to automatically detect the user and environment of a current session
-function run-in-user-session() {
-    _display_id=":$(find /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"
-    _username=$(who | grep "\(${_display_id}\)" | awk '{print $1}')
-    _user_id=$(id -u "$_username")
-    _environment=("DISPLAY=$_display_id" "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$_user_id/bus")
-    sudo -Hu "$_username" env "${_environment[@]}" "$@"
-}
-
-if [ "$depen_count" -ne 0 ];then
-
-    # Checking for internet connection
-    if ping -q -c 1 -W 1 $TEST_SITE &> /dev/null; then
-        echo -e "\n${IN}Updating repositories...${NC}\n"
-        apt update
-
-        echo -e "\n${IN}Installing dependencies...${NC}\n"
-        apt install -y "${update_depen[@]}"
-
-        # Installing repo if not already
-        which repo &> /dev/null
+        # Checking for dependencies
+        dpkg -l | grep -w "$dependency" > /dev/null
         if [ $? -ne 0 ]; then
-            REPO_PATH=/home/$(sudo -u $SUDO_USER whoami)/bin
+            # Filtering the dependiences to install
+            update_depen+=( $dependency )
+        fi
+    done
 
-            # Downloading and installing repo tool
-            echo -e "\n${IN}Installing repo...${NC}\n"
-            run-in-user-session mkdir $REPO_PATH 2> /dev/null
-            run-in-user-session curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > $REPO_PATH/repo
-            chmod a+x $REPO_PATH/repo
+    if [ "${#update_depen[@]}" -ne 0 ];then
 
-            # Adding repo to environment PATH
-            grep "$REPO_PATH" /etc/environment > /dev/null
-            if [ $? -ne 0 ]; then
-                sed -i "s|$|:${REPO_PATH}|" /etc/environment && source /etc/environment
-            fi
+        # Checking for internet connection
+        if ping -q -c 1 -W 1 $TEST_SITE &> /dev/null; then
+            echo -e "\n\n${IN}Installing dependencies...${NC}\n"
+            apt update
+            apt install -y "${update_depen[@]}"
+            update_dependencies
+        else
+            echo -e "\n${RD}No internet connection is available.\nUnable to update following dependencies:"
+            for dependency in "${update_depen[@]}"; do
+                echo $dependency
+            done
+
+            echo -e "${NC}Enable internet or manually install the dependencies to continue\n"
+            exit $ES_UNMET_DEPEN_ERR
         fi
     else
-        echo -e "\n${RD}No internet connection is available.\nUnable to update following dependencies:"
-        for dependency in "${update_depen[@]}"; do
-            echo $dependency
-        done
-
-        echo -e "${NC}Enable internet or manually install the dependencies to continue"
-        exit $ES_UNMET_DEPEN_ERR
+        echo -e "${GN}SUCCESS${NC}\n"
+        exit $ES_SUCCESS
     fi
-fi
+}
 
-exit $ES_SUCCESS
+update_dependencies
+
+exit -1  # Program never should reach this point
