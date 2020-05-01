@@ -60,9 +60,15 @@ ES_VER_MM_ERR=2         # Version MisMatch Error
 ES_NO_SPC_ERR=3         # NO SPaCe Error
 ES_UNMET_DEPEN_ERR=4    # UNMET DEPENdencies ERRor
 
+GN='\e[1;32m'   # Bold green
+YW='\e[1;33m'   # Bold yellow
+RD='\e[1;31m'   # Bold red
+IN='\e[1;7m'    # Bold inverted
+NC='\e[0m'      # Reset
+
 # Check for root previlages
 if [[ $EUID -ne 0 ]]; then
-    echo "run the ${!#} as root"
+    echo -e "\n${RD}Run the ${!#} as root${NC}\n"
     exit $ES_PERM_ERR
 fi
 
@@ -73,36 +79,33 @@ TEST_SITE=google.com
 HOSTNAME=$(hostnamectl | grep -i "operating system" | cut -d' ' -f5-)
 
 # Retrieving Operating System
+echo -ne "\n${IN}Checking OS Compatibility...${NC} "
 OS_NAME="$(echo $HOSTNAME | cut -d' ' -f1)"
 if [ "$OS_NAME" = "Ubuntu" ]; then
     
     # Comparing major version
     if [ "$(echo $HOSTNAME | cut -d' ' -f2 | cut -d. -f1)" -lt $k_OS_MIN_VERSION ]; then
-        # ERR
-        # TODO colorise
-        echo "The minimum version supported in $k_OS_MIN_VERSION. Kindly update your OS and try again."
+        echo -e "\n${RD}The minimum supported $OS_NAME version is $k_OS_MIN_VERSION, but you're running on $HOSTNAME.${NC}\nKindly update your OS and try again.\n"
         exit $ES_VER_MM_ERR
     fi
+    echo -e "${GN}SUCCESS${NC}"
 else
-    # Warning
-    # TODO colorise
-    echo "Kindly check https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#detailed-supported-distros for $OS_NAME support before proceed"
+    echo -e "\n${YW}Kindly check at https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#detailed-supported-distros for $OS_NAME support before proceed${NC}\n"
 fi
 
 # Getting available space in disk
 available_space=$(df -Pk . | awk 'NR==2 {print $4}')
 
 # Checking for minimum space requirements
+echo -ne "\n${IN}Checking space requirements...${NC} "
 if [ "$available_space" -lt $k_MIN_SPACE ]; then
-    # ERR
-    # TODO colorise
-    echo "$(($k_MIN_SPACE/$k_KB_TO_GB_CON))GB is not available in current disk ($(df -Pk . | awk 'NR==2 {print $1}'))"
-    echo "Update storage or try in different disk to proceed"
+    echo -e "\n${RD}$(($k_MIN_SPACE/$k_KB_TO_GB_CON))GB is not available in current disk ($(df -Pk . | awk 'NR==2 {print $1}')) (available: $(($available_space/$k_KB_TO_GB_CON))GB)\nUpdate storage or try in different disk to proceed${NC}\n"
     exit $ES_NO_SPC_ERR
-elif [ "$available_space" -lt $k_RECOM_SPACE ]; then
-    # Warning
-    # TODO colorise
-    echo "It is recommended to have $(($k_RECOM_SPACE/$k_KB_TO_GB_CON))GB for hassle free build, but $available_space is just sufficient"
+fi
+
+echo -e "${GN}SUCCESS${NC}"
+if [ "$available_space" -lt $k_RECOM_SPACE ]; then
+    echo -e "\n${YW}It is recommended to have $(($k_RECOM_SPACE/$k_KB_TO_GB_CON))GB for hassle free build, but $(($available_space/$k_KB_TO_GB_CON))GB is just sufficient.${NC}\n"
 fi
 
 update_depen=()
@@ -137,13 +140,16 @@ if [ "$depen_count" -ne 0 ];then
 
     # Checking for internet connection
     if ping -q -c 1 -W 1 $TEST_SITE &> /dev/null; then
-        echo "Updating repositories"
+        echo -e "\n${IN}Updating repositories...${NC}\n"
         apt update
+
+        echo -e "\n${IN}Installing dependencies...${NC}\n"
         apt install -y "${update_depen[@]}"
 
         REPO_PATH=/home/$(sudo -u $SUDO_USER whoami)/bin
 
         # Downloading and installing repo tool
+        echo -e "\n${IN}Installing repo...${NC}\n"
         run-in-user-session mkdir $REPO_PATH 2> /dev/null
         run-in-user-session curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > $REPO_PATH/repo
         chmod a+x $REPO_PATH/repo
@@ -153,15 +159,12 @@ if [ "$depen_count" -ne 0 ];then
             sed -i "s|$|:${REPO_PATH}|" /etc/environment && source /etc/environment
         fi
     else
-        # ERR
-        # TODO colorise
-        echo "No internet connection is available."
-        echo "Unable to update following dependencies:"
+        echo -e "\n${RD}No internet connection is available.\nUnable to update following dependencies:"
         for dependency in "${update_depen[@]}"; do
             echo $dependency
         done
 
-        echo "Enable internet or manually install the dependencies to continue"
+        echo -e "${NC}Enable internet or manually install the dependencies to continue"
         exit $ES_UNMET_DEPEN_ERR
     fi
 fi
