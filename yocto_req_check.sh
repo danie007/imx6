@@ -146,17 +146,22 @@ if [ "$depen_count" -ne 0 ];then
         echo -e "\n${IN}Installing dependencies...${NC}\n"
         apt install -y "${update_depen[@]}"
 
-        REPO_PATH=/home/$(sudo -u $SUDO_USER whoami)/bin
-
-        # Downloading and installing repo tool
-        echo -e "\n${IN}Installing repo...${NC}\n"
-        run-in-user-session mkdir $REPO_PATH 2> /dev/null
-        run-in-user-session curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > $REPO_PATH/repo
-        chmod a+x $REPO_PATH/repo
-
-        grep "$REPO_PATH" /etc/environment > /dev/null
+        # Installing repo if not already
+        which repo &> /dev/null
         if [ $? -ne 0 ]; then
-            sed -i "s|$|:${REPO_PATH}|" /etc/environment && source /etc/environment
+            REPO_PATH=/home/$(sudo -u $SUDO_USER whoami)/bin
+
+            # Downloading and installing repo tool
+            echo -e "\n${IN}Installing repo...${NC}\n"
+            run-in-user-session mkdir $REPO_PATH 2> /dev/null
+            run-in-user-session curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > $REPO_PATH/repo
+            chmod a+x $REPO_PATH/repo
+
+            # Adding repo to environment PATH
+            grep "$REPO_PATH" /etc/environment > /dev/null
+            if [ $? -ne 0 ]; then
+                sed -i "s|$|:${REPO_PATH}|" /etc/environment && source /etc/environment
+            fi
         fi
     else
         echo -e "\n${RD}No internet connection is available.\nUnable to update following dependencies:"
