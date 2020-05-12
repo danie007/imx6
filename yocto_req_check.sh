@@ -55,20 +55,23 @@ k_DEPEN_LIST=(
 
 # Exit Status
 ES_SUCCESS=0            # Success
-ES_PERM_ERR=1           # Permission Error
-ES_VER_MM_ERR=2         # Version MisMatch Error
-ES_NO_SPC_ERR=3         # NO SPaCe Error
+ES_PERM_ERR=1           # PERMission ERRor
+ES_VER_MM_ERR=2         # VERsion MisMatch ERRor
+ES_NO_SPC_ERR=3         # NO SPaCe ERRor
 ES_UNMET_DEPEN_ERR=4    # UNMET DEPENdencies ERRor
 
-GN='\e[1;32m'   # Bold green
-YW='\e[1;33m'   # Bold yellow
-RD='\e[1;31m'   # Bold red
-IN='\e[1;7m'    # Bold inverted
-NC='\e[0m'      # Reset
+YW='\e[0;33m'   # Yellow
+RD='\e[0;31m'   # Red
+BI='\e[1;7m'    # Bold inverted
+RS='\e[0m'      # Reset
+
+ERR='\e[1;31mERROR\e[0m'    # Error dialog
+WARN='\e[1;33mWARNING\e[0m' # Warning dialog
+SUCS='\e[1;32mSUCCESS\e[0m' # Success dialog
 
 # Check for root previlages
 if [[ $EUID -ne 0 ]]; then
-    echo -e "\n${RD}Run the ${!#} as root${NC}\n"
+    echo -e "\n${ERR}: ${RD}Run the ${!#} as root${RS}\n"
     exit $ES_PERM_ERR
 fi
 
@@ -79,37 +82,37 @@ TEST_SITE=google.com
 HOSTNAME=$(hostnamectl | grep -i "operating system" | cut -d' ' -f5-)
 
 # Retrieving Operating System
-echo -ne "\n${IN}Checking OS Compatibility...${NC} "
+echo -ne "\n${BI}Checking OS Compatibility...${RS} "
 OS_NAME="$(echo $HOSTNAME | cut -d' ' -f1)"
 if [ "$OS_NAME" = "Ubuntu" ]; then
     
     # Comparing major version
     if [ "$(echo $HOSTNAME | cut -d' ' -f2 | cut -d. -f1)" -lt $k_OS_MIN_VERSION ]; then
-        echo -e "\n${RD}The minimum supported $OS_NAME version is $k_OS_MIN_VERSION, but you're running on $HOSTNAME.${NC}\nKindly update your OS and try again.\n"
+        echo -e "\n${ERR}: ${RD}The minimum supported $OS_NAME version is $k_OS_MIN_VERSION, but you're running on $HOSTNAME.${RS}\nKindly update your OS and try again.\n"
         exit $ES_VER_MM_ERR
     fi
-    echo -e "${GN}SUCCESS${NC}"
+    echo -e "${SUCS}"
 else
-    echo -e "\n${YW}Kindly check at https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#detailed-supported-distros for $OS_NAME support before proceed${NC}\n"
+    echo -e "\n${WARN}: ${YW}Kindly check at https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#detailed-supported-distros for $OS_NAME support before proceed${RS}\n"
 fi
 
 # Getting available space in disk
 available_space=$(df -Pk . | awk 'NR==2 {print $4}')
 
 # Checking for minimum space requirements
-echo -ne "\n${IN}Checking space requirements...${NC} "
+echo -ne "\n${BI}Checking space requirements...${RS} "
 if [ "$available_space" -lt $k_MIN_SPACE ]; then
-    echo -e "\n${RD}$(($k_MIN_SPACE/$k_KB_TO_GB_CON))GB is not available in current disk ($(df -Pk . | awk 'NR==2 {print $1}')) (available: $(($available_space/$k_KB_TO_GB_CON))GB)\nUpdate storage or try in different disk to proceed${NC}\n"
+    echo -e "\n${ERR}: ${RD}$(($k_MIN_SPACE/$k_KB_TO_GB_CON))GB is not available in current disk ($(df -Pk . | awk 'NR==2 {print $1}')) (available: $(($available_space/$k_KB_TO_GB_CON))GB)\nUpdate storage or try in different disk to proceed${RS}\n"
     exit $ES_NO_SPC_ERR
 fi
 
-echo -e "${GN}SUCCESS${NC}"
+echo -e "${SUCS}"
 if [ "$available_space" -lt $k_RECOM_SPACE ]; then
-    echo -e "\n${YW}It is recommended to have $(($k_RECOM_SPACE/$k_KB_TO_GB_CON))GB for hassle free build, but $(($available_space/$k_KB_TO_GB_CON))GB is just sufficient.${NC}\n"
+    echo -e "\n${WARN}: ${YW}It is recommended to have $(($k_RECOM_SPACE/$k_KB_TO_GB_CON))GB for hassle free build, but $(($available_space/$k_KB_TO_GB_CON))GB is just sufficient.${RS}\n"
 fi
 
 update_dependencies() {
-    echo -ne "\n${IN}Checking dependencies...${NC} "
+    echo -ne "\n${BI}Checking dependencies...${RS} "
 
     update_depen=()
     for dependency in "${k_DEPEN_LIST[@]}"; do
@@ -126,21 +129,21 @@ update_dependencies() {
 
         # Checking for internet connection
         if ping -q -c 1 -W 1 $TEST_SITE &> /dev/null; then
-            echo -e "\n\n${IN}Installing dependencies...${NC}\n"
+            echo -e "\n\n${BI}Installing dependencies...${RS}\n"
             apt update
             apt install -y "${update_depen[@]}"
             update_dependencies
         else
-            echo -e "\n${RD}No internet connection is available.\nUnable to update following dependencies:"
+            echo -e "\n${ERR}: ${RD}No internet connection is available.\nUnable to update following dependencies:"
             for dependency in "${update_depen[@]}"; do
                 echo $dependency
             done
 
-            echo -e "${NC}Enable internet or manually install the dependencies to continue\n"
+            echo -e "${RS}Enable internet or manually install the dependencies to continue\n"
             exit $ES_UNMET_DEPEN_ERR
         fi
     else
-        echo -e "${GN}SUCCESS${NC}\n"
+        echo -e "${SUCS}\n"
         exit $ES_SUCCESS
     fi
 }
