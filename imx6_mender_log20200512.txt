@@ -1,0 +1,779 @@
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2020.05.12 20:51:57 =~=~=~=~=~=~=~=~=~=~=~=
+
+U-Boot SPL 2019.07+fslc+gca0ab15271 (May 12 2020 - 14:31:58 +0000)
+Trying to boot from MMC1
+
+
+U-Boot 2019.07+fslc+gca0ab15271 (May 12 2020 - 14:31:58 +0000)
+
+CPU:   Freescale i.MX6UL rev1.1 528 MHz (running at 396 MHz)
+CPU:   Industrial temperature grade (-40C to 105C) at 36C
+Reset cause: POR
+Model: Freescale i.MX6 UltraLite 14x14 EVK Board
+Board: MX6UL 14x14 EVK
+DRAM:  512 MiB
+MMC:   FSL_SDHC: 0, FSL_SDHC: 1
+Loading Environment from MMC... *** Warning - bad CRC, using default environment
+
+Video: 480x272x24
+In:    serial
+Out:   serial
+Err:   serial
+Net:   
+Error: ethernet@020b4000 address not set.
+
+Error: ethernet@020b4000 address not set.
+
+Error: ethernet@02188000 address not set.
+eth-1: ethernet@020b4000
+Error: ethernet@02188000 address not set.
+, eth-1: ethernet@02188000
+Hit any key to stop autoboot:  2  1  0 
+switch to partitions #0, [ OK ]
+mmc1 is current device
+switch to partitions #0, [ OK ]
+mmc1 is current device
+8123760 bytes read in 371 ms (20.9 MiB/s)
+Booting from mmc ...
+37104 bytes read in 19 ms (1.9 MiB/s)
+## Flattened Device Tree blob at 83000000
+   Booting using the fdt blob at 0x83000000
+   Using Device Tree in place at 83000000, end 8300c0ef
+
+Starting kernel ...
+
+Booting Linux on physical CPU 0x0
+Linux version 4.9.67-fslc+g953c6e30c970 (oe-user@oe-host) (gcc version 8.3.0 (GCC) ) #1 SMP PREEMPT Tue May 12 13:36:11 UTC 2020
+CPU: ARMv7 Processor [410fc075] revision 5 (ARMv7), cr=10c53c7d
+CPU: div instructions available: patching division code
+CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+OF: fdt:Machine model: Freescale i.MX6 UltraLite 14x14 EVK Board
+Reserved memory: created CMA memory pool at 0x8c000000, size 320 MiB
+OF: reserved mem: initialized node linux,cma, compatible id shared-dma-pool
+Memory policy: Data cache writealloc
+percpu: Embedded 15 pages/cpu @8bb30000 s29964 r8192 d23284 u61440
+Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 130048
+Kernel command line: console=ttymxc0,115200 root=/dev/mmcblk1p2 rootwait rw
+PID hash table entries: 2048 (order: 1, 8192 bytes)
+Dentry cache hash table entries: 65536 (order: 6, 262144 bytes)
+Inode-cache hash table entries: 32768 (order: 5, 131072 bytes)
+Memory: 173508K/524288K available (10240K kernel code, 859K rwdata, 3524K rodata, 1024K init, 480K bss, 23100K reserved, 327680K cma-reserved, 0K highmem)
+Virtual kernel memory layout:
+    vector  : 0xffff0000 - 0xffff1000   (   4 kB)
+    fixmap  : 0xffc00000 - 0xfff00000   (3072 kB)
+    vmalloc : 0xa0800000 - 0xff800000   (1520 MB)
+    lowmem  : 0x80000000 - 0xa0000000   ( 512 MB)
+    pkmap   : 0x7fe00000 - 0x80000000   (   2 MB)
+    modules : 0x7f000000 - 0x7fe00000   (  14 MB)
+      .text : 0x80008000 - 0x80b00000   (11232 kB)
+      .init : 0x81000000 - 0x81100000   (1024 kB)
+      .data : 0x81100000 - 0x811d6ea8   ( 860 kB)
+       .bss : 0x811d8000 - 0x81250070   ( 481 kB)
+SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+Preemptible hierarchical RCU implementation.
+	Build-time adjustment of leaf fanout to 32.
+	RCU restricting CPUs from NR_CPUS=4 to nr_cpu_ids=1.
+RCU: Adjusting geometry for rcu_fanout_leaf=32, nr_cpu_ids=1
+NR_IRQS:16 nr_irqs:16 16
+Switching to timer-based delay loop, resolution 333ns
+sched_clock: 32 bits at 3000kHz, resolution 333ns, wraps every 715827882841ns
+clocksource: mxc_timer1: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 637086815595 ns
+Console: colour dummy device 80x30
+Calibrating delay loop (skipped), value calculated using timer frequency.. 6.00 BogoMIPS (lpj=30000)
+pid_max: default: 32768 minimum: 301
+Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+CPU: Testing write buffer coherency: ok
+ftrace: allocating 33440 entries in 99 pages
+/cpus/cpu@0 missing clock-frequency property
+CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+Setting up static identity map for 0x80100000 - 0x80100058
+Brought up 1 CPUs
+SMP: Total of 1 processors activated (6.00 BogoMIPS).
+CPU: All CPU(s) started in SVC mode.
+devtmpfs: initialized
+VFP support v0.3: implementor 41 architecture 2 part 30 variant 7 rev 5
+clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+futex hash table entries: 256 (order: 2, 16384 bytes)
+pinctrl core: initialized pinctrl subsystem
+NET: Registered protocol family 16
+DMA: preallocated 256 KiB pool for atomic coherent allocations
+cpuidle: using governor menu
+hw-breakpoint: found 5 (+1 reserved) breakpoint and 4 watchpoint registers.
+hw-breakpoint: maximum watchpoint size is 8 bytes.
+imx6ul-pinctrl 20e0000.iomuxc: initialized IMX pinctrl driver
+mxs-dma 1804000.dma-apbh: initialized
+SCSI subsystem initialized
+usbcore: registered new interface driver usbfs
+usbcore: registered new interface driver hub
+usbcore: registered new device driver usb
+i2c i2c-0: IMX I2C adapter registered
+i2c i2c-0: can't use DMA, using PIO instead.
+i2c i2c-1: IMX I2C adapter registered
+i2c i2c-1: can't use DMA, using PIO instead.
+Linux video capture interface: v2.00
+pps_core: LinuxPPS API ver. 1 registered
+pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+PTP clock support registered
+MIPI CSI2 driver module loaded
+imx rpmsg driver is registered.
+Advanced Linux Sound Architecture Driver Initialized.
+Bluetooth: Core ver 2.22
+NET: Registered protocol family 31
+Bluetooth: HCI device and connection manager initialized
+Bluetooth: HCI socket layer initialized
+Bluetooth: L2CAP socket layer initialized
+Bluetooth: SCO socket layer initialized
+clocksource: Switched to clocksource mxc_timer1
+VFS: Disk quotas dquot_6.6.0
+VFS: Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+NET: Registered protocol family 2
+TCP established hash table entries: 4096 (order: 2, 16384 bytes)
+TCP bind hash table entries: 4096 (order: 3, 32768 bytes)
+TCP: Hash tables configured (established 4096 bind 4096)
+UDP hash table entries: 256 (order: 1, 8192 bytes)
+UDP-Lite hash table entries: 256 (order: 1, 8192 bytes)
+NET: Registered protocol family 1
+RPC: Registered named UNIX socket transport module.
+RPC: Registered udp transport module.
+RPC: Registered tcp transport module.
+RPC: Registered tcp NFSv4.1 backchannel transport module.
+Bus freq driver module loaded
+workingset: timestamp_bits=30 max_order=17 bucket_order=0
+NFS: Registering the id_resolver key type
+Key type id_resolver registered
+Key type id_legacy registered
+jffs2: version 2.2. (NAND) © 2001-2006 Red Hat, Inc.
+fuse init (API version 7.26)
+io scheduler noop registered
+io scheduler deadline registered
+io scheduler cfq registered (default)
+imx-weim 21b8000.weim: Driver registered.
+backlight supply power not found, using dummy regulator
+21c8000.lcdif supply lcd not found, using dummy regulator
+mxsfb 21c8000.lcdif: failed to find mxc display driver 
+Console: switching to colour frame buffer device 60x34
+mxsfb 21c8000.lcdif: initialized
+imx-sdma 20ec000.sdma: loaded firmware 3.3
+2020000.serial: ttymxc0 at MMIO 0x2020000 (irq = 19, base_baud = 5000000) is a IMX
+console [ttymxc0] enabled
+21e8000.serial: ttymxc1 at MMIO 0x21e8000 (irq = 66, base_baud = 5000000) is a IMX
+imx sema4 driver is registered.
+[drm] Initialized
+[drm] Initialized vivante 1.0.0 20120216 on minor 0
+brd: module loaded
+loop: module loaded
+fsl-quadspi 21e0000.qspi: n25q256a (32768 Kbytes)
+spi_gpio spi4: gpio-miso property not found, switching to no-rx mode
+libphy: Fixed MDIO Bus: probed
+CAN device driver interface
+flexcan 2090000.flexcan: device registered (reg_base=a09ac000, irq=25)
+flexcan 2094000.flexcan: device registered (reg_base=a09b4000, irq=26)
+20b4000.ethernet supply phy not found, using dummy regulator
+pps pps0: new PPS source ptp0
+fec 20b4000.ethernet (unnamed net_device) (uninitialized): Invalid MAC address: 00:00:00:00:00:00
+fec 20b4000.ethernet (unnamed net_device) (uninitialized): Using random MAC address: 36:cc:0a:04:6f:67
+libphy: fec_enet_mii_bus: probed
+fec 20b4000.ethernet eth0: registered PHC device 0
+2188000.ethernet supply phy not found, using dummy regulator
+pps pps1: new PPS source ptp1
+fec 2188000.ethernet (unnamed net_device) (uninitialized): Invalid MAC address: 00:00:00:00:00:00
+fec 2188000.ethernet (unnamed net_device) (uninitialized): Using random MAC address: 42:b0:e2:cd:73:fe
+fec 2188000.ethernet eth1: registered PHC device 1
+ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+ehci-mxc: Freescale On-Chip EHCI Host driver
+usbcore: registered new interface driver usb-storage
+usbcore: registered new interface driver usb_ehset_test
+2184800.usbmisc supply vbus-wakeup not found, using dummy regulator
+2184000.usb supply vbus not found, using dummy regulator
+2184200.usb supply vbus not found, using dummy regulator
+ci_hdrc ci_hdrc.1: EHCI Host Controller
+ci_hdrc ci_hdrc.1: new USB bus registered, assigned bus number 1
+ci_hdrc ci_hdrc.1: USB 2.0 started, EHCI 1.00
+hub 1-0:1.0: USB hub found
+hub 1-0:1.0: 1 port detected
+mousedev: PS/2 mouse device common for all mice
+input: 20cc000.snvs:snvs-powerkey as /devices/soc0/soc/2000000.aips-bus/20cc000.snvs/20cc000.snvs:snvs-powerkey/input/input0
+input: iMX6UL Touchscreen Controller as /devices/soc0/soc/2000000.aips-bus/2040000.tsc/input/input1
+input: FreescaleAccelerometer as /devices/virtual/input/input2
+fxls8471 device driver probe successfully
+snvs_rtc 20cc000.snvs:snvs-rtc-lp: rtc core: registered 20cc000.snvs:snvs-r as rtc0
+i2c /dev entries driver
+IR NEC protocol handler initialized
+IR RC5(x/sz) protocol handler initialized
+IR RC6 protocol handler initialized
+IR JVC protocol handler initialized
+IR Sony protocol handler initialized
+IR SANYO protocol handler initialized
+IR Sharp protocol handler initialized
+IR MCE Keyboard/mouse protocol handler initialized
+IR XMP protocol handler initialized
+pxp-v4l2 pxp_v4l2: initialized
+0-000e supply vdd not found, using dummy regulator
+0-000e supply vddio not found, using dummy regulator
+mag3110 0-000e: check mag3110 chip ID
+random: fast init done
+input: mag3110 as /devices/virtual/input/input3
+mag3110 0-000e: mag3110 is probed
+imx2-wdt 20bc000.wdog: timeout 60 sec (nowayout=0)
+Bluetooth: HCI UART driver ver 2.3
+Bluetooth: HCI UART protocol H4 registered
+Bluetooth: HCI UART protocol BCSP registered
+Bluetooth: HCI UART protocol ATH3K registered
+usbcore: registered new interface driver bcm203x
+usbcore: registered new interface driver btusb
+usbcore: registered new interface driver ath3k
+sdhci: Secure Digital Host Controller Interface driver
+sdhci: Copyright(c) Pierre Ossman
+sdhci-pltfm: SDHCI platform and OF driver helper
+sdhci-esdhc-imx 2190000.usdhc: Got CD GPIO
+mmc0: SDHCI controller on 2190000.usdhc [2190000.usdhc] using ADMA
+sdhci-esdhc-imx 2194000.usdhc: could not get ultra high speed state, work on normal mode
+mmc1: SDHCI controller on 2194000.usdhc [2194000.usdhc] using ADMA
+caam 2140000.caam: ERA source: CCBVID.
+caam 2140000.caam: Entropy delay = 3200
+caam 2140000.caam: Instantiated RNG4 SH0
+mmc1: host does not support reading read-only switch, assuming write-enable
+mmc1: new high speed SDHC card at address 0001
+caam 2140000.caam: Instantiated RNG4 SH1
+caam 2140000.caam: device ID = 0x0a16030000000000 (Era 8)
+caam 2140000.caam: job rings = 3, qi = 0
+mmcblk1: mmc1:0001 SD8GB 7.24 GiB 
+ mmcblk1: p1 p2
+caam algorithms registered in /proc/crypto
+caam_jr 2141000.jr0: registering rng-caam
+caam 2140000.caam: caam pkc algorithms registered in /proc/crypto
+platform caam_sm: blkkey_ex: 8 keystore units available
+platform caam_sm: 64-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: 64-bit black key:
+platform caam_sm: [0000] 96 7f b4 ba 79 ca df 55
+platform caam_sm: [0008] 90 54 ad 2d 59 2a 0f 59
+platform caam_sm: 128-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: [0008] 08 09 0a 0b 0c 0d 0e 0f
+platform caam_sm: 128-bit black key:
+platform caam_sm: [0000] b9 62 ea 69 89 c3 bd 20
+platform caam_sm: [0008] 6c b8 e1 9a b4 d4 1a a3
+platform caam_sm: 192-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: [0008] 08 09 0a 0b 0c 0d 0e 0f
+platform caam_sm: [0016] 10 11 12 13 14 15 16 17
+platform caam_sm: 192-bit black key:
+platform caam_sm: [0000] b4 f0 ae f7 2c 4d 89 b3
+platform caam_sm: [0008] 04 ca 46 4b 45 6c 8b 42
+platform caam_sm: [0016] d4 40 8d 7b d8 e7 35 0f
+platform caam_sm: [0024] 3c bf 3e 51 aa e8 2e 55
+platform caam_sm: 256-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: [0008] 08 09 0a 0b 0c 0d 0e 0f
+platform caam_sm: [0016] 10 11 12 13 14 15 16 17
+platform caam_sm: [0024] 18 19 1a 1b 1c 1d 1e 1f
+platform caam_sm: 256-bit black key:
+platform caam_sm: [0000] dc 39 c1 ab 43 18 86 77
+platform caam_sm: [0008] fc 3d 3b 76 72 2a dc 4b
+platform caam_sm: [0016] 50 d1 37 5f 06 11 91 78
+platform caam_sm: [0024] 8b 11 3e e7 cc dc 7f 73
+platform caam_sm: 64-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 128-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 196-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 256-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 64-bit black key in blob:
+platform caam_sm: [0000] 5e 6c f4 c0 54 19 b9 b0
+platform caam_sm: [0008] dc 71 e0 23 00 3e 23 2b
+platform caam_sm: [0016] 8b 23 aa fb 22 35 6d 1c
+platform caam_sm: [0024] c1 2e f0 ba 4b 7c 4b 8f
+platform caam_sm: [0032] a0 f4 0d 10 14 1b a0 2e
+platform caam_sm: [0040] f1 bd c3 cf 18 01 64 0d
+platform caam_sm: [0048] 2e 25 f3 ce 7d 52 17 88
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 128-bit black key in blob:
+platform caam_sm: [0000] cc eb 76 1f 44 8c 40 a6
+platform caam_sm: [0008] b9 77 70 5f 13 bf 9c db
+platform caam_sm: [0016] 22 89 7b 82 8f d9 d9 c0
+platform caam_sm: [0024] 93 71 3d 2c 75 5a a7 49
+platform caam_sm: [0032] 6a a6 fb 19 1b c9 9f 76
+platform caam_sm: [0040] af 02 85 69 7e 10 eb 07
+platform caam_sm: [0048] 87 3d c5 44 0d 8b 81 3d
+platform caam_sm: [0056] d5 ca be 22 9c 8d 0a b0
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 192-bit black key in blob:
+platform caam_sm: [0000] da 07 f1 0d da 9e c0 ef
+platform caam_sm: [0008] 27 1e 36 89 84 05 c5 84
+platform caam_sm: [0016] eb 95 9d 7f 49 7d 8b 44
+platform caam_sm: [0024] 0c 0f ac 8a 28 d1 5f cd
+platform caam_sm: [0032] d7 f3 88 b4 fe ef 4d 02
+platform caam_sm: [0040] 89 08 3a dd d9 d0 27 a5
+platform caam_sm: [0048] fd 34 74 56 95 aa de 98
+platform caam_sm: [0056] 23 2b 51 e7 de ab 2c db
+platform caam_sm: [0064] 10 9e a6 bd 4c f5 ac b6
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 256-bit black key in blob:
+platform caam_sm: [0000] af b8 ed 87 34 b4 c1 7f
+platform caam_sm: [0008] fd 61 d3 e5 2a 07 73 9c
+platform caam_sm: [0016] 54 8c 97 58 4f 3d 2d 9f
+platform caam_sm: [0024] 53 7b 98 e1 75 96 34 a8
+platform caam_sm: [0032] 6b 55 02 77 46 57 d1 9a
+platform caam_sm: [0040] 52 50 5c aa 43 b7 7f 0e
+platform caam_sm: [0048] a1 0d 5e f9 27 c6 e3 53
+platform caam_sm: [0056] 9d 7b 7d 6a 0e a3 f3 07
+platform caam_sm: [0064] 63 66 b1 96 1d e2 4c cb
+platform caam_sm: [0072] 70 94 90 68 ee 6f a9 fa
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: restored 64-bit black key:
+platform caam_sm: [0000] d7 f7 5a e0 a7 4a fa 39
+platform caam_sm: [0008] 19 34 db e8 4b c8 51 81
+platform caam_sm: restored 128-bit black key:
+platform caam_sm: [0000] b9 62 ea 69 89 c3 bd 20
+platform caam_sm: [0008] 6c b8 e1 9a b4 d4 1a a3
+platform caam_sm: restored 192-bit black key:
+platform caam_sm: [0000] b4 f0 ae f7 2c 4d 89 b3
+platform caam_sm: [0008] 04 ca 46 4b 45 6c 8b 42
+platform caam_sm: [0016] 4f 53 67 4d 5d 30 07 c9
+platform caam_sm: [0024] cf 9c a0 68 35 8d 92 d2
+platform caam_sm: restored 256-bit black key:
+platform caam_sm: [0000] dc 39 c1 ab 43 18 86 77
+platform caam_sm: [0008] fc 3d 3b 76 72 2a dc 4b
+platform caam_sm: [0016] 50 d1 37 5f 06 11 91 78
+platform caam_sm: [0024] 8b 11 3e e7 cc dc 7f 73
+snvs-secvio 20cc000.caam-snvs: can't get snvs clock
+snvs-secvio 20cc000.caam-snvs: violation handlers armed - non-secure state
+usbcore: registered new interface driver usbhid
+usbhid: USB HID core driver
+imx-wm8960 sound: wm8960-hifi <-> 202c000.sai mapping ok
+imx-wm8960 sound: snd-soc-dummy-dai <-> 2034000.asrc mapping ok
+imx-wm8960 sound: wm8960-hifi <-> 202c000.sai mapping ok
+NET: Registered protocol family 26
+NET: Registered protocol family 10
+sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+NET: Registered protocol family 17
+can: controller area network core (rev 20120528 abi 9)
+NET: Registered protocol family 29
+can: raw protocol (rev 20120528)
+can: broadcast manager protocol (rev 20161123 t)
+can: netlink gateway (rev 20130117) max_hops=1
+Bluetooth: RFCOMM TTY layer initialized
+Bluetooth: RFCOMM socket layer initialized
+Bluetooth: RFCOMM ver 1.11
+Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+Bluetooth: BNEP filters: protocol multicast
+Bluetooth: BNEP socket layer initialized
+Bluetooth: HIDP (Human Interface Emulation) ver 1.2
+Bluetooth: HIDP socket layer initialized
+8021q: 802.1Q VLAN Support v1.8
+Key type dns_resolver registered
+cpu cpu0: Registered imx6q-cpufreq
+imx_thermal 2000000.aips-bus:tempmon: Industrial CPU temperature grade - max:105C critical:100C passive:95C
+dhd_module_init in
+snvs_rtc 20cc000.snvs:snvs-rtc-lp: setting system clock to 1970-01-01 00:00:01 UTC (1)
+VSD_3V3: disabling
+can-3v3: disabling
+gpio_dvfs: disabling
+ALSA device list:
+  #0: wm8960-audio
+EXT4-fs (mmcblk1p2): couldn't mount as ext3 due to feature incompatibilities
+EXT4-fs (mmcblk1p2): mounted filesystem with ordered data mode. Opts: (null)
+VFS: Mounted root (ext4 filesystem) on device 179:18.
+devtmpfs: mounted
+Freeing unused kernel memory: 1024K
+cgroup: cgroup2: unknown option "nsdelegate"
+systemd[1]: systemd 241-9-gc1f8ff8+ running in system mode. (+PAM -AUDIT -SELINUX +IMA -APPARMOR +SMACK +SYSVINIT +UTMP -LIBCRYPTSETUP -GCRYPT -GNUTLS +ACL +XZ -LZ4 -SECCOMP +BLKID -ELFUTILS +KMOD -IDN2 -IDN -PCRE2 default-hierarchy=hybrid)
+systemd[1]: Detected architecture arm.
+
+Welcome to [1mFSLC Wayland with XWayland 2.7 (warrior)!
+
+systemd[1]: Set hostname to <imx6ulevk>.
+systemd[1]: Initializing machine ID from random generator.
+systemd[1]: File /lib/systemd/system/systemd-journald.service:12 configures an IP firewall (IPAddressDeny=any), but the local system does not support BPF/cgroup based firewalling.
+systemd[1]: Proceeding WITHOUT firewalling in effect! (This warning is only shown for the first loaded unit using IP firewalling.)
+systemd[1]: Created slice system-serial\x2dgetty.slice.
+[ OK ] Created slice system-serial\x2dgetty.slice.
+systemd[1]: Listening on Syslog Socket.
+[ OK ] Listening on Syslog Socket.
+systemd[1]: Listening on Journal Socket.
+[ OK ] Listening on Journal Socket.
+systemd[1]: Listening on Journal Socket (/dev/log).
+[ OK ] Listening on Journal Socket (/dev/log).
+[ OK ] Listening on Network Service Netlink Socket.
+[ OK ] Created slice User and Session Slice.
+         Mounting Kernel Debug File System...
+[ OK ] Started Dispatch Password …ts to Console Directory Watch.
+         Mounting FUSE Control File System...
+[ OK ] Reached target Swap.
+         Mounting Temporary Directory (/tmp)...
+[ OK ] Started Forward Password R…uests to Wall Directory Watch.
+[ OK ] Reached target Paths.
+         Starting Remount Root and Kernel File Systems...
+[ OK ] Reached target Remote File Systems.
+[ OK ] Listening on udev Control Socket.
+[ OK ] Created slice system-getty.slice.
+[ OK ] Listening on udev Kernel Socket.
+         Starting udev Coldplug all Devices...
+EXT4-fs (mmcblk1p2): re-mounted. Opts: (null)
+         Starting Journal Service...
+[ OK ] Listening on initctl Compatibility Named Pipe.
+         Starting Mender service to grow data partition size...
+[ OK ] Reached target Slices.
+         Starting Apply Kernel Variables...
+[ OK ] Created slice system-systemd\x2dgrowfs.slice.
+[ OK ] Mounted Kernel Debug File System.
+[ OK ] Mounted FUSE Control File System.
+[ OK ] Mounted Temporary Directory (/tmp).
+[ OK ] Started Remount Root and Kernel File Systems.
+[FAILED] Failed to start Mender ser…e to grow data partition size.
+See 'systemctl status mender-grow-data.service' for details.
+[ OK ] Started Apply Kernel Variables.
+         Starting Create System Users...
+         Starting Rebuild Hardware Database...
+[ OK ] Started Create System Users.
+         Starting Create Static Device Nodes in /dev...
+[ OK ] Started Create Static Device Nodes in /dev.
+[ OK ] Reached target Local File Systems (Pre).
+         Mounting /var/volatile...
+[ OK ] Reached target Containers.
+[ OK ] Mounted /var/volatile.
+         Starting Load/Save Random Seed...
+[ OK ] Started Load/Save Random Seed.
+[ OK ] Started Journal Service.
+         Starting Flush Journal to Persistent Storage...
+systemd-journald[198]: Received request to flush runtime journal from PID 1
+[ OK ] Started Flush Journal to Persistent Storage.
+[ OK ] Started udev Coldplug all Devices.
+(1 of 4) A start job is running for… Hardware Database (8s / 1min 31s)
+
+(1 of 4) A start job is running for… Hardware Database (9s / 1min 31s)
+
+[ OK ] Started Rebuild Hardware Database.
+[ OK ] Starting udev Kernel Device Manager...
+[ OK ] Started udev Kernel Device Manager.
+         Starting Network Service...
+[ OK ] Started Network Service.
+[ OK ] Found device /dev/ttymxc0.
+         Starting Mender service to grow data partition size...
+[ OK ] Created slice system-systemd\x2dbacklight.slice.
+         Starting Load/Save Screen …ness of backlight:backlight...
+[FAILED] Failed to start Mender ser…e to grow data partition size.
+See 'systemctl status mender-grow-data.service' for details.
+[ OK ] Started Load/Save Screen B…htness of backlight:backlight.
+(1 of 2) A start job is running for /dev/mmcblk0p4 (19s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (19s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (20s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (20s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (21s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (21s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (22s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (22s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (23s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (23s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (24s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (24s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (25s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (25s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (26s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (26s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (27s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (27s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (28s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (28s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (29s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (29s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (30s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (30s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (31s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (31s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (32s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (32s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (33s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (33s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (34s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (34s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (35s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (35s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (36s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (36s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (37s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (37s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (38s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (38s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (39s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (39s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (40s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (40s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (41s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (41s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (42s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (42s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (43s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (43s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (44s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (44s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (45s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (45s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (46s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (46s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (47s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (47s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (48s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (48s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (49s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (49s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (50s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (50s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (51s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (51s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (52s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (52s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (53s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (53s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (54s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (54s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (55s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (55s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (56s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (56s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (57s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (57s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (58s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (58s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (59s / 1min 30s)
+(2 of 2) A start job is running for /dev/mmcblk0p1 (59s / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (1min / 1min 30s)
+(1 of 2) A start job is running for /dev/mmcblk0p4 (1min / 1min 30s)
+(1 of 2) A start job is running for…dev/mmcblk0p4 (1min 1s / 1min 30s)
+(2 of 2) A start job is running for…dev/mmcblk0p1 (1min 1s / 1min 30s)
+(2 of 2) A start job is running for…dev/mmcblk0p1 (1min 2s / 1min 30s)
+(2 of 2) A start job is running for…dev/mmcblk0p1 (1min 2s / 1min 30s)
+(1 of 2) A start job is running for…dev/mmcblk0p4 (1min 3s / 1min 30s)
+(1 of 2) A start job is running for…dev/mmcblk0p4 (1min 3s / 1min 30s)
+(1 of 2) A start job is running for…dev/mmcblk0p4 (1min 4s / 1min 30s)
+(2 of 2) A start job is running for…dev/mmcblk0p1 (1min 4s / 1min 30s)
+(2 of 2) A start job is running for…dev/mmcblk0p1 (1min 5s / 1min 30s)
+(2 of 2) A start job is running for…dev/mmcblk0p1 (1min 5s / 1min 30s)
+(1 of 2) A start job is running for…dev/mmcblk0p4 (1min 6s / 1min 30s)
+(1 of 2) A start job is running for…dev/mmcblk0p4 (1min 6s / 1min 30s)
+(1 of 2) A start job is running for…dev/mmcblk0p4 (1min 7s / 1min 30s)
+(2 of 2) A start job is running for…dev/mmcblk0p1 (1min 7s / 1min 30s)
+(2 of 2) A start job is running for…dev/mmcblk0p1 (1min 8s / 1min 30s)
+(2 of 2) A start job is running for…dev/mmcblk0p1 (1min 8s / 1min 30s)
+(1 of 2) A start job is running for…dev/mmcblk0p4 (1min 9s / 1min 30s)
+(1 of 2) A start job is running for…dev/mmcblk0p4 (1min 9s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 10s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 10s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 11s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 11s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 12s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 12s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 13s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 13s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 14s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 14s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 15s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 15s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 16s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 16s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 17s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 17s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 18s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 18s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 19s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 19s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 20s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 20s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 21s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 21s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 22s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 22s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 23s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 23s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 24s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 24s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 25s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 25s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 26s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 26s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 27s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 27s / 1min 30s)
+(1 of 2) A start job is running for…ev/mmcblk0p4 (1min 28s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 28s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 29s / 1min 30s)
+(2 of 2) A start job is running for…ev/mmcblk0p1 (1min 29s / 1min 30s)
+
+[ TIME ]  Timed out waiting for device /dev/mmcblk0p4.
+[ DEPEND ] Dependency failed for /data.
+[ DEPEND ] Dependency failed for Local File Systems.
+[ DEPEND ] Dependency failed for Grow File System on /data.
+[ TIME ]  Timed out waiting for device /dev/mmcblk0p1.
+[ DEPEND ] Dependency failed for /boot/efi.
+[ OK ] Stopped Dispatch Password …ts to Console Directory Watch.
+[ OK ] Reached target Timers.
+[ OK ] Closed Syslog Socket.
+[ OK ] Stopped Forward Password R…uests to Wall Directory Watch.
+[ OK ] Reached target Sound Card.
+[ OK ] Reached target Sockets.
+[ OK ] Started Emergency Shell.
+[ OK ] Reached target Emergency Mode.
+         Starting Rebuild Dynamic Linker Cache...
+         Starting Create Volatile Files and Directories...
+         Starting Rebuild Journal Catalog...
+[ OK ] Reached target Login Prompts.
+[ OK ] Started Create Volatile Files and Directories.
+         Starting Network Name Resolution...
+         Starting Update UTMP about System Boot/Shutdown...
+         Starting Network Time Synchronization...
+         Starting Run pending postinsts...
+[ OK ] Started Rebuild Journal Catalog.
+[ OK ] Started Rebuild Dynamic Linker Cache.
+[ OK ] Started Update UTMP about System Boot/Shutdown.
+         Starting Update UTMP about System Runlevel Changes...
+         Starting Update is Completed...
+[ OK ] Started Update is Completed.
+[ OK ] Started Network Name Resolution.
+[ OK ] Started Network Time Synchronization.
+[ OK ] Started Run pending postinsts.
+[ OK ] Started Update UTMP about System Runlevel Changes.
+[ OK ] Reached target System Time Synchronized.
+[ OK ] Reached target Host and Network Name Lookups.
+[ OK ] Reached target Network.
+You are in emergency mode. After logging in, type "journalctl -xb" to view
+system logs, "systemctl reboot" to reboot, "systemctl default" or "exit"
+to boot into default mode.
+Press Enter for maintenance
+(or press Control-D to continue): random: crng init done
+
+
+~ # 
+~ # systemctl status mender-grow-data.service
+mender-grow-data.service - Mender service to grow data partition size
+Loaded: loaded (/lib/systemd/system/mender-grow-data.service; disabled; vendor preset: enabled)
+Active: failed (Result: exit-code) since Thu 1970-01-01 00:00:19 UTC; 3min 27s ago
+Process: 233 ExecStartPre=/bin/sh -c /bin/echo "w" | /sbin/fdisk /dev/mmcblk0 (code=exited, status=1/FAILURE)
+
+Jan 01 00:00:19 imx6ulevk systemd[1]: Starting Mender service to grow data partition size...
+Jan 01 00:00:19 imx6ulevk sh[233]: fdisk: can't open '/dev/mmcblk0'
+Jan 01 00:00:19 imx6ulevk systemd[1]: mender-grow-data.service: Control process exited, code=exited, status=1/FAILURE
+Jan 01 00:00:19 imx6ulevk systemd[1]: mender-grow-data.service: Failed with result 'exit-code'.
+Jan 01 00:00:19 imx6ulevk systemd[1]: Failed to start Mender service to grow data partition size.
+standard input
+~ # 
+~ # poweroff
+[ OK ] Stopped target Emergency Mode.
+[ OK ] Stopped target Sound Card.
+[ OK ] Stopped target Timers.
+[ OK ] Stopped target Slices.
+[ OK ] Removed slice User and Session Slice.
+[ OK ] Stopped target Login Prompts.
+[ OK ] Removed slice system-systemd\x2dgrowfs.slice.
+[ OK ] Stopped target Network.
+[ OK ] Stopped target Paths.
+[ OK ] Stopped target System Time Synchronized.
+         Stopping Network Time Synchronization...
+         Unmounting /var/volatile...
+[ OK ] Removed slice system-serial\x2dgetty.slice.
+[ OK ] Stopped target Containers.
+[ OK ] Stopped target Sockets.
+[ OK ] Stopped Update is Completed.
+[ OK ] Stopped Rebuild Hardware Database.
+[ OK ] Stopped Rebuild Dynamic Linker Cache.
+         Stopping Load/Save Screen …ness of bac         Stopping Emergency Shell...
+[ OK ] Removed slice system-getty.slice.
+[ OK ] Stopped target Remote File Systems.
+         Stopping Load/Save Random Seed...
+[ OK ] Stopped Network Name Resolution.
+[ OK ] Stopped Network Time Synchronization.
+[ OK ] Stopped Emergency Shell.
+[ OK ] Unmounted /var/volatile.
+[ OK ] Stopped Load/Save Screen B…htness of backlight:backlight.
+[ OK ] Stopped Load/Save Random Seed.
+[ OK ] Removed slice system-systemd\x2dbacklight.slice.
+[ OK ] Stopped target Local File Systems (Pre).
+[ OK ] Stopped Create Static Device Nodes in /dev.
+         Stopping Network Service...
+         Unmounting Temporary Directory (/tmp)...
+[ OK ] Stopped Create Volatile Files and Directories.
+[ OK ] Stopped Network Service.
+[ OK ] Unmounted Temporary Directory (/tmp).
+[ OK ] Reached target Unmount All Filesystems.
+[ OK ] Stopped target Swap.
+[ OK ] Stopped Apply Kernel Variables.
+[ OK ] Stopped Create System Users.
+[ OK ] Stopped Remount Root and Kernel File Systems.
+[ OK ] Reached target Shutdown.
+[ OK ] Reached target Final Step.
+[ OK ] Started Power-Off.
+[ OK ] Reached target Power-Off.
+systemd-shutdow: 54 output lines suppressed due to ratelimiting
+systemd-shutdown[1]: Syncing filesystems and block devices.
+systemd-shutdown[1]: Sending SIGTERM to remaining processes...
+systemd-journald[198]: Received SIGTERM from PID 1 (systemd-shutdow).
+systemd-shutdown[1]: Sending SIGKILL to remaining processes...
+systemd-shutdown[1]: Unmounting file systems.
+[271]: Remounting '/' read-only in with options 'data=ordered'.
+EXT4-fs (mmcblk1p2): re-mounted. Opts: data=ordered
+systemd-shutdown[1]: All filesystems unmounted.
+systemd-shutdown[1]: Deactivating swaps.
+systemd-shutdown[1]: All swaps deactivated.
+systemd-shutdown[1]: Detaching loop devices.
+systemd-shutdown[1]: All loop devices detached.
+systemd-shutdown[1]: Detaching DM devices.
+ci_hdrc ci_hdrc.1: remove, state 4
+usb usb1: USB disconnect, device number 1
+ci_hdrc ci_hdrc.1: USB bus 1 deregistered
+reboot: Power down
