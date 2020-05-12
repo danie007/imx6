@@ -13,8 +13,8 @@
 ###############################################################
 
 k_OS_MIN_VERSION=16     # Minimum supported version in Ubuntu
-k_RECOM_SPACE=120000000 # 120 GB in KB - REcommended Space in Ubuntu 
-k_MIN_SPACE=50200000    # 50.2GB in KB - Minumum required space
+k_RECOM_SPACE=120000000 # 120 GB in KB - RECOMmended SPACE in Ubuntu 
+k_MIN_SPACE=50200000    # 50.2GB in KB - MINimum required SPACE
 k_KB_TO_GB_CON=1000000  # Constant to convert KB to GB (KB/1000000)
 
 # Dependiences of Yocto build
