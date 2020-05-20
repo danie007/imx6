@@ -1,0 +1,57 @@
+DEBUG: Executing python function set_image_size
+DEBUG: 91837.200000 = 70644 * 1.300000
+DEBUG: 91837.200000 = max(91837.200000, 65536)[91837.200000] + 1
+DEBUG: 91838.000000 = int(91837.200000)
+DEBUG: 91838 = aligned(91838)
+DEBUG: returning 91838
+DEBUG: Python function set_image_size finished
+DEBUG: Executing python function extend_recipe_sysroot
+NOTE: Direct dependencies are ['/home/ux/test_yocto/sources/poky/meta/recipes-core/glibc/cross-localedef-native_2.29.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-devtools/qemu/qemuwrapper-cross_1.0.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-kernel/kern-tools/kern-tools-native_git.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-kernel/kmod/kmod-native_git.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-devtools/python/python-native_2.7.16.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-core/update-rc.d/update-rc.d_0.8.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-core/glibc/glibc_2.29.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/e2fsprogs/e2fsprogs_1.44.5.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/makedevs/makedevs_1.0.1.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/pseudo/pseudo_git.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-support/lzop/lzop_1.04.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/opkg-utils/opkg-utils_0.4.0.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/opkg/opkg_0.4.0.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/swig/swig_3.0.12.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-extended/pigz/pigz_2.4.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/rpm/rpm_4.14.2.1.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-connectivity/openssl/openssl_1.1.1b.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-core/glibc/ldconfig-native_2.12.1.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-extended/parted/parted_3.2.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-devtools/mklibs/mklibs-native_0.1.44.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-kernel/kmod/depmodwrapper-cross_1.0.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/meta-freescale/recipes-kernel/linux/linux-fslc-imx_4.9-1.0.x.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-devtools/quilt/quilt-native_0.65.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/dosfstools/dosfstools_4.1.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/prelink/prelink_git.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/bison/bison_3.0.4.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-devtools/binutils/binutils-cross_2.32.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-support/bmap-tools/bmap-tools_3.5.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-devtools/gcc/gcc-cross_8.3.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/createrepo-c/createrepo-c_git.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/fdisk/gptfdisk_1.0.4.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/dnf/dnf_4.1.0.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/poky/meta/recipes-devtools/gcc/gcc-runtime_8.3.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-devtools/mtools/mtools_4.0.19.bb:do_populate_sysroot', 'virtual:native:/home/ux/test_yocto/sources/poky/meta/recipes-extended/bc/bc_1.07.1.bb:do_populate_sysroot', '/home/ux/test_yocto/sources/meta-freescale/recipes-bsp/u-boot/u-boot-imx_2018.03.bb:do_populate_sysroot']
+NOTE: Installed into sysroot: ['kern-tools-native', 'python-native', 'lzop-native', 'parted-native', 'linux-fslc-imx', 'dosfstools-native', 'bison-native', 'binutils-cross-arm', 'gcc-cross-arm', 'gptfdisk-native', 'mtools-native', 'bc-native', 'gmp-native', 'mpfr-native', 'libmpc-native']
+NOTE: Skipping as already exists in sysroot: ['cross-localedef-native', 'qemuwrapper-cross', 'kmod-native', 'update-rc.d-native', 'glibc', 'e2fsprogs-native', 'makedevs-native', 'pseudo-native', 'opkg-utils-native', 'opkg-native', 'swig-native', 'pigz-native', 'rpm-native', 'openssl-native', 'ldconfig-native', 'mklibs-native', 'depmodwrapper-cross', 'quilt-native', 'prelink-native', 'bmap-tools-native', 'createrepo-c-native', 'dnf-native', 'gcc-runtime', 'u-boot-imx', 'autoconf-native', 'automake-native', 'libtool-native', 'gnu-config-native', 'qemu-native', 'zlib-native', 'gtk-doc-native', 'pkgconfig-native', 'python3-native', 'sqlite3-native', 'readline-native', 'bzip2-native', 'db-native', 'expat-native', 'gdbm-native', 'xz-native', 'systemd-systemctl-native', 'shadow-native', 'linux-libc-headers', 'texinfo-dummy-native', 'gettext-minimal-native', 'attr-native', 'util-linux-native', 'lzo-native', 'libarchive-native', 'libsolv-native', 'libpcre-native', 'perl-native', 'dbus-native', 'nss-native', 'file-native', 'elfutils-native', 'popt-native', 'ncurses-native', 'binutils-native', 'flex-native', 'debianutils-native', 'python3-setuptools-native', 'python3-six-native', 'glib-2.0-native', 'ninja-native', 'libxml2-native', 'curl-native', 'cmake-native', 'libcomps-native', 'python3-iniparse-native', 'librepo-native', 'libdnf-native', 'libgcc', 'm4-native', 'libffi-native', 'libnsl2-native', 'libtirpc-native', 'nspr-native', 'unzip-native', 'gettext-native', 'meson-native', 're2c-native', 'libcheck-native', 'gpgme-native', 'json-c-native', 'libmodulemd-native', 'gobject-introspection-native', 'libgpg-error-native', 'libassuan-native', 'libyaml-native']
+DEBUG: sed -e 's:^[^/]*/:/home/ux/test_yocto/test_build/tmp/work/imx6ulevk-fslc-linux-gnueabi/core-image-base/1.0-r0/recipe-sysroot-native/:g' /home/ux/test_yocto/test_build/tmp/sysroots-components/x86_64/python-native/fixmepath /home/ux/test_yocto/test_build/tmp/sysroots-components/x86_64/bison-native/fixmepath /home/ux/test_yocto/test_build/tmp/sysroots-components/x86_64/gcc-cross-arm/fixmepath /home/ux/test_yocto/test_build/tmp/sysroots-components/x86_64/gmp-native/fixmepath | xargs sed -i -e 's:FIXMESTAGINGDIRTARGET:/home/ux/test_yocto/test_build/tmp/work/imx6ulevk-fslc-linux-gnueabi/core-image-base/1.0-r0/recipe-sysroot:g; s:FIXMESTAGINGDIRHOST:/home/ux/test_yocto/test_build/tmp/work/imx6ulevk-fslc-linux-gnueabi/core-image-base/1.0-r0/recipe-sysroot-native:g' -e 's:FIXME_COMPONENTS_DIR:/home/ux/test_yocto/test_build/tmp/sysroots-components:g' -e 's:FIXME_HOSTTOOLS_DIR:/home/ux/test_yocto/test_build/tmp/hosttools:g' -e 's:FIXME_PKGDATA_DIR:/home/ux/test_yocto/test_build/tmp/pkgdata/imx6ulevk:g' -e 's:FIXME_PSEUDO_LOCALSTATEDIR:/home/ux/test_yocto/test_build/tmp/work/imx6ulevk-fslc-linux-gnueabi/core-image-base/1.0-r0/pseudo/:g' -e 's:FIXME_LOGFIFO:/home/ux/test_yocto/test_build/tmp/work/imx6ulevk-fslc-linux-gnueabi/core-image-base/1.0-r0/temp/fifo.596:g'
+DEBUG: Python function extend_recipe_sysroot finished
+DEBUG: Executing shell function do_image_wic
+INFO: Creating image(s)...
+
+Traceback (most recent call last):
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/filemap.py", line 124, in _open_image_file
+    self._f_image = open(self._image_path, 'rb')
+FileNotFoundError: [Errno 2] No such file or directory: '/home/ux/test_yocto/test_build/tmp/deploy/images/imx6ulevk/SPL'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ux/test_yocto/sources/poky/scripts/wic", line 520, in <module>
+    sys.exit(main(sys.argv[1:]))
+  File "/home/ux/test_yocto/sources/poky/scripts/wic", line 515, in main
+    return hlp.invoke_subcommand(args, parser, hlp.wic_help_usage, subcommands)
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/help.py", line 83, in invoke_subcommand
+    subcmd[0](args, usage)
+  File "/home/ux/test_yocto/sources/poky/scripts/wic", line 220, in wic_create_subcommand
+    native_sysroot, options)
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/engine.py", line 188, in wic_create
+    plugin.do_create()
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/plugins/imager/direct.py", line 86, in do_create
+    self.create()
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/plugins/imager/direct.py", line 196, in create
+    self._image.prepare(self)
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/plugins/imager/direct.py", line 362, in prepare
+    imager.kernel_dir, imager.native_sysroot)
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/partition.py", line 173, in prepare
+    kernel_dir, rootfs_dir, native_sysroot)
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/plugins/source/rawcopy.py", line 65, in do_prepare_partition
+    sparse_copy(src, dst)
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/filemap.py", line 547, in sparse_copy
+    fmap = api(src_fname)
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/filemap.py", line 529, in filemap
+    return FilemapFiemap(image, log)
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/filemap.py", line 347, in __init__
+    _FilemapBase.__init__(self, image, log)
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/filemap.py", line 83, in __init__
+    self._open_image_file()
+  File "/home/ux/test_yocto/sources/poky/scripts/lib/wic/filemap.py", line 127, in _open_image_file
+    % (self._image_path, err))
+wic.filemap.Error: cannot open image file '/home/ux/test_yocto/test_build/tmp/deploy/images/imx6ulevk/SPL': [Errno 2] No such file or directory: '/home/ux/test_yocto/test_build/tmp/deploy/images/imx6ulevk/SPL'
+WARNING: exit code 1 from a shell command.
+ERROR: Function failed: do_image_wic (log file is located at /home/ux/test_yocto/test_build/tmp/work/imx6ulevk-fslc-linux-gnueabi/core-image-base/1.0-r0/temp/log.do_image_wic.596)
