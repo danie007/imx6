@@ -1,0 +1,734 @@
+U-Boot SPL 2019.07+fslc+gca0ab15271 (May 28 2020 - 05:40:53 +0000)
+Trying to boot from MMC1
+
+
+U-Boot 2019.07+fslc+gca0ab15271 (May 28 2020 - 05:40:53 +0000)
+
+CPU:   Freescale i.MX6UL rev1.1 528 MHz (running at 396 MHz)
+CPU:   Industrial temperature grade (-40C to 105C) at 38C
+Reset cause: POR
+Model: Freescale i.MX6 UltraLite 14x14 EVK Board
+Board: MX6UL 14x14 EVK
+DRAM:  512 MiB
+MMC:   FSL_SDHC: 0, FSL_SDHC: 1
+Loading Environment from MMC... OK
+In:    serial
+Out:   serial
+Err:   serial
+Net:   
+Error: ethernet@020b4000 address not set.
+
+Error: ethernet@020b4000 address not set.
+
+Error: ethernet@02188000 address not set.
+eth-1: ethernet@020b4000
+Error: ethernet@02188000 address not set.
+, eth-1: ethernet@02188000
+Hit any key to stop autoboot:  0 
+37228 bytes read in 22 ms (1.6 MiB/s)
+8123760 bytes read in 372 ms (20.8 MiB/s)
+## Flattened Device Tree blob at 83000000
+   Booting using the fdt blob at 0x83000000
+   Using Device Tree in place at 83000000, end 8300c16b
+
+Starting kernel ...
+
+Booting Linux on physical CPU 0x0
+Linux version 4.9.67-fslc+g953c6e30c970 (oe-user@oe-host) (gcc version 8.3.0 (GCC) ) #1 SMP PREEMPT Thu May 28 06:18:02 UTC 2020
+CPU: ARMv7 Processor [410fc075] revision 5 (ARMv7), cr=10c53c7d
+CPU: div instructions available: patching division code
+CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+OF: fdt:Machine model: Freescale i.MX6 UltraLite 14x14 EVK Board
+Reserved memory: created CMA memory pool at 0x8c000000, size 320 MiB
+OF: reserved mem: initialized node linux,cma, compatible id shared-dma-pool
+Memory policy: Data cache writealloc
+percpu: Embedded 15 pages/cpu @8bb30000 s29964 r8192 d23284 u61440
+Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 130048
+Kernel command line: root=/dev/mmcblk1p2
+PID hash table entries: 2048 (order: 1, 8192 bytes)
+Dentry cache hash table entries: 65536 (order: 6, 262144 bytes)
+Inode-cache hash table entries: 32768 (order: 5, 131072 bytes)
+Memory: 173508K/524288K available (10240K kernel code, 859K rwdata, 3524K rodata, 1024K init, 480K bss, 23100K reserved, 327680K cma-reserve
+d, 0K highmem)
+Virtual kernel memory layout:
+    vector  : 0xffff0000 - 0xffff1000   (   4 kB)
+    fixmap  : 0xffc00000 - 0xfff00000   (3072 kB)
+    vmalloc : 0xa0800000 - 0xff800000   (1520 MB)
+    lowmem  : 0x80000000 - 0xa0000000   ( 512 MB)
+    pkmap   : 0x7fe00000 - 0x80000000   (   2 MB)
+    modules : 0x7f000000 - 0x7fe00000   (  14 MB)
+      .text : 0x80008000 - 0x80b00000   (11232 kB)
+      .init : 0x81000000 - 0x81100000   (1024 kB)
+      .data : 0x81100000 - 0x811d6ea8   ( 860 kB)
+       .bss : 0x811d8000 - 0x81250070   ( 481 kB)
+SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+Preemptible hierarchical RCU implementation.
+	Build-time adjustment of leaf fanout to 32.
+	RCU restricting CPUs from NR_CPUS=4 to nr_cpu_ids=1.
+RCU: Adjusting geometry for rcu_fanout_leaf=32, nr_cpu_ids=1
+NR_IRQS:16 nr_irqs:16 16
+Switching to timer-based delay loop, resolution 333ns
+sched_clock: 32 bits at 3000kHz, resolution 333ns, wraps every 715827882841ns
+clocksource: mxc_timer1: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 637086815595 ns
+Console: colour dummy device 80x30
+console [tty0] enabled
+Calibrating delay loop (skipped), value calculated using timer frequency.. 6.00 BogoMIPS (lpj=30000)
+pid_max: default: 32768 minimum: 301
+Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+CPU: Testing write buffer coherency: ok
+ftrace: allocating 33440 entries in 99 pages
+/cpus/cpu@0 missing clock-frequency property
+CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+Setting up static identity map for 0x80100000 - 0x80100058
+Brought up 1 CPUs
+SMP: Total of 1 processors activated (6.00 BogoMIPS).
+CPU: All CPU(s) started in SVC mode.
+devtmpfs: initialized
+VFP support v0.3: implementor 41 architecture 2 part 30 variant 7 rev 5
+clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+futex hash table entries: 256 (order: 2, 16384 bytes)
+pinctrl core: initialized pinctrl subsystem
+NET: Registered protocol family 16
+DMA: preallocated 256 KiB pool for atomic coherent allocations
+cpuidle: using governor menu
+hw-breakpoint: found 5 (+1 reserved) breakpoint and 4 watchpoint registers.
+hw-breakpoint: maximum watchpoint size is 8 bytes.
+imx6ul-pinctrl 20e0000.iomuxc: initialized IMX pinctrl driver
+mxs-dma 1804000.dma-apbh: initialized
+SCSI subsystem initialized
+usbcore: registered new interface driver usbfs
+usbcore: registered new interface driver hub
+usbcore: registered new device driver usb
+i2c i2c-0: IMX I2C adapter registered
+i2c i2c-0: can't use DMA, using PIO instead.
+i2c i2c-1: IMX I2C adapter registered
+i2c i2c-1: can't use DMA, using PIO instead.
+Linux video capture interface: v2.00
+pps_core: LinuxPPS API ver. 1 registered
+pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+PTP clock support registered
+MIPI CSI2 driver module loaded
+imx rpmsg driver is registered.
+Advanced Linux Sound Architecture Driver Initialized.
+Bluetooth: Core ver 2.22
+NET: Registered protocol family 31
+Bluetooth: HCI device and connection manager initialized
+Bluetooth: HCI socket layer initialized
+Bluetooth: L2CAP socket layer initialized
+Bluetooth: SCO socket layer initialized
+clocksource: Switched to clocksource mxc_timer1
+VFS: Disk quotas dquot_6.6.0
+VFS: Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+NET: Registered protocol family 2
+TCP established hash table entries: 4096 (order: 2, 16384 bytes)
+TCP bind hash table entries: 4096 (order: 3, 32768 bytes)
+TCP: Hash tables configured (established 4096 bind 4096)
+UDP hash table entries: 256 (order: 1, 8192 bytes)
+UDP-Lite hash table entries: 256 (order: 1, 8192 bytes)
+NET: Registered protocol family 1
+RPC: Registered named UNIX socket transport module.
+RPC: Registered udp transport module.
+RPC: Registered tcp transport module.
+RPC: Registered tcp NFSv4.1 backchannel transport module.
+Bus freq driver module loaded
+workingset: timestamp_bits=30 max_order=17 bucket_order=0
+NFS: Registering the id_resolver key type
+Key type id_resolver registered
+Key type id_legacy registered
+jffs2: version 2.2. (NAND) © 2001-2006 Red Hat, Inc.
+fuse init (API version 7.26)
+io scheduler noop registered
+io scheduler deadline registered
+io scheduler cfq registered (default)
+imx-weim 21b8000.weim: Driver registered.
+backlight supply power not found, using dummy regulator
+21c8000.lcdif supply lcd not found, using dummy regulator
+mxsfb 21c8000.lcdif: failed to find mxc display driver 
+Console: switching to colour frame buffer device 60x34
+mxsfb 21c8000.lcdif: initialized
+imx-sdma 20ec000.sdma: loaded firmware 3.3
+2020000.serial: ttymxc0 at MMIO 0x2020000 (irq = 19, base_baud = 5000000) is a IMX
+Console IMX rounded baud rate from 114943 to 114900
+console [ttymxc0] enabled
+21e8000.serial: ttymxc1 at MMIO 0x21e8000 (irq = 66, base_baud = 5000000) is a IMX
+imx sema4 driver is registered.
+[drm] Initialized
+[drm] Initialized vivante 1.0.0 20120216 on minor 0
+brd: module loaded
+loop: module loaded
+fsl-quadspi 21e0000.qspi: n25q256a (32768 Kbytes)
+spi_gpio spi4: gpio-miso property not found, switching to no-rx mode
+libphy: Fixed MDIO Bus: probed
+CAN device driver interface
+flexcan 2090000.flexcan: device registered (reg_base=a09ac000, irq=25)
+flexcan 2094000.flexcan: device registered (reg_base=a09b4000, irq=26)
+20b4000.ethernet supply phy not found, using dummy regulator
+pps pps0: new PPS source ptp0
+fec 20b4000.ethernet (unnamed net_device) (uninitialized): Invalid MAC address: 00:00:00:00:00:00
+fec 20b4000.ethernet (unnamed net_device) (uninitialized): Using random MAC address: 86:7e:1d:ae:76:e6
+libphy: fec_enet_mii_bus: probed
+fec 20b4000.ethernet eth0: registered PHC device 0
+2188000.ethernet supply phy not found, using dummy regulator
+pps pps1: new PPS source ptp1
+fec 2188000.ethernet (unnamed net_device) (uninitialized): Invalid MAC address: 00:00:00:00:00:00
+fec 2188000.ethernet (unnamed net_device) (uninitialized): Using random MAC address: d2:dc:2d:ed:b0:aa
+fec 2188000.ethernet eth1: registered PHC device 1
+ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+ehci-mxc: Freescale On-Chip EHCI Host driver
+usbcore: registered new interface driver usb-storage
+usbcore: registered new interface driver usb_ehset_test
+2184800.usbmisc supply vbus-wakeup not found, using dummy regulator
+2184000.usb supply vbus not found, using dummy regulator
+2184200.usb supply vbus not found, using dummy regulator
+ci_hdrc ci_hdrc.1: EHCI Host Controller
+ci_hdrc ci_hdrc.1: new USB bus registered, assigned bus number 1
+ci_hdrc ci_hdrc.1: USB 2.0 started, EHCI 1.00
+hub 1-0:1.0: USB hub found
+hub 1-0:1.0: 1 port detected
+mousedev: PS/2 mouse device common for all mice
+input: 20cc000.snvs:snvs-powerkey as /devices/soc0/soc/2000000.aips-bus/20cc000.snvs/20cc000.snvs:snvs-powerkey/input/input0
+input: iMX6UL Touchscreen Controller as /devices/soc0/soc/2000000.aips-bus/2040000.tsc/input/input1
+input: FreescaleAccelerometer as /devices/virtual/input/input2
+fxls8471 device driver probe successfully
+snvs_rtc 20cc000.snvs:snvs-rtc-lp: rtc core: registered 20cc000.snvs:snvs-r as rtc0
+random: fast init done
+i2c /dev entries driver
+IR NEC protocol handler initialized
+IR RC5(x/sz) protocol handler initialized
+IR RC6 protocol handler initialized
+IR JVC protocol handler initialized
+IR Sony protocol handler initialized
+IR SANYO protocol handler initialized
+IR Sharp protocol handler initialized
+IR MCE Keyboard/mouse protocol handler initialized
+IR XMP protocol handler initialized
+pxp-v4l2 pxp_v4l2: initialized
+0-000e supply vdd not found, using dummy regulator
+0-000e supply vddio not found, using dummy regulator
+mag3110 0-000e: check mag3110 chip ID
+input: mag3110 as /devices/virtual/input/input3
+mag3110 0-000e: mag3110 is probed
+imx2-wdt 20bc000.wdog: timeout 60 sec (nowayout=0)
+Bluetooth: HCI UART driver ver 2.3
+Bluetooth: HCI UART protocol H4 registered
+Bluetooth: HCI UART protocol BCSP registered
+Bluetooth: HCI UART protocol ATH3K registered
+usbcore: registered new interface driver bcm203x
+usbcore: registered new interface driver btusb
+usbcore: registered new interface driver ath3k
+sdhci: Secure Digital Host Controller Interface driver
+sdhci: Copyright(c) Pierre Ossman
+sdhci-pltfm: SDHCI platform and OF driver helper
+sdhci-esdhc-imx 2190000.usdhc: Got CD GPIO
+mmc0: SDHCI controller on 2190000.usdhc [2190000.usdhc] using ADMA
+mmc1: SDHCI controller on 2194000.usdhc [2194000.usdhc] using ADMA
+caam 2140000.caam: ERA source: CCBVID.
+caam 2140000.caam: Entropy delay = 3200
+caam 2140000.caam: Instantiated RNG4 SH0
+caam 2140000.caam: Instantiated RNG4 SH1
+caam 2140000.caam: device ID = 0x0a16030000000000 (Era 8)
+caam 2140000.caam: job rings = 3, qi = 0
+mmc1: host does not support reading read-only switch, assuming write-enable
+caam algorithms registered in /proc/crypto
+caam_jr 2141000.jr0: registering rng-caam
+caam 2140000.caam: caam pkc algorithms registered in /proc/crypto
+platform caam_sm: blkkey_ex: 8 keystore units available
+platform caam_sm: 64-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: 64-bit black key:
+platform caam_sm: [0000] 28 90 df c1 fd e7 da cd
+platform caam_sm: [0008] 5d 84 a4 83 b3 14 88 2f
+platform caam_sm: 128-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: [0008] 08 09 0a 0b 0c 0d 0e 0f
+platform caam_sm: 128-bit black key:
+platform caam_sm: [0000] fe f2 8b ee 80 6a a0 b4
+platform caam_sm: [0008] 24 fe 6e 53 f6 85 c4 6d
+platform caam_sm: 192-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: [0008] 08 09 0a 0b 0c 0d 0e 0f
+platform caam_sm: [0016] 10 11 12 13 14 15 16 17
+platform caam_sm: 192-bit black key:
+platform caam_sm: [0000] 11 b6 07 82 69 58 4f c4
+platform caam_sm: [0008] 7f c5 0e 3a 06 f2 42 03
+platform caam_sm: [0016] 76 ec 45 60 08 e9 5a 79
+platform caam_sm: [0024] 07 12 e6 ee 3a 2c 0b 96
+platform caam_sm: 256-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: [0008] 08 09 0a 0b 0c 0d 0e 0f
+platform caam_sm: [0016] 10 11 12 13 14 15 16 17
+platform caam_sm: [0024] 18 19 1a 1b 1c 1d 1e 1f
+platform caam_sm: 256-bit black key:
+platform caam_sm: [0000] 11 70 56 19 d9 67 8b 4e
+platform caam_sm: [0008] 44 1a 11 e7 a1 5a 73 0b
+platform caam_sm: [0016] 03 13 00 c5 b5 b3 39 0b
+platform caam_sm: [0024] aa 5f 19 54 58 9d 63 19
+mmc1: new ultra high speed SDR104 SDHC card at address 0001
+platform caam_sm: 64-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+mmcblk1: mmc1:0001 SD8GB 7.24 GiB 
+ mmcblk1: p1 p2 p3 p4
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 128-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 196-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 256-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 64-bit black key in blob:
+platform caam_sm: [0000] fd c9 7e 81 e2 a4 58 2e
+platform caam_sm: [0008] 9c 87 74 2b 3f 9c b1 18
+platform caam_sm: [0016] 1e 88 de f2 ab 5f a6 f0
+platform caam_sm: [0024] ef 3e 9a 8f 27 2c 31 32
+platform caam_sm: [0032] bd 92 2d d2 17 c9 b2 83
+platform caam_sm: [0040] 81 72 23 70 de 99 31 73
+platform caam_sm: [0048] 57 39 e4 97 c6 a7 3d 39
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 128-bit black key in blob:
+platform caam_sm: [0000] a9 3b 0f e4 9f 2a c3 b0
+platform caam_sm: [0008] d0 0b 13 a8 48 f2 ae eb
+platform caam_sm: [0016] f4 3c 3b fe d2 05 b4 75
+platform caam_sm: [0024] 38 9c 33 76 32 63 02 e3
+platform caam_sm: [0032] 9d 25 38 b5 31 51 0b 5b
+platform caam_sm: [0040] c2 d7 41 c3 f5 06 6f b0
+platform caam_sm: [0048] e6 c6 db fc 1c 30 38 7a
+platform caam_sm: [0056] 86 96 ca 2d 31 73 b3 dd
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 192-bit black key in blob:
+platform caam_sm: [0000] 47 47 46 7a f0 1f 8a 0b
+platform caam_sm: [0008] cc fc a1 5d 9b d7 81 f8
+platform caam_sm: [0016] 84 7a cd 41 cc bc a9 55
+platform caam_sm: [0024] 5d ce bf 53 5b 1a 15 b2
+platform caam_sm: [0032] de 00 94 25 fd 44 17 9c
+platform caam_sm: [0040] 67 fa d0 fe 0b e7 2e ee
+platform caam_sm: [0048] 89 bb 48 38 f3 12 34 aa
+platform caam_sm: [0056] 43 67 28 ac 68 a4 0f 94
+platform caam_sm: [0064] e0 4a 4d 21 e6 59 bd ce
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 256-bit black key in blob:
+platform caam_sm: [0000] 50 78 b2 f8 26 34 76 28
+platform caam_sm: [0008] f4 4f ce e4 fa 99 a6 dc
+platform caam_sm: [0016] be fb 3b 48 5e ac a7 42
+platform caam_sm: [0024] 1f 98 5f 3f 3d 44 7c 30
+platform caam_sm: [0032] 30 47 97 d0 33 0d da 61
+platform caam_sm: [0040] 24 19 25 eb b5 68 c1 10
+platform caam_sm: [0048] da 77 ee 49 6a 82 19 6e
+platform caam_sm: [0056] 3c 79 6d 59 f2 d4 4a db
+platform caam_sm: [0064] d2 84 f7 b6 0d a3 db 9e
+platform caam_sm: [0072] 2c 1b 60 64 90 8a 1b f3
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: restored 64-bit black key:
+platform caam_sm: [0000] 1c f0 5c 11 64 b7 a2 8b
+platform caam_sm: [0008] 81 b0 a6 bb 28 a2 ed 1c
+platform caam_sm: restored 128-bit black key:
+platform caam_sm: [0000] fe f2 8b ee 80 6a a0 b4
+platform caam_sm: [0008] 24 fe 6e 53 f6 85 c4 6d
+platform caam_sm: restored 192-bit black key:
+platform caam_sm: [0000] 11 b6 07 82 69 58 4f c4
+platform caam_sm: [0008] 7f c5 0e 3a 06 f2 42 03
+platform caam_sm: [0016] 1e 10 12 0a 5d 62 1d ff
+platform caam_sm: [0024] e7 66 1b 38 69 5f b8 ea
+platform caam_sm: restored 256-bit black key:
+platform caam_sm: [0000] 11 70 56 19 d9 67 8b 4e
+platform caam_sm: [0008] 44 1a 11 e7 a1 5a 73 0b
+platform caam_sm: [0016] 03 13 00 c5 b5 b3 39 0b
+platform caam_sm: [0024] aa 5f 19 54 58 9d 63 19
+snvs-secvio 20cc000.caam-snvs: can't get snvs clock
+snvs-secvio 20cc000.caam-snvs: violation handlers armed - non-secure state
+usbcore: registered new interface driver usbhid
+usbhid: USB HID core driver
+imx-wm8960 sound: wm8960-hifi <-> 202c000.sai mapping ok
+imx-wm8960 sound: snd-soc-dummy-dai <-> 2034000.asrc mapping ok
+imx-wm8960 sound: wm8960-hifi <-> 202c000.sai mapping ok
+NET: Registered protocol family 26
+NET: Registered protocol family 10
+sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+NET: Registered protocol family 17
+can: controller area network core (rev 20120528 abi 9)
+NET: Registered protocol family 29
+can: raw protocol (rev 20120528)
+can: broadcast manager protocol (rev 20161123 t)
+can: netlink gateway (rev 20130117) max_hops=1
+Bluetooth: RFCOMM TTY layer initialized
+Bluetooth: RFCOMM socket layer initialized
+Bluetooth: RFCOMM ver 1.11
+Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+Bluetooth: BNEP filters: protocol multicast
+Bluetooth: BNEP socket layer initialized
+Bluetooth: HIDP (Human Interface Emulation) ver 1.2
+Bluetooth: HIDP socket layer initialized
+8021q: 802.1Q VLAN Support v1.8
+Key type dns_resolver registered
+cpu cpu0: Registered imx6q-cpufreq
+imx_thermal 2000000.aips-bus:tempmon: Industrial CPU temperature grade - max:105C critical:100C passive:95C
+dhd_module_init in
+snvs_rtc 20cc000.snvs:snvs-rtc-lp: setting system clock to 1970-01-01 00:00:01 UTC (1)
+VSD_3V3: disabling
+can-3v3: disabling
+gpio_dvfs: disabling
+ALSA device list:
+  #0: wm8960-audio
+EXT4-fs (mmcblk1p2): couldn't mount as ext3 due to feature incompatibilities
+EXT4-fs (mmcblk1p2): INFO: recovery required on readonly filesystem
+EXT4-fs (mmcblk1p2): write access will be enabled during recovery
+EXT4-fs (mmcblk1p2): recovery complete
+EXT4-fs (mmcblk1p2): mounted filesystem with ordered data mode. Opts: (null)
+VFS: Mounted root (ext4 filesystem) readonly on device 179:18.
+devtmpfs: mounted
+Freeing unused kernel memory: 1024K
+cgroup: cgroup2: unknown option "nsdelegate"
+systemd[1]: systemd 241-9-gc1f8ff8+ running in system mode. (-PAM -AUDIT -SELINUX +IMA -APPARMOR +SMACK +SYSVINIT +UTMP -LIBCRYPTSETUP -GCRY
+PT -GNUTLS +ACL +XZ -LZ4 -SECCOMP +BLKID -ELFUTILS +KMOD -IDN2 -IDN -PCRE2 default-hierarchy=hybrid)
+systemd[1]: Detected architecture arm.
+
+Welcome to FSLC FrameBuffer 2.7 (warrior)!
+
+systemd[1]: Set hostname to <imx6ulevk>.
+systemd[1]: File /lib/systemd/system/systemd-journald.service:12 configures an IP firewall (IPAddressDeny=any), but the local system does no
+t support BPF/cgroup based firewalling.
+systemd[1]: Proceeding WITHOUT firewalling in effect! (This warning is only shown for the first loaded unit using IP firewalling.)
+systemd[1]: /lib/systemd/system/syslogd.service:7: PIDFile= references path below legacy directory /var/run/, updating /var/run/syslogd.pid 
+→ /run/syslogd.pid; please update the unit file accordingly.
+systemd[1]: /lib/systemd/system/klogd.service:7: PIDFile= references path below legacy directory /var/run/, updating /var/run/klogd.pid → /r
+un/klogd.pid; please update the unit file accordingly.
+systemd[1]: Listening on udev Kernel Socket.
+[  OK  ] Listening on udev Kernel Socket.
+systemd[1]: Reached target Swap.
+[  OK  ] Reached target Swap.
+systemd[1]: Created slice User and Session Slice.
+[  OK  ] Created slice User and Session Slice.
+[  OK  ] Created slice system-serial\x2dgetty.slice.
+[  OK  ] Listening on Network Service Netlink Socket.
+[  OK  ] Listening on udev Control Socket.
+[  OK  ] Listening on initctl Compatibility Named Pipe.
+[  OK  ] Listening on Journal Socket (/dev/log).
+[  OK  ] Reached target Remote File Systems.
+[  OK  ] Reached target Slices.
+[  OK  ] Listening on Syslog Socket.
+[  OK  ] Started Forward Password R…uests to Wall Directory Watch.
+[  OK  ] Created slice system-getty.slice.
+[  OK  ] Started Dispatch Password …ts to Console Directory Watch.
+[  OK  ] Reached target Paths.
+[  OK  ] Listening on Journal Socket.
+         Starting File System Check on Root Device...
+         Starting udev Coldplug all Devices...
+         Starting Journal Service...
+         Mounting NFSD configuration filesystem...
+         Mounting Temporary Directory (/tmp)...
+         Mounting Kernel Debug File System...
+[  OK  ] Started Hardware RNG Entropy Gatherer Daemon.
+         Starting Apply Kernel Variables...
+         Mounting FUSE Control File System...
+[FAILED] Failed to mount NFSD configuration filesystem.
+See 'systemctl status proc-fs-nfsd.mount' for details.
+[DEPEND] Dependency failed for NFS server and services.
+[DEPEND] Dependency failed for NFS Mount Daemon.
+[  OK  ] Mounted Temporary Directory (/tmp).
+[  OK  ] Mounted Kernel Debug File System.
+[  OK  ] Mounted FUSE Control File System.
+[  OK  ] Started File System Check on Root Device.
+[  OK  ] Started Apply Kernel Variables.
+         Starting Remount Root and Kernel File Systems...
+EXT4-fs (mmcblk1p2): re-mounted. Opts: (null)
+[  OK  ] Started Remount Root and Kernel File Systems.
+         Starting Create Static Device Nodes in /dev...
+[  OK  ] Started Create Static Device Nodes in /dev.
+[  OK  ] Reached target Local File Systems (Pre).
+         Mounting /var/volatile...
+[  OK  ] Reached target Containers.
+         Starting udev Kernel Device Manager...
+[  OK  ] Mounted /var/volatile.
+         Starting Load/Save Random Seed...
+[  OK  ] Started Load/Save Random Seed.
+[  OK  ] Started udev Kernel Device Manager.
+         Starting Network Service...
+[  OK  ] Started Network Service.
+[  OK  ] Started Journal Service.
+         Starting Flush Journal to Persistent Storage...
+systemd-journald[191]: Received request to flush runtime journal from PID 1
+[  OK  ] Started Flush Journal to Persistent Storage.
+[  OK  ] Found device /dev/ttymxc0.
+[  OK  ] Started udev Coldplug all Devices.
+[  OK  ] Found device /dev/mmcblk1p1.
+[  OK  ] Found device /dev/mmcblk1p4.
+         Mounting /data...
+[  OK  ] Reached target Sound Card.
+         Mounting /uboot...
+[  OK  ] Created slice system-systemd\x2dbacklight.slice.
+         Starting Load/Save Screen …ness of backlight:backlight...
+EXT4-fs (mmcblk1p4): recovery complete
+EXT4-fs (mmcblk1p4): mounted filesystem with ordered data mode. Opts: (null)
+FAT-fs (mmcblk1p1): Volume was not properly unmounted. Some data may be corrupt. Please run fsck.
+[  OK  ] Mounted /data.
+[  OK  ] Mounted /uboot.
+[  OK  ] Started Load/Save Screen B…htness of backlight:backlight.
+[  OK  ] Reached target Local File Systems.
+         Starting Create Volatile Files and Directories...
+[  OK  ] Started Create Volatile Files and Directories.
+         Starting Network Time Synchronization...
+         Starting Update UTMP about System Boot/Shutdown...
+         Starting Network Name Resolution...
+[  OK  ] Started Update UTMP about System Boot/Shutdown.
+[  OK  ] Started Network Time Synchronization.
+[  OK  ] Reached target System Time Synchronized.
+[  OK  ] Reached target System Initialization.
+[  OK  ] Started Daily Cleanup of Temporary Directories.
+[  OK  ] Listening on D-Bus System Message Bus Socket.
+[  OK  ] Listening on RPCbind Server Activation Socket.
+[  OK  ] Started Daily rotation of log files.
+[  OK  ] Reached target Timers.
+         Starting sshd.socket.
+[  OK  ] Started Network Name Resolution.
+[  OK  ] Listening on sshd.socket.
+[  OK  ] Reached target Sockets.
+[  OK  ] Reached target Basic System.
+[  OK  ] Started Serial Getty on ttymxc0.
+[  OK  ] Started Job spooling tools.
+         Starting System Logging Service...
+[  OK  ] Started Periodic Command Scheduler.
+[  OK  ] Started Starting network service.
+         Starting RPC Bind Service...
+[  OK  ] Started Getty on tty1.
+[  OK  ] Reached target Login Prompts.
+[  OK  ] Started D-Bus System Message Bus.
+         Starting Login Service...
+[  OK  ] Started Mender OTA update service.
+[  OK  ] Reached target Host and Network Name Lookups.
+[  OK  ] Reached target Network.
+[  OK  ] Started System Logging Service.
+[  OK  ] Started RPC Bind Service.
+[  OK  ] Started NFS status monitor for NFSv2/3 locking..
+         Starting Kernel Logging Service...
+[  OK  ] Started Login Service.
+[  OK  ] Started Kernel Logging Service.
+[  OK  ] Reached target Multi-User System.
+         Starting Update UTMP about System Runlevel Changes...
+[  OK  ] Started Update UTMP about System Runlevel Changes.
+
+FSLC FrameBuffer 2.7 imx6ulevk ttymxc0
+
+imx6ulevk login: root
+
+root@imx6ulevk:~# cat /usr/share/doc/mender-client
+/examples/demo.crt
+cat: /usr/share/doc/mender-client/examples/demo.crt: No such file or directory
+root@imx6ulevk:~# vi /usr/share/doc/mender-client/examples/demo.crt
+root@imx6ulevk:/# cd ..
+root@imx6ulevk:/# cd ..
+root@imx6ulevk:/# find . -type f -name demo.crt
+root@imx6ulevk:~# systemctl start mender
+root@imx6ulevk:~# journalctl -op mender
+root@imx6ulevk:~# systemctl restart mender
+root@imx6ulevk:~# mender setup
+Mender Client Setup
+===================
+
+Setting up the Mender client: The client will regularly poll the server to check for updates and report its inventory data.
+Get started by first configuring the device type and settings for communicating with the server.
+
+
+The device type property is used to determine which Mender Artifact are compatible with this device.
+Enter a name for the device type (e.g. raspberrypi3): [imx6ulevk] 
+
+Are you connecting this device to hosted.mender.io? [Y/n] n
+
+Demo mode uses short poll intervals and assumes the default demo server setup. (Recommended for testing.)
+Do you want to run the client in demo mode? [Y/n] y
+
+Set the IP of the Mender Server: [127.0.0.1] 192.168.1.31
+Mender setup successfully.
+root@imx6ulevk:~# vi /etc/mender/mender.conf
+root@imx6ulevk:~# systemctl stop mender; systemctl start mender
+root@imx6ulevk:~# journalctl -u mender
+May 28 09:06:40 imx6ulevk systemd[1]: Stopping Mender OTA update service...
+May 28 09:06:40 imx6ulevk systemd[1]: mender.service: Main process exited, code=killed, status=15/TERM
+May 28 09:06:40 imx6ulevk systemd[1]: mender.service: Succeeded.
+May 28 09:06:40 imx6ulevk systemd[1]: Stopped Mender OTA update service.
+May 28 09:06:45 imx6ulevk systemd[1]: Started Mender OTA update service.
+May 28 09:06:45 imx6ulevk mender[1877]: time="2020-05-28T09:06:45Z" level=info msg="Loaded configuration file: /var/lib/mender/mender.conf" module=config
+May 28 09:06:45 imx6ulevk mender[1877]: time="2020-05-28T09:06:45Z" level=info msg="Loaded configuration file: /etc/mender/mender.conf" module=config
+May 28 09:06:45 imx6ulevk mender[1877]: time="2020-05-28T09:06:45Z" level=info msg="Mender running on partition: /dev/mmcblk1p2" module=cli
+May 28 09:06:46 imx6ulevk mender[1877]: time="2020-05-28T09:06:46Z" level=warning msg="IGNORING ERROR: The client server-certificate can not be loaded: (open /usr/share/doc/mender-client/examples/demo.crt: no such file or directory). The client will continue running, but may not be able to communicate with the server. If this is not your intention please add a valid server certificate" module=client
+May 28 09:06:46 imx6ulevk mender[1877]: time="2020-05-28T09:06:46Z" level=info msg="State transition: init [none] -> init [none]" module=mender
+May 28 09:06:46 imx6ulevk mender[1877]: time="2020-05-28T09:06:46Z" level=info msg="State transition: init [none] -> idle [Idle]" module=mender
+May 28 09:06:46 imx6ulevk mender[1877]: time="2020-05-28T09:06:46Z" level=info msg="State transition: idle [Idle] -> authorize-wait [Idle]" module=mender
+May 28 09:06:46 imx6ulevk mender[1877]: time="2020-05-28T09:06:46Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:06:47 imx6ulevk mender[1877]: time="2020-05-28T09:06:47Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1bb1600), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:06:47 imx6ulevk mender[1877]: time="2020-05-28T09:06:47Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:06:47 imx6ulevk mender[1877]: time="2020-05-28T09:06:47Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:06:47 imx6ulevk mender[1877]: time="2020-05-28T09:06:47Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:06:47 imx6ulevk mender[1877]: time="2020-05-28T09:06:47Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:06:47 imx6ulevk mender[1877]: time="2020-05-28T09:06:47Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:07:16 imx6ulevk mender[1877]: time="2020-05-28T09:07:16Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:07:17 imx6ulevk mender[1877]: time="2020-05-28T09:07:17Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1bb18c0), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:07:17 imx6ulevk mender[1877]: time="2020-05-28T09:07:17Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:07:17 imx6ulevk mender[1877]: time="2020-05-28T09:07:17Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:07:17 imx6ulevk mender[1877]: time="2020-05-28T09:07:17Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:07:17 imx6ulevk mender[1877]: time="2020-05-28T09:07:17Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:07:17 imx6ulevk mender[1877]: time="2020-05-28T09:07:17Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:07:46 imx6ulevk mender[1877]: time="2020-05-28T09:07:46Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:07:47 imx6ulevk mender[1877]: time="2020-05-28T09:07:47Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x18b0000), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:07:47 imx6ulevk mender[1877]: time="2020-05-28T09:07:47Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:07:47 imx6ulevk mender[1877]: time="2020-05-28T09:07:47Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:07:47 imx6ulevk mender[1877]: time="2020-05-28T09:07:47Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:07:47 imx6ulevk mender[1877]: time="2020-05-28T09:07:47Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:07:47 imx6ulevk mender[1877]: time="2020-05-28T09:07:47Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:08:16 imx6ulevk mender[1877]: time="2020-05-28T09:08:16Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:08:17 imx6ulevk mender[1877]: time="2020-05-28T09:08:17Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1960b00), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:08:17 imx6ulevk mender[1877]: time="2020-05-28T09:08:17Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:08:17 imx6ulevk mender[1877]: time="2020-05-28T09:08:17Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:08:17 imx6ulevk mender[1877]: time="2020-05-28T09:08:17Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:08:17 imx6ulevk mender[1877]: time="2020-05-28T09:08:17Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:08:17 imx6ulevk mender[1877]: time="2020-05-28T09:08:17Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:08:46 imx6ulevk mender[1877]: time="2020-05-28T09:08:46Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:08:47 imx6ulevk mender[1877]: time="2020-05-28T09:08:47Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1961080), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:08:47 imx6ulevk mender[1877]: time="2020-05-28T09:08:47Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:08:47 imx6ulevk mender[1877]: time="2020-05-28T09:08:47Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:08:47 imx6ulevk mender[1877]: time="2020-05-28T09:08:47Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:08:47 imx6ulevk mender[1877]: time="2020-05-28T09:08:47Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:08:47 imx6ulevk mender[1877]: time="2020-05-28T09:08:47Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:09:16 imx6ulevk mender[1877]: time="2020-05-28T09:09:16Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:09:17 imx6ulevk mender[1877]: time="2020-05-28T09:09:17Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1a6bb80), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:09:17 imx6ulevk mender[1877]: time="2020-05-28T09:09:17Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:09:17 imx6ulevk mender[1877]: time="2020-05-28T09:09:17Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:09:17 imx6ulevk mender[1877]: time="2020-05-28T09:09:17Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:09:17 imx6ulevk mender[1877]: time="2020-05-28T09:09:17Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:09:17 imx6ulevk mender[1877]: time="2020-05-28T09:09:17Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:09:46 imx6ulevk mender[1877]: time="2020-05-28T09:09:46Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:09:47 imx6ulevk mender[1877]: time="2020-05-28T09:09:47Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1960b00), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:09:47 imx6ulevk mender[1877]: time="2020-05-28T09:09:47Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:09:47 imx6ulevk mender[1877]: time="2020-05-28T09:09:47Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:09:47 imx6ulevk mender[1877]: time="2020-05-28T09:09:47Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:09:47 imx6ulevk mender[1877]: time="2020-05-28T09:09:47Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:09:47 imx6ulevk mender[1877]: time="2020-05-28T09:09:47Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:10:16 imx6ulevk mender[1877]: time="2020-05-28T09:10:16Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:10:17 imx6ulevk mender[1877]: time="2020-05-28T09:10:17Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1961080), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:10:17 imx6ulevk mender[1877]: time="2020-05-28T09:10:17Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:10:17 imx6ulevk mender[1877]: time="2020-05-28T09:10:17Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:10:17 imx6ulevk mender[1877]: time="2020-05-28T09:10:17Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:10:17 imx6ulevk mender[1877]: time="2020-05-28T09:10:17Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:10:17 imx6ulevk mender[1877]: time="2020-05-28T09:10:17Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:10:46 imx6ulevk mender[1877]: time="2020-05-28T09:10:46Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:10:47 imx6ulevk mender[1877]: time="2020-05-28T09:10:47Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x18b0000), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:10:47 imx6ulevk mender[1877]: time="2020-05-28T09:10:47Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:10:47 imx6ulevk mender[1877]: time="2020-05-28T09:10:47Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:10:47 imx6ulevk mender[1877]: time="2020-05-28T09:10:47Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:10:47 imx6ulevk mender[1877]: time="2020-05-28T09:10:47Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:10:47 imx6ulevk mender[1877]: time="2020-05-28T09:10:47Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:11:16 imx6ulevk mender[1877]: time="2020-05-28T09:11:16Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:11:17 imx6ulevk mender[1877]: time="2020-05-28T09:11:17Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1a6bb80), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:11:17 imx6ulevk mender[1877]: time="2020-05-28T09:11:17Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:11:17 imx6ulevk mender[1877]: time="2020-05-28T09:11:17Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:11:17 imx6ulevk mender[1877]: time="2020-05-28T09:11:17Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:11:17 imx6ulevk mender[1877]: time="2020-05-28T09:11:17Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:11:17 imx6ulevk mender[1877]: time="2020-05-28T09:11:17Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:11:46 imx6ulevk mender[1877]: time="2020-05-28T09:11:46Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:11:47 imx6ulevk mender[1877]: time="2020-05-28T09:11:47Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x18b0000), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:11:47 imx6ulevk mender[1877]: time="2020-05-28T09:11:47Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:11:47 imx6ulevk mender[1877]: time="2020-05-28T09:11:47Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:11:47 imx6ulevk mender[1877]: time="2020-05-28T09:11:47Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:11:47 imx6ulevk mender[1877]: time="2020-05-28T09:11:47Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:11:47 imx6ulevk mender[1877]: time="2020-05-28T09:11:47Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:12:16 imx6ulevk mender[1877]: time="2020-05-28T09:12:16Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:12:17 imx6ulevk mender[1877]: time="2020-05-28T09:12:17Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1960b00), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:12:17 imx6ulevk mender[1877]: time="2020-05-28T09:12:17Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:12:17 imx6ulevk mender[1877]: time="2020-05-28T09:12:17Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:12:17 imx6ulevk mender[1877]: time="2020-05-28T09:12:17Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:12:17 imx6ulevk mender[1877]: time="2020-05-28T09:12:17Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:12:17 imx6ulevk mender[1877]: time="2020-05-28T09:12:17Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:12:46 imx6ulevk mender[1877]: time="2020-05-28T09:12:46Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:12:47 imx6ulevk mender[1877]: time="2020-05-28T09:12:47Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1961080), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:12:47 imx6ulevk mender[1877]: time="2020-05-28T09:12:47Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:12:47 imx6ulevk mender[1877]: time="2020-05-28T09:12:47Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:12:47 imx6ulevk mender[1877]: time="2020-05-28T09:12:47Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:12:47 imx6ulevk mender[1877]: time="2020-05-28T09:12:47Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:12:47 imx6ulevk mender[1877]: time="2020-05-28T09:12:47Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:13:16 imx6ulevk mender[1877]: time="2020-05-28T09:13:16Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:13:17 imx6ulevk mender[1877]: time="2020-05-28T09:13:17Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1a6bb80), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:13:17 imx6ulevk mender[1877]: time="2020-05-28T09:13:17Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:13:17 imx6ulevk mender[1877]: time="2020-05-28T09:13:17Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:13:17 imx6ulevk mender[1877]: time="2020-05-28T09:13:17Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:13:17 imx6ulevk mender[1877]: time="2020-05-28T09:13:17Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:13:17 imx6ulevk mender[1877]: time="2020-05-28T09:13:17Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:13:46 imx6ulevk mender[1877]: time="2020-05-28T09:13:46Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:13:47 imx6ulevk mender[1877]: time="2020-05-28T09:13:47Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1960b00), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:13:47 imx6ulevk mender[1877]: time="2020-05-28T09:13:47Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:13:47 imx6ulevk mender[1877]: time="2020-05-28T09:13:47Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:13:47 imx6ulevk mender[1877]: time="2020-05-28T09:13:47Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:13:47 imx6ulevk mender[1877]: time="2020-05-28T09:13:47Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:13:47 imx6ulevk mender[1877]: time="2020-05-28T09:13:47Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:14:16 imx6ulevk mender[1877]: time="2020-05-28T09:14:16Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:14:17 imx6ulevk mender[1877]: time="2020-05-28T09:14:17Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1961080), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:14:17 imx6ulevk mender[1877]: time="2020-05-28T09:14:17Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:14:17 imx6ulevk mender[1877]: time="2020-05-28T09:14:17Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:14:17 imx6ulevk mender[1877]: time="2020-05-28T09:14:17Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:14:17 imx6ulevk mender[1877]: time="2020-05-28T09:14:17Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:14:17 imx6ulevk mender[1877]: time="2020-05-28T09:14:17Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:14:46 imx6ulevk mender[1877]: time="2020-05-28T09:14:46Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:14:47 imx6ulevk mender[1877]: time="2020-05-28T09:14:47Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x18b0000), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:14:47 imx6ulevk mender[1877]: time="2020-05-28T09:14:47Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:14:47 imx6ulevk mender[1877]: time="2020-05-28T09:14:47Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:14:47 imx6ulevk mender[1877]: time="2020-05-28T09:14:47Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:14:47 imx6ulevk mender[1877]: time="2020-05-28T09:14:47Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+May 28 09:14:47 imx6ulevk mender[1877]: time="2020-05-28T09:14:47Z" level=info msg="State transition: authorize [Sync] -> authorize-wait [Idle]" module=mender
+May 28 09:15:16 imx6ulevk mender[1877]: time="2020-05-28T09:15:16Z" level=info msg="State transition: authorize-wait [Idle] -> authorize [Sync]" module=mender
+May 28 09:15:17 imx6ulevk mender[1877]: time="2020-05-28T09:15:17Z" level=error msg="Failure occurred while executing authorization request: &url.Error{Op:\"Post\", URL:\"https://docker.mender.io/api/devices/v1/authentication/auth_requests\", Err:x509.UnknownAuthorityError{Cert:(*x509.Certificate)(0x1a6bb80), hintErr:error(nil), hintCert:(*x509.Certificate)(nil)}}" module=client_auth
+May 28 09:15:17 imx6ulevk mender[1877]: time="2020-05-28T09:15:17Z" level=error msg="Certificate is signed by unknown authority." module=client_auth
+May 28 09:15:17 imx6ulevk mender[1877]: time="2020-05-28T09:15:17Z" level=error msg="If you are using a self-signed certificate, make sure it is available locally to the Mender client in /etc/mender/server.crt and is configured properly in /etc/mender/mender.conf." module=client_auth
+May 28 09:15:17 imx6ulevk mender[1877]: time="2020-05-28T09:15:17Z" level=error msg="See https://docs.mender.io/troubleshooting/mender-client#certificate-signed-by-unknown-authority for more information." module=client_auth
+May 28 09:15:17 imx6ulevk mender[1877]: time="2020-05-28T09:15:17Z" level=error msg="authorize failed: transient error: authorization request failed: certificate signed by unknown authority: Post https://docker.mender.io/api/devices/v1/authentication/auth_requests: x509: certificate signed by unknown authority" module=state
+root@imx6ulevk:~# 
