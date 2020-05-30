@@ -395,3 +395,11 @@ MENDER_FEATURES_DISABLE_append = " mender-grub mender-image-uefi"
     bitbake -c compile -f core-image-full-cmdline & time bitbake core-image-full-cmdline # Fore re-compile all the source & builds image
     bitbake -c cleansstate linux-imx core-image-full-cmdline && bitbake core-image-full-cmdline # Clean kernal & builds image
     ```
+
+6. Bringing up network manually after restart
+    ```
+    $ crontab -e
+    # @reboot /sbin/udhcpc -i eth1
+    ```
+
+HWaddr 42:26:51:65:90:c8
