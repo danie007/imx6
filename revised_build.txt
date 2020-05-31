@@ -362,29 +362,51 @@ MENDER_FEATURES_DISABLE_append = " mender-grub mender-image-uefi"
     ```
 
 4. Encryption support
-    Open `uboot_auto_patch.sh` in `warrior_yocto/sources/meta-mender/meta-mender-core/recipes-bsp/u-boot/files/uboot_auto_patch.sh`
+    Open `uboot_auto_patch.sh` in `~/warrior_yocto/sources/meta-mender/meta-mender-core/recipes-bsp/u-boot/files/uboot_auto_patch.sh`
     Add the following inside `patch_all_candidates` function:
     ```
+# Top
+ENCR_BOOT=1
 
-    # Edited by Daniel on 30.05.2020
-    # Adding support for encrypted boot(signed) in U-Boot
-    # Tested on imx-linux 2018
-    add_definition \
-        'CONFIG_SECURE_BOOT'
-    add_definition \
-        'CONFIG_CMD_DEKBLOB'
-    add_definition \
-        'CONFIG_IMX_CAAM_DEK_ENCAP'
-    add_definition \
-        'CONFIG_CMD_PRIBLOB'
-    add_definition \
-        'CONFIG_FSL_CAAM'
-    add_definition \
-        'CONFIG_SYS_FSL_HAS_SEC'
-    add_definition \
-        'CONFIG_SYS_FSL_SEC_COMPAT'
-    add_definition \
-        'CONFIG_SHA_HW_ACCEL'
+# Somewhere in middle
+_add_definition() {
+    defconfig=configs/$CONFIG
+    
+    # backing up original configuration
+    if [ ! -f $defconfig.orig ]; then
+        cp $defconfig $defconfig.orig
+    fi
+
+    # Removing configuration, if any and rewritng the file
+    if [ grep -q "$1" "$defconfig" ]; then
+        grep -v "$1" $defconfig.orig > $defconfig
+    fi
+
+    echo "$1=y" >> $defconfig
+}
+
+# Edited by Daniel on 30.05.2020
+# Adding support for encrypted boot(signed) in U-Boot
+# Tested on imx-linux 2018
+patch_encrypted_boot() {
+
+    # Secure Boot
+    _add_definition 'CONFIG_SECURE_BOOT'
+
+    # Encrypted Boot options
+    _add_definition 'CONFIG_CMD_DEKBLOB'
+    _add_definition 'CONFIG_IMX_CAAM_DEK_ENCAP'
+    _add_definition 'CONFIG_CMD_PRIBLOB'
+    _add_definition 'CONFIG_FSL_CAAM'
+    _add_definition 'CONFIG_SYS_FSL_HAS_SEC'
+    _add_definition 'CONFIG_SYS_FSL_SEC_COMPAT'
+    _add_definition 'CONFIG_SHA_HW_ACCEL'
+}
+
+# Bottom
+if [ $ENCR_BOOT = 1 ]; then
+    patch_encrypted_boot
+fi
     ```
 5. build
     Can be built with any of the following commands.
