@@ -1,0 +1,707 @@
+U-Boot 2018.03-imx_v2018.03_4.14.98_2.0.0_ga+g0d6d880779 (Jun 03 2020 - 11:05:30 +0000)
+
+CPU:   Freescale i.MX6UL rev1.1 528 MHz (running at 396 MHz)
+CPU:   Industrial temperature grade (-40C to 105C) at 44C
+Reset cause: POR
+Model: Freescale i.MX6 UltraLite 14x14 EVK Board
+Board: MX6UL 14x14 EVK
+DRAM:  512 MiB
+MMC:   FSL_SDHC: 0, FSL_SDHC: 1
+Loading Environment from MMC... *** Warning - bad CRC, using default environment
+
+Failed (-5)
+Display: TFT43AB (480x272)
+Video: 480x272x24
+In:    serial
+Out:   serial
+Err:   serial
+switch to partitions #0, OK
+mmc1 is current device
+flash target is MMC:1
+Net:   
+Warning: ethernet@020b4000 using MAC address from ROM
+eth1: ethernet@020b4000 [PRIME]
+Warning: ethernet@02188000 using MAC address from ROM
+, eth0: ethernet@02188000
+Fastboot: Normal
+Normal Boot
+Hit any key to stop autoboot:  0 
+=> 
+=> 
+=> 
+=> 
+=> hab_status 
+
+Secure boot enabled
+
+HAB Configuration: 0xcc, HAB State: 0x99
+No HAB Events Found!
+
+=> printenv 
+baudrate=115200
+board_name=EVK
+board_rev=14X14
+boot_fdt=try
+bootcmd=run findfdt;run findtee;mmc dev ${mmcdev};mmc dev ${mmcdev}; if mmc rescan; then if run loadbootscript; then run bootscript; else if run loadi
+mage; then run mmcboot; else run netboot; fi; fi; else run netboot; fi
+bootcmd_mfg=run mfgtool_args;if iminfo ${initrd_addr}; then if test ${tee} = yes; then bootm ${tee_addr} ${initrd_addr} ${fdt_addr}; else bootz ${load
+addr} ${initrd_addr} ${fdt_addr}; fi; else echo "Run fastboot ..."; fastboot 0; fi;
+bootdelay=3
+bootscript=echo Running bootscript from mmc ...; source
+console=ttymxc0
+emmc_ack=1
+emmc_dev=1
+eth1addr=00:04:9f:04:eb:85
+ethact=ethernet@020b4000
+ethaddr=00:04:9f:04:eb:84
+ethprime=eth1
+fastboot_dev=mmc1
+fdt_addr=0x83000000
+fdt_file=undefined
+fdt_high=0xffffffff
+fdtcontroladdr=9ef29070
+findfdt=if test $fdt_file = undefined; then if test $board_name = EVK && test $board_rev = 9X9; then setenv fdt_file imx6ul-9x9-evk.dtb; fi; if test $
+board_name = EVK && test $board_rev = 14X14; then setenv fdt_file imx6ul-14x14-evk.dtb; fi; if test $fdt_file = undefined; then echo WARNING: Could no
+t determine dtb to use; fi; fi;
+findtee=if test $tee_file = undefined; then if test $board_name = EVK && test $board_rev = 9X9; then setenv tee_file uTee-6ul9x9; fi; if test $board_n
+ame = EVK && test $board_rev = 14X14; then setenv tee_file uTee-6ulevk; fi; if test $fdt_file = undefined; then echo WARNING: Could not determine tee 
+to use; fi; fi;
+image=zImage
+initrd_addr=0x86800000
+initrd_high=0xffffffff
+ip_dyn=yes
+kboot=bootz 
+loadaddr=0x80800000
+loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};
+loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file}
+loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}
+loadtee=fatload mmc ${mmcdev}:${mmcpart} ${tee_addr} ${tee_file}
+mfgtool_args=setenv bootargs console=${console},${baudrate} rdinit=/linuxrc clk_ignore_unused 
+mmcargs=setenv bootargs console=${console},${baudrate} root=${mmcroot}
+mmcautodetect=yes
+mmcboot=echo Booting from mmc ...; run mmcargs; if test ${tee} = yes; then run loadfdt; run loadtee; bootm ${tee_addr} - ${fdt_addr}; else if test ${b
+oot_fdt} = yes || test ${boot_fdt} = try; then if run loadfdt; then bootz ${loadaddr} - ${fdt_addr}; else if test ${boot_fdt} = try; then bootz; else 
+echo WARN: Cannot load the DT; fi; fi; else bootz; fi; fi;
+mmcdev=1
+mmcpart=1
+mmcroot=/dev/mmcblk1p2 rootwait rw
+netargs=setenv bootargs console=${console},${baudrate} root=/dev/nfs ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp
+netboot=echo Booting from net ...; run netargs; if test ${ip_dyn} = yes; then setenv get_cmd dhcp; else setenv get_cmd tftp; fi; ${get_cmd} ${image}; 
+if test ${tee} = yes; then ${get_cmd} ${tee_addr} ${tee_file}; ${get_cmd} ${fdt_addr} ${fdt_file}; bootm ${tee_addr} - ${fdt_addr}; else if test ${boo
+t_fdt} = yes || test ${boot_fdt} = try; then if ${get_cmd} ${fdt_addr} ${fdt_file}; then bootz ${loadaddr} - ${fdt_addr}; else if test ${boot_fdt} = t
+ry; then bootz; else echo WARN: Cannot load the DT; fi; fi; else bootz; fi; fi;
+panel=TFT43AB
+script=boot.scr
+sd_dev=1
+soc_type=imx6ul
+tee=no
+tee_addr=0x84000000
+tee_file=undefined
+
+Environment size: 3270/8188 bytes
+=> 
+
+U-Boot 2018.03-imx_v2018.03_4.14.98_2.0.0_ga+g0d6d880779 (Jun 03 2020 - 11:05:30 +0000)
+
+CPU:   Freescale i.MX6UL rev1.1 528 MHz (running at 396 MHz)
+CPU:   Industrial temperature grade (-40C to 105C) at 38C
+Reset cause: POR
+Model: Freescale i.MX6 UltraLite 14x14 EVK Board
+Board: MX6UL 14x14 EVK
+DRAM:  512 MiB
+MMC:   FSL_SDHC: 0, FSL_SDHC: 1
+Loading Environment from MMC... *** Warning - bad CRC, using default environment
+
+Failed (-5)
+Display: TFT43AB (480x272)
+Video: 480x272x24
+In:    serial
+Out:   serial
+Err:   serial
+switch to partitions #0, OK
+mmc1 is current device
+flash target is MMC:1
+Net:   
+Warning: ethernet@020b4000 using MAC address from ROM
+eth1: ethernet@020b4000 [PRIME]
+Warning: ethernet@02188000 using MAC address from ROM
+, eth0: ethernet@02188000
+Fastboot: Normal
+Normal Boot
+Hit any key to stop autoboot:  0 
+=> 
+=> hab_status 
+
+Secure boot enabled
+
+HAB Configuration: 0xcc, HAB State: 0x99
+No HAB Events Found!
+
+=> printenv 
+baudrate=115200
+board_name=EVK
+board_rev=14X14
+boot_fdt=try
+bootcmd=run findfdt;run findtee;mmc dev ${mmcdev};mmc dev ${mmcdev}; if mmc rescan; then if run loadbootscript; then run bootscript; else if run loadi
+mage; then run mmcboot; else run netboot; fi; fi; else run netboot; fi
+bootcmd_mfg=run mfgtool_args;if iminfo ${initrd_addr}; then if test ${tee} = yes; then bootm ${tee_addr} ${initrd_addr} ${fdt_addr}; else bootz ${load
+addr} ${initrd_addr} ${fdt_addr}; fi; else echo "Run fastboot ..."; fastboot 0; fi;
+bootdelay=3
+bootscript=echo Running bootscript from mmc ...; source
+console=ttymxc0
+emmc_ack=1
+emmc_dev=1
+eth1addr=00:04:9f:04:eb:85
+ethact=ethernet@020b4000
+ethaddr=00:04:9f:04:eb:84
+ethprime=eth1
+fastboot_dev=mmc1
+fdt_addr=0x83000000
+fdt_file=undefined
+fdt_high=0xffffffff
+fdtcontroladdr=9ef29070
+findfdt=if test $fdt_file = undefined; then if test $board_name = EVK && test $board_rev = 9X9; then setenv fdt_file imx6ul-9x9-evk.dtb; fi; if test $
+board_name = EVK && test $board_rev = 14X14; then setenv fdt_file imx6ul-14x14-evk.dtb; fi; if test $fdt_file = undefined; then echo WARNING: Could no
+t determine dtb to use; fi; fi;
+findtee=if test $tee_file = undefined; then if test $board_name = EVK && test $board_rev = 9X9; then setenv tee_file uTee-6ul9x9; fi; if test $board_n
+ame = EVK && test $board_rev = 14X14; then setenv tee_file uTee-6ulevk; fi; if test $fdt_file = undefined; then echo WARNING: Could not determine tee 
+to use; fi; fi;
+image=zImage
+initrd_addr=0x86800000
+initrd_high=0xffffffff
+ip_dyn=yes
+kboot=bootz 
+loadaddr=0x80800000
+loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};
+loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file}
+loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}
+loadtee=fatload mmc ${mmcdev}:${mmcpart} ${tee_addr} ${tee_file}
+mfgtool_args=setenv bootargs console=${console},${baudrate} rdinit=/linuxrc clk_ignore_unused 
+mmcargs=setenv bootargs console=${console},${baudrate} root=${mmcroot}
+mmcautodetect=yes
+mmcboot=echo Booting from mmc ...; run mmcargs; if test ${tee} = yes; then run loadfdt; run loadtee; bootm ${tee_addr} - ${fdt_addr}; else if test ${b
+oot_fdt} = yes || test ${boot_fdt} = try; then if run loadfdt; then bootz ${loadaddr} - ${fdt_addr}; else if test ${boot_fdt} = try; then bootz; else 
+echo WARN: Cannot load the DT; fi; fi; else bootz; fi; fi;
+mmcdev=1
+mmcpart=1
+mmcroot=/dev/mmcblk1p2 rootwait rw
+netargs=setenv bootargs console=${console},${baudrate} root=/dev/nfs ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp
+netboot=echo Booting from net ...; run netargs; if test ${ip_dyn} = yes; then setenv get_cmd dhcp; else setenv get_cmd tftp; fi; ${get_cmd} ${image}; 
+if test ${tee} = yes; then ${get_cmd} ${tee_addr} ${tee_file}; ${get_cmd} ${fdt_addr} ${fdt_file}; bootm ${tee_addr} - ${fdt_addr}; else if test ${boo
+t_fdt} = yes || test ${boot_fdt} = try; then if ${get_cmd} ${fdt_addr} ${fdt_file}; then bootz ${loadaddr} - ${fdt_addr}; else if test ${boot_fdt} = t
+ry; then bootz; else echo WARN: Cannot load the DT; fi; fi; else bootz; fi; fi;
+panel=TFT43AB
+script=boot.scr
+sd_dev=1
+soc_type=imx6ul
+tee=no
+tee_addr=0x84000000
+tee_file=undefined
+
+Environment size: 3270/8188 bytes
+=> bootd 
+switch to partitions #0, OK
+mmc1 is current device
+switch to partitions #0, OK
+mmc1 is current device
+** Unable to read file boot.scr **
+7522468 bytes read in 343 ms (20.9 MiB/s)
+Booting from mmc ...
+37340 bytes read in 17 ms (2.1 MiB/s)
+Kernel image @ 0x80800000 [ 0x000000 - 0x72b520 ]
+## Flattened Device Tree blob at 83000000
+   Booting using the fdt blob at 0x83000000
+
+Authenticate image from DDR location 0x80800000...
+
+Secure boot enabled
+
+HAB Configuration: 0xcc, HAB State: 0x99
+No HAB Events Found!
+
+   Using Device Tree in place at 83000000, end 8300c1db
+Modify /soc/aips-bus@02000000/bee@02044000:status disabled
+ft_system_setup for mx6
+
+Starting kernel ...
+
+Booting Linux on physical CPU 0x0
+Linux version 4.9.123-imx+g6a71cbc08975 (oe-user@oe-host) (gcc version 8.3.0 (GCC) ) #1 SMP PREEMPT Wed Jun 3 11:31:13 UTC 2020
+CPU: ARMv7 Processor [410fc075] revision 5 (ARMv7), cr=10c53c7d
+CPU: div instructions available: patching division code
+CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+OF: fdt:Machine model: Freescale i.MX6 UltraLite 14x14 EVK Board
+Reserved memory: created CMA memory pool at 0x8c000000, size 320 MiB
+OF: reserved mem: initialized node linux,cma, compatible id shared-dma-pool
+Memory policy: Data cache writealloc
+percpu: Embedded 14 pages/cpu @8bb31000 s25996 r8192 d23156 u57344
+Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 130048
+Kernel command line: console=ttymxc0,115200 root=/dev/mmcblk1p2 rootwait rw
+PID hash table entries: 2048 (order: 1, 8192 bytes)
+Dentry cache hash table entries: 65536 (order: 6, 262144 bytes)
+Inode-cache hash table entries: 32768 (order: 5, 131072 bytes)
+Memory: 175828K/524288K available (9216K kernel code, 599K rwdata, 3420K rodata, 1024K init, 473K bss, 20780K reserved, 327680K cma-reserved, 0K highm
+em)
+Virtual kernel memory layout:
+    vector  : 0xffff0000 - 0xffff1000   (   4 kB)
+    fixmap  : 0xffc00000 - 0xfff00000   (3072 kB)
+    vmalloc : 0xa0800000 - 0xff800000   (1520 MB)
+    lowmem  : 0x80000000 - 0xa0000000   ( 512 MB)
+    pkmap   : 0x7fe00000 - 0x80000000   (   2 MB)
+    modules : 0x7f000000 - 0x7fe00000   (  14 MB)
+      .text : 0x80008000 - 0x80a00000   (10208 kB)
+      .init : 0x80e00000 - 0x80f00000   (1024 kB)
+      .data : 0x80f00000 - 0x80f95d80   ( 600 kB)
+       .bss : 0x80f97000 - 0x8100d578   ( 474 kB)
+SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+Preemptible hierarchical RCU implementation.
+	Build-time adjustment of leaf fanout to 32.
+	RCU restricting CPUs from NR_CPUS=4 to nr_cpu_ids=1.
+RCU: Adjusting geometry for rcu_fanout_leaf=32, nr_cpu_ids=1
+NR_IRQS:16 nr_irqs:16 16
+Switching to timer-based delay loop, resolution 333ns
+sched_clock: 32 bits at 3000kHz, resolution 333ns, wraps every 715827882841ns
+clocksource: mxc_timer1: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 637086815595 ns
+Console: colour dummy device 80x30
+Calibrating delay loop (skipped), value calculated using timer frequency.. 6.00 BogoMIPS (lpj=30000)
+pid_max: default: 32768 minimum: 301
+Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+CPU: Testing write buffer coherency: ok
+/cpus/cpu@0 missing clock-frequency property
+CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+Setting up static identity map for 0x80100000 - 0x80100058
+Brought up 1 CPUs
+SMP: Total of 1 processors activated (6.00 BogoMIPS).
+CPU: All CPU(s) started in SVC mode.
+devtmpfs: initialized
+VFP support v0.3: implementor 41 architecture 2 part 30 variant 7 rev 5
+clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+futex hash table entries: 256 (order: 2, 16384 bytes)
+pinctrl core: initialized pinctrl subsystem
+NET: Registered protocol family 16
+DMA: preallocated 256 KiB pool for atomic coherent allocations
+cpuidle: using governor menu
+hw-breakpoint: found 5 (+1 reserved) breakpoint and 4 watchpoint registers.
+hw-breakpoint: maximum watchpoint size is 8 bytes.
+imx6ul-pinctrl 20e0000.iomuxc: initialized IMX pinctrl driver
+mxs-dma 1804000.dma-apbh: initialized
+SCSI subsystem initialized
+usbcore: registered new interface driver usbfs
+usbcore: registered new interface driver hub
+usbcore: registered new device driver usb
+i2c i2c-0: IMX I2C adapter registered
+i2c i2c-0: can't use DMA, using PIO instead.
+i2c i2c-1: IMX I2C adapter registered
+i2c i2c-1: can't use DMA, using PIO instead.
+Linux video capture interface: v2.00
+pps_core: LinuxPPS API ver. 1 registered
+pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+PTP clock support registered
+MIPI CSI2 driver module loaded
+imx rpmsg driver is registered.
+Advanced Linux Sound Architecture Driver Initialized.
+Bluetooth: Core ver 2.22
+NET: Registered protocol family 31
+Bluetooth: HCI device and connection manager initialized
+Bluetooth: HCI socket layer initialized
+Bluetooth: L2CAP socket layer initialized
+Bluetooth: SCO socket layer initialized
+clocksource: Switched to clocksource mxc_timer1
+VFS: Disk quotas dquot_6.6.0
+VFS: Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+NET: Registered protocol family 2
+TCP established hash table entries: 4096 (order: 2, 16384 bytes)
+TCP bind hash table entries: 4096 (order: 3, 32768 bytes)
+TCP: Hash tables configured (established 4096 bind 4096)
+UDP hash table entries: 256 (order: 1, 8192 bytes)
+UDP-Lite hash table entries: 256 (order: 1, 8192 bytes)
+NET: Registered protocol family 1
+RPC: Registered named UNIX socket transport module.
+RPC: Registered udp transport module.
+RPC: Registered tcp transport module.
+RPC: Registered tcp NFSv4.1 backchannel transport module.
+Bus freq driver module loaded
+workingset: timestamp_bits=30 max_order=17 bucket_order=0
+NFS: Registering the id_resolver key type
+Key type id_resolver registered
+Key type id_legacy registered
+jffs2: version 2.2. (NAND) © 2001-2006 Red Hat, Inc.
+fuse init (API version 7.26)
+io scheduler noop registered
+io scheduler deadline registered
+io scheduler cfq registered (default)
+imx-weim 21b8000.weim: Driver registered.
+backlight supply power not found, using dummy regulator
+21c8000.lcdif supply lcd not found, using dummy regulator
+Console: switching to colour frame buffer device 60x34
+mxsfb 21c8000.lcdif: initialized
+imx-sdma 20ec000.sdma: loaded firmware 3.3
+2020000.serial: ttymxc0 at MMIO 0x2020000 (irq = 19, base_baud = 5000000) is a IMX
+console [ttymxc0] enabled
+21e8000.serial: ttymxc1 at MMIO 0x21e8000 (irq = 66, base_baud = 5000000) is a IMX
+imx sema4 driver is registered.
+[drm] Initialized
+[drm] Initialized vivante 1.0.0 20120216 on minor 0
+brd: module loaded
+loop: module loaded
+fsl-quadspi 21e0000.qspi: n25q256a (32768 Kbytes)
+spi_gpio spi4: gpio-miso property not found, switching to no-rx mode
+libphy: Fixed MDIO Bus: probed
+CAN device driver interface
+flexcan 2090000.flexcan: device registered (reg_base=a099c000, irq=25)
+flexcan 2094000.flexcan: device registered (reg_base=a09a4000, irq=26)
+20b4000.ethernet supply phy not found, using dummy regulator
+pps pps0: new PPS source ptp0
+libphy: fec_enet_mii_bus: probed
+fec 20b4000.ethernet eth0: registered PHC device 0
+2188000.ethernet supply phy not found, using dummy regulator
+pps pps1: new PPS source ptp1
+fec 2188000.ethernet eth1: registered PHC device 1
+usbcore: registered new interface driver kaweth
+pegasus: v0.9.3 (2013/04/25), Pegasus/Pegasus II USB Ethernet driver
+usbcore: registered new interface driver pegasus
+usbcore: registered new interface driver rtl8150
+usbcore: registered new interface driver r8152
+usbcore: registered new interface driver asix
+usbcore: registered new interface driver ax88179_178a
+usbcore: registered new interface driver cdc_ether
+usbcore: registered new interface driver net1080
+usbcore: registered new interface driver cdc_subset
+usbcore: registered new interface driver zaurus
+usbcore: registered new interface driver cdc_ncm
+ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+ehci-mxc: Freescale On-Chip EHCI Host driver
+usbcore: registered new interface driver usb-storage
+usbcore: registered new interface driver usb_ehset_test
+2184800.usbmisc supply vbus-wakeup not found, using dummy regulator
+2184000.usb supply vbus not found, using dummy regulator
+2184200.usb supply vbus not found, using dummy regulator
+ci_hdrc ci_hdrc.1: EHCI Host Controller
+ci_hdrc ci_hdrc.1: new USB bus registered, assigned bus number 1
+ci_hdrc ci_hdrc.1: USB 2.0 started, EHCI 1.00
+hub 1-0:1.0: USB hub found
+hub 1-0:1.0: 1 port detected
+mousedev: PS/2 mouse device common for all mice
+input: 20cc000.snvs:snvs-powerkey as /devices/soc0/soc/2000000.aips-bus/20cc000.snvs/20cc000.snvs:snvs-powerkey/input/input0
+input: iMX6UL Touchscreen Controller as /devices/soc0/soc/2000000.aips-bus/2040000.tsc/input/input1
+input: FreescaleAccelerometer as /devices/virtual/input/input2
+fxls8471 device driver probe successfully
+snvs_rtc 20cc000.snvs:snvs-rtc-lp: rtc core: registered 20cc000.snvs:snvs-r as rtc0
+i2c /dev entries driver
+IR NEC protocol handler initialized
+IR RC5(x/sz) protocol handler initialized
+IR RC6 protocol handler initialized
+IR JVC protocol handler initialized
+IR Sony protocol handler initialized
+IR SANYO protocol handler initialized
+IR Sharp protocol handler initialized
+IR MCE Keyboard/mouse protocol handler initialized
+IR XMP protocol handler initialized
+pxp-v4l2 pxp_v4l2: initialized
+0-000e supply vdd not found, using dummy regulator
+0-000e supply vddio not found, using dummy regulator
+mag3110 0-000e: check mag3110 chip ID
+input: mag3110 as /devices/virtual/input/input3
+random: fast init done
+mag3110 0-000e: mag3110 is probed
+imx2-wdt 20bc000.wdog: timeout 60 sec (nowayout=0)
+Bluetooth: HCI UART driver ver 2.3
+Bluetooth: HCI UART protocol H4 registered
+Bluetooth: HCI UART protocol BCSP registered
+Bluetooth: HCI UART protocol ATH3K registered
+usbcore: registered new interface driver bcm203x
+usbcore: registered new interface driver btusb
+usbcore: registered new interface driver ath3k
+sdhci: Secure Digital Host Controller Interface driver
+sdhci: Copyright(c) Pierre Ossman
+sdhci-pltfm: SDHCI platform and OF driver helper
+sdhci-esdhc-imx 2190000.usdhc: Got CD GPIO
+mmc0: SDHCI controller on 2190000.usdhc [2190000.usdhc] using ADMA
+sdhci-esdhc-imx 2194000.usdhc: could not get ultra high speed state, work on normal mode
+mmc1: SDHCI controller on 2194000.usdhc [2194000.usdhc] using ADMA
+caam 2140000.caam: ERA source: CCBVID.
+caam 2140000.caam: device ID = 0x0a16030000000000 (Era 8)
+job rings = 3, qi = 0
+caam algorithms registered in /proc/crypto
+caam_jr 2141000.jr0: registering rng-caam
+caam 2140000.caam: caam pkc algorithms registered in /proc/crypto
+platform caam_sm: blkkey_ex: 8 keystore units available
+mmc1: host does not support reading read-only switch, assuming write-enable
+mmc1: new high speed SDHC card at address 0001
+platform caam_sm: 64-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: 64-bit black key:
+platform caam_sm: [0000] 8d 93 fd d8 45 ec 1b 39
+platform caam_sm: [0008] 9b 6d 01 54 97 3e 93 39
+platform caam_sm: 128-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: [0008] 08 09 0a 0b 0c 0d 0e 0f
+mmcblk1: mmc1:0001 SD8GB 7.24 GiB 
+ mmcblk1: p1 p2
+platform caam_sm: 128-bit black key:
+platform caam_sm: [0000] a7 b1 71 b2 af 60 03 55
+platform caam_sm: [0008] 5b bc b1 cb 38 eb 0a b2
+platform caam_sm: 192-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: [0008] 08 09 0a 0b 0c 0d 0e 0f
+platform caam_sm: [0016] 10 11 12 13 14 15 16 17
+platform caam_sm: 192-bit black key:
+platform caam_sm: [0000] 68 79 c4 30 ce d3 79 2f
+platform caam_sm: [0008] 17 2a 22 c4 a9 6e 53 23
+platform caam_sm: [0016] 4d 52 a9 61 f5 a8 0b ee
+platform caam_sm: [0024] a5 cd 50 f2 95 d9 03 d8
+platform caam_sm: 256-bit clear key:
+platform caam_sm: [0000] 00 01 02 03 04 0f 06 07
+platform caam_sm: [0008] 08 09 0a 0b 0c 0d 0e 0f
+platform caam_sm: [0016] 10 11 12 13 14 15 16 17
+platform caam_sm: [0024] 18 19 1a 1b 1c 1d 1e 1f
+platform caam_sm: 256-bit black key:
+platform caam_sm: [0000] 0c 36 f9 9e 31 c5 b6 d7
+platform caam_sm: [0008] 16 46 00 10 89 41 b0 94
+platform caam_sm: [0016] 51 4f 09 63 26 66 c2 98
+platform caam_sm: [0024] 2e ff 38 7a 5c b6 27 c8
+platform caam_sm: 64-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 128-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 196-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 256-bit unwritten blob:
+platform caam_sm: [0000] 00 00 00 00 00 00 00 00
+platform caam_sm: [0008] 00 00 00 00 00 00 00 00
+platform caam_sm: [0016] 00 00 00 00 00 00 00 00
+platform caam_sm: [0024] 00 00 00 00 00 00 00 00
+platform caam_sm: [0032] 00 00 00 00 00 00 00 00
+platform caam_sm: [0040] 00 00 00 00 00 00 00 00
+platform caam_sm: [0048] 00 00 00 00 00 00 00 00
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 64-bit black key in blob:
+platform caam_sm: [0000] 8a f1 a6 99 a2 88 e5 bb
+platform caam_sm: [0008] 89 3c 71 62 28 53 23 6d
+platform caam_sm: [0016] 23 05 a1 4c d3 1f 55 b7
+platform caam_sm: [0024] 4c 59 73 04 7f 4d 9a 48
+platform caam_sm: [0032] 88 d1 92 47 d2 f1 1d c8
+platform caam_sm: [0040] 92 01 98 b8 1c aa e1 f5
+platform caam_sm: [0048] 96 98 c9 78 66 56 63 64
+platform caam_sm: [0056] 00 00 00 00 00 00 00 00
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 128-bit black key in blob:
+platform caam_sm: [0000] df ff c0 41 89 6f 72 35
+platform caam_sm: [0008] 18 da 36 05 36 e6 57 25
+platform caam_sm: [0016] 64 80 b8 e7 12 77 3f 26
+platform caam_sm: [0024] ca 1b 49 42 2b 06 42 a1
+platform caam_sm: [0032] e5 2a a4 da 34 08 55 39
+platform caam_sm: [0040] 3a aa 32 da f2 8b 4d 15
+platform caam_sm: [0048] 33 01 ad d5 ac 12 f3 6a
+platform caam_sm: [0056] 73 9e 1d f8 27 97 c2 62
+platform caam_sm: [0064] 00 00 00 00 00 00 00 00
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 192-bit black key in blob:
+platform caam_sm: [0000] 08 21 ef 2f 47 a4 ce c8
+platform caam_sm: [0008] 8b 94 09 72 50 90 69 ed
+platform caam_sm: [0016] 49 7e f2 37 3b b4 32 bf
+platform caam_sm: [0024] ba de 66 06 aa ff 7a ce
+platform caam_sm: [0032] cd 74 72 a4 0d 00 55 c4
+platform caam_sm: [0040] 46 d5 b0 95 fe fe fd f3
+platform caam_sm: [0048] ab c2 9b 61 1a 49 77 4f
+platform caam_sm: [0056] 33 92 a5 55 85 e9 fa f4
+platform caam_sm: [0064] 2f c9 12 85 86 0d f0 99
+platform caam_sm: [0072] 00 00 00 00 00 00 00 00
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: 256-bit black key in blob:
+platform caam_sm: [0000] 5c 5f 21 69 77 f8 89 5c
+platform caam_sm: [0008] 4e 6a 7d 65 87 02 19 00
+platform caam_sm: [0016] 0e 5c 70 83 c4 7d 61 d5
+platform caam_sm: [0024] a7 8c 49 02 a0 ab e7 57
+platform caam_sm: [0032] aa 80 d7 f8 d3 67 8d aa
+platform caam_sm: [0040] 9b 96 f4 23 fa fb 01 d6
+platform caam_sm: [0048] 88 6d 5f 1f 3c 2a eb 42
+platform caam_sm: [0056] aa 33 0b 6c 7e 5b 5f 38
+platform caam_sm: [0064] 24 63 76 7f 56 b7 dc 6c
+platform caam_sm: [0072] 81 48 d5 5e 48 61 f6 ec
+platform caam_sm: [0080] 00 00 00 00 00 00 00 00
+platform caam_sm: [0088] 00 00 00 00 00 00 00 00
+platform caam_sm: restored 64-bit black key:
+platform caam_sm: [0000] d1 7e 69 ac fe 22 91 61
+platform caam_sm: [0008] 27 36 a3 88 c2 12 e0 8c
+platform caam_sm: restored 128-bit black key:
+platform caam_sm: [0000] a7 b1 71 b2 af 60 03 55
+platform caam_sm: [0008] 5b bc b1 cb 38 eb 0a b2
+platform caam_sm: restored 192-bit black key:
+platform caam_sm: [0000] 68 79 c4 30 ce d3 79 2f
+platform caam_sm: [0008] 17 2a 22 c4 a9 6e 53 23
+platform caam_sm: [0016] 8a f4 f4 04 a7 6c e3 16
+platform caam_sm: [0024] 59 f0 69 59 17 bb b7 e2
+platform caam_sm: restored 256-bit black key:
+platform caam_sm: [0000] 0c 36 f9 9e 31 c5 b6 d7
+platform caam_sm: [0008] 16 46 00 10 89 41 b0 94
+platform caam_sm: [0016] 51 4f 09 63 26 66 c2 98
+platform caam_sm: [0024] 2e ff 38 7a 5c b6 27 c8
+caam-snvs 20cc000.caam-snvs: can't get snvs clock
+caam-snvs 20cc000.caam-snvs: violation handlers armed - trusted state
+usbcore: registered new interface driver usbhid
+usbhid: USB HID core driver
+imx-wm8960 sound: wm8960-hifi <-> 202c000.sai mapping ok
+imx-wm8960 sound: snd-soc-dummy-dai <-> 2034000.asrc mapping ok
+imx-wm8960 sound: wm8960-hifi <-> 202c000.sai mapping ok
+NET: Registered protocol family 26
+NET: Registered protocol family 10
+sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+NET: Registered protocol family 17
+can: controller area network core (rev 20120528 abi 9)
+NET: Registered protocol family 29
+can: raw protocol (rev 20120528)
+can: broadcast manager protocol (rev 20161123 t)
+can: netlink gateway (rev 20130117) max_hops=1
+Bluetooth: RFCOMM TTY layer initialized
+Bluetooth: RFCOMM socket layer initialized
+Bluetooth: RFCOMM ver 1.11
+Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+Bluetooth: BNEP filters: protocol multicast
+Bluetooth: BNEP socket layer initialized
+Bluetooth: HIDP (Human Interface Emulation) ver 1.2
+Bluetooth: HIDP socket layer initialized
+8021q: 802.1Q VLAN Support v1.8
+lib80211: common routines for IEEE802.11 drivers
+Key type dns_resolver registered
+cpu cpu0: Registered imx6q-cpufreq
+imx_thermal 2000000.aips-bus:tempmon: Industrial CPU temperature grade - max:105C critical:100C passive:95C
+dhd_module_init in
+snvs_rtc 20cc000.snvs:snvs-rtc-lp: setting system clock to 1970-01-01 00:00:01 UTC (1)
+VSD_3V3: disabling
+can-3v3: disabling
+gpio_dvfs: disabling
+ALSA device list:
+  #0: wm8960-audio
+EXT4-fs (mmcblk1p2): couldn't mount as ext3 due to feature incompatibilities
+EXT4-fs (mmcblk1p2): recovery complete
+EXT4-fs (mmcblk1p2): mounted filesystem with ordered data mode. Opts: (null)
+VFS: Mounted root (ext4 filesystem) on device 179:2.
+devtmpfs: mounted
+Freeing unused kernel memory: 1024K
+INIT: version 2.88 booting
+Starting udev
+udevd[201]: starting version 3.2.7
+random: udevd: uninitialized urandom read (16 bytes read)
+random: udevd: uninitialized urandom read (16 bytes read)
+random: udevd: uninitialized urandom read (16 bytes read)
+udevd[201]: specified group 'kvm' unknown
+udevd[202]: starting eudev-3.2.7
+EXT4-fs (mmcblk1p2): re-mounted. Opts: (null)
+hwclock: settimeofday() failed: Invalid argument
+Wed Jun  3 12:17:32 UTC 2020
+urandom_read: 1 callbacks suppressed
+random: dd: uninitialized urandom read (512 bytes read)
+INIT: Entering runlevel: 5
+Configuring network interfaces... Micrel KSZ8081 or KSZ8091 20b4000.ethernet-1:01: attached PHY driver [Micrel KSZ8081 or KSZ8091] (mii_bus:phy_addr=2
+0b4000.ethernet-1:01, irq=-1)
+IPv6: ADDRCONF(NETDEV_UP): eth0: link is not ready
+udhcpc: started, v1.30.1
+udhcpc: sending discover
+udhcpc: sending discover
+udhcpc: sending discover
+udhcpc: no lease, forking to background
+done.
+Starting random number generator daemon
+Initalizing available sources
+
+Initalizing entropy source hwrng
+
+Enabling JITTER rng support
+
+Initalizing entropy source jitter
+
+.
+random: crng init done
+Starting OpenBSD Secure Shell server: sshd
+done.
+Starting rpcbind daemon...done.
+starting statd: done
+Starting atd: OK
+exportfs: can't open /etc/exports for reading
+NFS daemon support not enabled in kernel
+Starting system log daemon...0
+Starting kernel log daemon...0
+Starting crond: OK
+Running local boot scripts (/etc/rc.local)udhcpc: started, v1.30.1
+Micrel KSZ8081 or KSZ8091 20b4000.ethernet-1:02: attached PHY driver [Micrel KSZ8081 or KSZ8091] (mii_bus:phy_addr=20b4000.ethernet-1:02, irq=-1)
+IPv6: ADDRCONF(NETDEV_UP): eth1: link is not ready
+udhcpc: sending discover
+udhcpc: sending discover
+fec 2188000.ethernet eth1: Link is Up - 100Mbps/Full - flow control rx/tx
+IPv6: ADDRCONF(NETDEV_CHANGE): eth1: link becomes ready
+udhcpc: sending discover
+udhcpc: sending select for 192.168.1.5
+udhcpc: sending select for 192.168.1.5
+udhcpc: lease of 192.168.1.5 obtained, lease time 259200
+/etc/udhcpc.d/50default: Adding DNS 192.168.1.1
+.
+
+FSLC FrameBuffer 2.7 imx6ulevk ttymxc0
+
+imx6ulevk login: root
+root@imx6ulevk:~# cat /proc/version 
+Linux version 4.9.123-imx+g6a71cbc08975 (oe-user@oe-host) (gcc version 8.3.0 (GCC) ) #1 SMP PREEMPT Wed Jun 3 11:31:13 UTC 2020
+root@imx6ulevk:~# poweroff
+
+Broadcast message from root@imx6ulevk (ttymxc0) (Wed Jun  3 12:20:48 2020):
+INIT: Sending processes the TERM signal
+Stopping OpenBSD Secure Shell server: sshdstopped /usr/sbin/sshd (pid 345)
+.
+Stopping atd: OK
+stopping mountd: done
+stopping nfsd: done
+Stopping system log daemon...0
+Stopping kernel log daemon...0
+stopping statd: done
+Stopping random number generator daemon.
+Stopping crond: OK
+Stopping rpcbind daemon...
+done.
+Deconfiguring network interfaces... done.
+Sending all processes the TERM signal...
+logout
