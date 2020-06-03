@@ -1,0 +1,149 @@
+U-Boot 2018.03-imx_v2018.03_4.14.98_2.0.0_ga+g0d6d880779 (May 31 2020 - 09:41:29 +0000)
+
+CPU:   Freescale i.MX6UL rev1.1 528 MHz (running at 396 MHz)
+CPU:   Industrial temperature grade (-40C to 105C) at 38C
+Reset cause: POR
+Model: Freescale i.MX6 UltraLite 14x14 EVK Board
+Board: MX6UL 14x14 EVK
+DRAM:  512 MiB
+MMC:   FSL_SDHC: 0, FSL_SDHC: 1
+Loading Environment from MMC... OK
+Display: TFT43AB (480x272)
+Video: 480x272x24
+In:    serial
+Out:   serial
+Err:   serial
+switch to partitions #0, OK
+mmc1 is current device
+flash target is MMC:1
+Net:   eth1: ethernet@020b4000 [PRIME], eth0: ethernet@02188000
+Fastboot: Normal
+Normal Boot
+Hit any key to stop autoboot:  0 
+37183 bytes read in 125 ms (290 KiB/s)
+7738296 bytes read in 522 ms (14.1 MiB/s)
+Kernel image @ 0x80800000 [ 0x000000 - 0x7613b8 ]
+## Flattened Device Tree blob at 83000000
+   Booting using the fdt blob at 0x83000000
+
+Authenticate image from DDR location 0x80800000...
+bad magic magic=0x0 length=0x00 version=0x0
+bad length magic=0x0 length=0x00 version=0x0
+bad version magic=0x0 length=0x00 version=0x0
+Error: Invalid IVT structure
+
+Allowed IVT structure:
+IVT HDR       = 0x4X2000D1
+IVT ENTRY     = 0xXXXXXXXX
+IVT RSV1      = 0x0
+IVT DCD       = 0x0
+IVT BOOT_DATA = 0xXXXXXXXX
+IVT SELF      = 0xXXXXXXXX
+IVT CSF       = 0xXXXXXXXX
+IVT RSV2      = 0x0
+Authenticate zImage Fail, Please check
+=> hab_status 
+
+Secure boot enabled
+
+HAB Configuration: 0xcc, HAB State: 0x99
+No HAB Events Found!
+
+=> printenv 
+altbootcmd=run mender_altbootcmd; run bootcmd
+baudrate=115200
+board_name=EVK
+board_rev=14X14
+boot_fdt=try
+bootargs=root=/dev/mmcblk1p2
+bootcmd=run mender_setup; setenv bootargs root=${mender_kernel_root} ${bootargs}; if test "${fdt_addr_r}" != ""; then load ${mender_uboot_root} ${fdt_
+addr_r} /boot/${mender_dtb_name}; fi; load ${mender_uboot_root} ${kernel_addr_r} /boot/${mender_kernel_name}; ${mender_boot_kernel_type} ${kernel_addr
+_r} - ${fdt_addr_r}; run mender_try_to_recover
+bootcmd_mfg=run mfgtool_args;if iminfo ${initrd_addr}; then if test ${tee} = yes; then bootm ${tee_addr} ${initrd_addr} ${fdt_addr}; else bootz ${load
+addr} ${initrd_addr} ${fdt_addr}; fi; else echo "Run fastboot ..."; fastboot 0; fi;
+bootcount=1
+bootdelay=3
+bootlimit=1
+bootscript=echo Running bootscript from mmc ...; source
+console=ttymxc0
+emmc_ack=1
+emmc_dev=1
+eth1addr=00:04:9f:04:eb:85
+ethact=ethernet@020b4000
+ethaddr=00:04:9f:04:eb:84
+ethprime=eth1
+fastboot_dev=mmc1
+fdt_addr_r=0x83000000
+fdt_file=undefined
+fdt_high=0xffffffff
+fdtaddr=83000000
+fdtcontroladdr=9ef0b070
+fileaddr=80800000
+filesize=7613b8
+findfdt=if test $fdt_file = undefined; then if test $board_name = EVK && test $board_rev = 9X9; then setenv fdt_file imx6ul-9x9-evk.dtb; fi; if test $
+board_name = EVK && test $board_rev = 14X14; then setenv fdt_file imx6ul-14x14-evk.dtb; fi; if test $fdt_file = undefined; then echo WARNING: Could no
+t determine dtb to use; fi; fi;
+findtee=if test $tee_file = undefined; then if test $board_name = EVK && test $board_rev = 9X9; then setenv tee_file uTee-6ul9x9; fi; if test $board_n
+ame = EVK && test $board_rev = 14X14; then setenv tee_file uTee-6ulevk; fi; if test $fdt_file = undefined; then echo WARNING: Could not determine tee 
+to use; fi; fi;
+image=zImage
+initrd_addr=0x86800000
+initrd_high=0xffffffff
+ip_dyn=yes
+kboot=bootz 
+kernel_addr_r=0x80800000
+loadaddr=0x80800000
+loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};
+loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file}
+loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}
+loadtee=fatload mmc ${mmcdev}:${mmcpart} ${tee_addr} ${tee_file}
+mender_altbootcmd=if test ${mender_boot_part} = 2; then setenv mender_boot_part 3; setenv mender_boot_part_hex 3; else setenv mender_boot_part 2; sete
+nv mender_boot_part_hex 2; fi; setenv upgrade_available 0; saveenv; run mender_setup
+mender_boot_kernel_type=bootz
+mender_boot_part=2
+mender_boot_part_hex=2
+mender_boot_part_name=/dev/mmcblk1p2
+mender_check_saveenv_canary=1
+mender_dtb_name=imx6ul-14x14-evk-emmc.dtb
+mender_kernel_name=zImage
+mender_kernel_root=/dev/mmcblk1p2
+mender_kernel_root_name=/dev/mmcblk1p2
+mender_pre_setup_commands=setenv kernel_addr_r ${loadaddr}
+mender_saveenv_canary=1
+mender_setup=if test "${mender_saveenv_canary}" != "1"; then setenv mender_saveenv_canary 1; saveenv; fi; if test "${mender_pre_setup_commands}" != ""
+; then run mender_pre_setup_commands; fi; if test "${mender_systemd_machine_id}" != ""; then setenv bootargs systemd.machine_id=${mender_systemd_machi
+ne_id} ${bootargs}; fi; setenv mender_kernel_root /dev/mmcblk1p${mender_boot_part}; if test ${mender_boot_part} = 2; then setenv mender_boot_part_name
+ /dev/mmcblk1p2; else setenv mender_boot_part_name /dev/mmcblk1p3; fi; setenv mender_kernel_root_name ${mender_boot_part_name}; setenv mender_uboot_ro
+ot mmc 1:${mender_boot_part_hex}; setenv mender_uboot_root_name ${mender_boot_part_name}; setenv expand_bootargs "setenv bootargs \\"${bootargs}\\""; 
+run expand_bootargs; setenv expand_bootargs; if test "${mender_post_setup_commands}" != ""; then run mender_post_setup_commands; fi
+mender_try_to_recover=if test ${upgrade_available} = 1; then reset; fi
+mender_uboot_boot=mmc 1:1
+mender_uboot_dev=1
+mender_uboot_if=mmc
+mender_uboot_root=mmc 1:2
+mender_uboot_root_name=/dev/mmcblk1p2
+mfgtool_args=setenv bootargs console=${console},${baudrate} rdinit=/linuxrc clk_ignore_unused 
+mmcargs=setenv bootargs console=${console},${baudrate} 
+mmcautodetect=yes
+mmcboot=echo Booting from mmc ...; run mmcargs; if test ${tee} = yes; then run loadfdt; run loadtee; bootm ${tee_addr} - ${fdt_addr}; else if test ${b
+oot_fdt} = yes || test ${boot_fdt} = try; then if run loadfdt; then bootz ${loadaddr} - ${fdt_addr}; else if test ${boot_fdt} = try; then bootz; else 
+echo WARN: Cannot load the DT; fi; fi; else bootz; fi; fi;
+mmcdev=1
+mmcpart=1
+mmcroot=/dev/mmcblk1p2 rootwait rw
+netargs=setenv bootargs console=${console},${baudrate} ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp
+netboot=echo Booting from net ...; run netargs; if test ${ip_dyn} = yes; then setenv get_cmd dhcp; else setenv get_cmd tftp; fi; ${get_cmd} ${image}; 
+if test ${tee} = yes; then ${get_cmd} ${tee_addr} ${tee_file}; ${get_cmd} ${fdt_addr} ${fdt_file}; bootm ${tee_addr} - ${fdt_addr}; else if test ${boo
+t_fdt} = yes || test ${boot_fdt} = try; then if ${get_cmd} ${fdt_addr} ${fdt_file}; then bootz ${loadaddr} - ${fdt_addr}; else if test ${boot_fdt} = t
+ry; then bootz; else echo WARN: Cannot load the DT; fi; fi; else bootz; fi; fi;
+panel=TFT43AB
+script=boot.scr
+sd_dev=1
+soc_type=imx6ul
+tee=no
+tee_addr=0x84000000
+tee_file=undefined
+upgrade_available=0
+
+Environment size: 5300/131067 bytes
+=> 
