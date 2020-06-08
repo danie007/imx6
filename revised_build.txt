@@ -218,6 +218,7 @@ bitbake -c compile -f u-boot-fslc; time bitbake core-image-full-cmdline; alarm
     fi
     ```
 
+
 2. Adding mender support in u-boot:
     Open `/warrior_yocto/sources/meta-mender/meta-mender-core/recipes-bsp/u-boot/patches/` and
     a. Replace the contents of `0003-Integration-of-Mender-boot-code-into-U-Boot.patch`
@@ -311,21 +312,47 @@ index 6fdf41c..f8e3f07 100644
     MENDER_UBOOT_PRE_SETUP_COMMANDS = "setenv kernel_addr_r \${loadaddr}"
     ```
 
-3. local configuration
+
+3. Adding mender certificate in build:
+    Create a mender bbappend file in `/home/ux/warrior_yocto/sources/meta-mender/meta-mender-core/recipes-mender/mender/mender_%.bbappend` with following contents,
+    ```
+FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+SRC_URI_append = " file://server.crt"
+    ```
+    Copy your `server.crt` to: `~/warrior_yocto/sources/meta-mender/meta-mender-core/recipes-mender/mender/files/`
+
+
+4. Bringing up network with rc.local file
+    As a workaround we can include `fsl-rc-local` in the build and configure it to bring network in each restart.
+    Append the following lines in your `conf/local.conf`
+    ```
+# Adding support for rc.local script
+# It'll be used to auto run script at reboot
+IMAGE_INSTALL_append = " fsl-rc-local"
+    ```
+    Edit the `~/warrior_yocto/sources/meta-freescale-distro/recipes-fsl/fsl-rc-local/fsl-rc-local/rc.local.etc`
+    ```
+# Edited by Daniel on 01.06.2020
+# command to manually start network interfaces
+udhcpc -i eth1
+    ```
+
+
+5. local configuration
     Append the following:
     ```
-# REQUIRED:
-# Specifying kernel version to 4.19 from meta-fsl
-# Build steps still show as 4.9 but 4.19 will be built
-PREDERRED_VERSION_linux-imx = "4.19%"
-
-# MENDER_FEATURES settings and the inherit of mender-full
-INHERIT += "mender-full"
-
 # The name of the image or update that will be built
 # This is what the device will report that it is running
 # and different updates must have different names
 MENDER_ARTIFACT_NAME = "release-1"
+
+# REQUIRED:
+# Adding support for rc.local script
+# It'll be used to auto run script at reboot
+IMAGE_INSTALL_append = " fsl-rc-local"
+
+# MENDER_FEATURES settings and the inherit of mender-full
+INHERIT += "mender-full"
 
 # The storage device holding all partitions
 # See https://docs.mender.io/2.3/devices/yocto-project/partition-configuration#configuring-storage
@@ -361,9 +388,10 @@ MENDER_FEATURES_DISABLE_append = " mender-growfs-data"
 MENDER_FEATURES_DISABLE_append = " mender-grub mender-image-uefi"
     ```
 
-4. Encryption support
+
+6. Encryption support
     Open `uboot_auto_patch.sh` in `~/warrior_yocto/sources/meta-mender/meta-mender-core/recipes-bsp/u-boot/files/uboot_auto_patch.sh`
-    Add the following inside `patch_all_candidates` function:
+    Add the following:
     ```
 # Top
 ENCR_BOOT=1
@@ -408,7 +436,53 @@ if [ $ENCR_BOOT = 1 ]; then
     patch_encrypted_boot
 fi
     ```
-5. build
+
+
+7. Changing kernel version(Optional);
+    By default Warrior Yocto builds kernel version 4.9 and if you want to change that t0 4.19 paste the following in
+    `~/warrior_yocto/sources/meta-freescale/recipes-kernel/linux/linux-imx_4.9.123.bb`
+
+    It is advisible to save a copy of original file contents as it'll be required to build 4.9 kernel if needed.
+    ```
+# Modified by Daniel on 30.05.2020
+
+SUMMARY = "Linux Kernel provided and supported by NXP"
+DESCRIPTION = "Linux Kernel provided and supported by NXP with focus on \
+i.MX Family Reference Boards. It includes support for many IPs such as GPU, VPU and IPU."
+
+require recipes-kernel/linux/linux-imx.inc
+
+LICENSE = "GPLv2"
+LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
+DEPENDS += "lzop-native bc-native"
+
+SRCBRANCH = "imx_4.19.35_1.1.0"
+LOCALVERSION = "-1.1.0"
+KERNEL_SRC ?= "git://source.codeaurora.org/external/imx/linux-imx.git;protocol=https"
+SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
+SRCREV = "0f9917c56d5995e1dc3bde5658e2d7bc865464de"
+
+S = "${WORKDIR}/git"
+
+DEFAULT_PREFERENCE = "1"
+
+DEFCONFIG     = "defconfig"
+DEFCONFIG_mx6 = "imx_v7_defconfig"
+DEFCONFIG_mx7 = "imx_v7_defconfig"
+
+do_preconfigure_prepend() {
+    # meta-freescale/classes/fsl-kernel-localversion.bbclass requires
+    # defconfig in ${WORKDIR}
+    install -d ${B}
+    cp ${S}/arch/${ARCH}/configs/${DEFCONFIG} ${WORKDIR}/defconfig
+}
+
+COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
+    ```
+    NOTE: This method is not perfect as the kernel name still the old(4.9)
+
+
+8. build
     Can be built with any of the following commands.
     Ensure MACHINE=imx6ulevk & DISTRO=fslc-framebuffer in `warrior_yocto/mender_build/conf/local.conf`
     ```
@@ -418,10 +492,52 @@ fi
     bitbake -c cleansstate linux-imx core-image-full-cmdline && bitbake core-image-full-cmdline # Clean kernal & builds image
     ```
 
-6. Bringing up network manually after restart
-    ```
-    $ crontab -e
-    # @reboot /sbin/udhcpc -i eth1
-    ```
 
-HWaddr 42:26:51:65:90:c8
+05.06.2020
+
+```
+mount -o loop core-image-full-cmdline-imx6ulevk-20200605060411.ext4 /mnt/rootfs/
+cd /mnt/rootfs/
+vim etc/mender/artifact_info # Inc release for updation
+mkdir -p usr/share/mender/modules/v3
+vi usr/share/mender/modules/v3/test.tmp # Write something to differentiate release
+echo "$IP_OF_MENDER_SERVER_FROM_DEVICE docker.mender.io s3.docker.mender.io" | tee -a etc/hosts
+cat > etc/mender/mender.conf << EOF
+{   
+    "ClientProtocol": "https",
+    "ArtifactVerifyKey": "",
+    "HttpsClient": {
+        "Certificate": "",
+        "Key": "",
+        "SkipVerify": false
+    },
+    "RootfsPartA": "/dev/mmcblk1p1",
+    "RootfsPartB": "/dev/mmcblk1p2",
+    "DeviceTypeFile": "/var/lib/mender/device_type",
+    "UpdatePollIntervalSeconds": 5,
+    "InventoryPollIntervalSeconds": 5,
+    "RetryPollIntervalSeconds": 30,
+    "StateScriptTimeoutSeconds": 0,
+    "StateScriptRetryTimeoutSeconds": 0,
+    "StateScriptRetryIntervalSeconds": 0,
+    "ModuleTimeoutSeconds": 0,
+    "ServerCertificate": "/etc/mender/server.crt",
+    "ServerURL": "",
+    "UpdateLogPath": "",
+    "TenantToken": "",
+    "Servers": [
+        {   
+            "ServerURL": "https://docker.mender.io"
+        }
+    ]
+}
+EOF
+cd && umount /mnt/rootfs # Changes will be saved in .ext4 file
+```
+
+mender-artifact --compression lzma write rootfs-image -t imx6ulevk -n release-2 -f core-image-full-cmdline-imx6ulevk-20200605060411.ext4 -o core-image-full-cmdline-imx6ulevk-r2.mender
+
+
+=> load mmc 1 0x80800000 boot/dek.bin
+=> dek_blob 0x80800000 0x80801000 128
+=> ext4write mmc 1:1 0x80801000 /boot/dek_blob.bin 0x48
