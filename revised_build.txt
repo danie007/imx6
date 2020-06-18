@@ -332,9 +332,11 @@ IMAGE_INSTALL_append = " fsl-rc-local"
     ```
     Edit the `~/warrior_yocto/sources/meta-freescale-distro/recipes-fsl/fsl-rc-local/fsl-rc-local/rc.local.etc`
     ```
-# Edited by Daniel on 01.06.2020
-# command to manually start network interfaces
-udhcpc -i eth1
+# Edited by Daniel on 09.06.2020
+# Command to manually start network interfaces
+# Added -n option to exit udhcpc after failure
+# Otherwise it'll looping in reconnect state hindering boot
+udhcpc -i eth1 -n
     ```
 
 
@@ -438,13 +440,14 @@ fi
     ```
 
 
-7. Changing kernel version(Optional);
+7. (Optional) Changing kernel version:
     By default Warrior Yocto builds kernel version 4.9 and if you want to change that t0 4.19 paste the following in
     `~/warrior_yocto/sources/meta-freescale/recipes-kernel/linux/linux-imx_4.9.123.bb`
 
     It is advisible to save a copy of original file contents as it'll be required to build 4.9 kernel if needed.
     ```
 # Modified by Daniel on 30.05.2020
+# Builds kernel version 4.19.35
 
 SUMMARY = "Linux Kernel provided and supported by NXP"
 DESCRIPTION = "Linux Kernel provided and supported by NXP with focus on \
@@ -481,8 +484,59 @@ COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
     ```
     NOTE: This method is not perfect as the kernel name still the old(4.9)
 
+    Original `~/warrior_yocto/sources/meta-freescale/recipes-kernel/linux/linux-imx_4.9.123.bb` file content:
+    ```
+# Copyright (C) 2013-2016 Freescale Semiconductor
+# Copyright 2017-2018 NXP
+# Copyright 2018 (C) O.S. Systems Software LTDA.
+# Released under the MIT license (see COPYING.MIT for the terms)
 
-8. build
+SUMMARY = "Linux Kernel provided and supported by NXP"
+DESCRIPTION = "Linux Kernel provided and supported by NXP with focus on \
+i.MX Family Reference Boards. It includes support for many IPs such as GPU, VPU and IPU."
+
+require recipes-kernel/linux/linux-imx.inc
+
+DEPENDS += "lzop-native bc-native"
+
+SRCBRANCH = "imx_4.9.123_imx8mm_ga"
+LOCALVERSION = "-imx"
+SRCREV = "6a71cbc089755afd6a86c005c22a1af6eab24a70"
+
+DEFAULT_PREFERENCE = "1"
+
+COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
+
+    ```
+
+
+8. (Optional) signing mender artifact:
+    a. generating keys:
+    RSA with recommended key length of at least 3072 bits
+    ```
+    openssl genpkey -algorithm RSA -out private.key -pkeyopt rsa_keygen_bits:3072
+    openssl rsa -in private.key -out private.key
+    openssl rsa -in private.key -out public.key -pubout
+    mv public.key artifact-verify-key.pem
+    ```
+    b. Adding public key to Yocto build
+    Copy the generated `artifact-verify-key.pem` to `~/warrior_yocto/sources/meta-mender/meta-mender-core/recipes-mender/mender/files/`
+
+    Modify the mender bbappend file in `~/warrior_yocto/sources/meta-mender/meta-mender-core/recipes-mender/mender/mender_%.bbappend` with following contents,
+    ```
+SRC_URI_append = " \
+    file://server.crt \
+    file://artifact-verify-key.pem \
+"
+    ```
+    c. Signing artifact:
+    `mender-artifact --compression lzma write rootfs-image -t imx6ulevk -n release-2 -f core-image-full-cmdline-imx6ulevk-20200605060411.ext4 -k private.key -o core-image-full-cmdline-imx6ulevk-r2s.mender` or `mender-artifact sign core-image-full-cmdline-imx6ulevk-r2.mender -k private.key -o core-image-full-cmdline-imx6ulevk-r2-signed.mender`
+
+    d. Validating mender artifact:
+    Run `mender-artifact validate core-image-full-cmdline-imx6ulevk-r2-signed.mender -k artifact-verify-key.pem` if succeed you'll get 'mender-artifact validate core-image-full-cmdline-imx6ulevk-r2-signed.mender -k artifact-verify-key.pem' or 'crypto/rsa: verification error' on error.
+
+
+9. build
     Can be built with any of the following commands.
     Ensure MACHINE=imx6ulevk & DISTRO=fslc-framebuffer in `warrior_yocto/mender_build/conf/local.conf`
     ```
@@ -500,12 +554,17 @@ mount -o loop core-image-full-cmdline-imx6ulevk-20200605060411.ext4 /mnt/rootfs/
 cd /mnt/rootfs/
 vim etc/mender/artifact_info # Inc release for updation
 mkdir -p usr/share/mender/modules/v3
-vi usr/share/mender/modules/v3/test.tmp # Write something to differentiate release
+cat > home/root/release_info << EOF
+Kernel version: 4.19.35
+Release version: release-2s
+Date modified: 09.06.2020
+Modified by: Daniel Selvan D, Jasmin Infotech
+EOF
 echo "$IP_OF_MENDER_SERVER_FROM_DEVICE docker.mender.io s3.docker.mender.io" | tee -a etc/hosts
 cat > etc/mender/mender.conf << EOF
 {   
     "ClientProtocol": "https",
-    "ArtifactVerifyKey": "",
+    "ArtifactVerifyKey": "/etc/mender/artifact-verify-key.pem",
     "HttpsClient": {
         "Certificate": "",
         "Key": "",
@@ -541,3 +600,5 @@ mender-artifact --compression lzma write rootfs-image -t imx6ulevk -n release-2 
 => load mmc 1 0x80800000 boot/dek.bin
 => dek_blob 0x80800000 0x80801000 128
 => ext4write mmc 1:1 0x80801000 /boot/dek_blob.bin 0x48
+
+~/warrior_yocto/sources/meta-freescale/recipes-kernel/linux/linux-imx-4.9.123/imx/defconfig
