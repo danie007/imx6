@@ -51,11 +51,11 @@ cd $OP_DIR
 
 cp ../$BOOT_IMG ./
 
-addr=$(hexdump -e '/4 "%X""\n"' -s 20 -n 4 $BOOT_IMG)
-offst=00
+OFFSET=00
+IVT_ADDR=$(hexdump -e '/4 "%X""\n"' -s 20 -n 4 $BOOT_IMG)
 
 CSF_PTR=$(hexdump -e '/4 "%X""\n"' -s 24 -n 4 $BOOT_IMG)
-size=$(printf '%X\n' $((0x$CSF_PTR - 0x$addr)))
+size=$(printf '%X\n' $((0x$CSF_PTR - 0x$IVT_ADDR)))
 
 echo "Creating csf_uBoot.txt"
 echo ""
@@ -91,16 +91,18 @@ File= "$CST/crts/IMG1_1_sha256_1024_65537_v3_usr_crt.pem"
 [Authenticate Data]
 # Key slot index used to authenticate the image data
 Verification index = 2
-# 	     Address  Offset   Length  Data_File_Path
-Blocks = 0x$addr 0x$offst 0x$size "$BOOT_IMG"
+# 	      Address  Offset Length  Data_File_Path
+Blocks = 0x$IVT_ADDR 0x$OFFSET 0x$size "$BOOT_IMG"
 EOT
 
 # Creating secure U-Boot image generation script
 cat << EOT >habimagegen.sh
 #!/bin/bash
+
 #############################################
 #   Automatically created by sign_uboot.sh  #
 #############################################
+
 YELLOW='$YELLOW'
 RED='$RED'
 GREEN='$GREEN'
@@ -115,13 +117,13 @@ echo ""
 echo "Generating CSF binary..."
 
 # Calling CST with the CSF input file
-csf_status=\$($CST/linux64/bin/cst --o csf_uBoot.bin --i csf_uBoot.txt)
-if echo "\$csf_status" | grep -qi 'invalid\|error'; then
-    echo -e "\${RED}\$csf_status\${NC}"
+cst_status=\$($CST/linux64/bin/cst --o csf_uBoot.bin --i csf_uBoot.txt)
+if echo "\$cst_status" | grep -qi 'invalid\|error'; then
+    echo -e "\${RED}\$cst_status\${NC}"
 
     exit 1
 fi
-echo -e "\${GREEN}\$csf_status\${NC}"
+echo -e "\${GREEN}\$cst_status\${NC}"
 
 echo "Length of CSF binary: \$(hexdump csf_uBoot.bin | tail -n 1)"
 
