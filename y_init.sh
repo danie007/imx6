@@ -1,13 +1,17 @@
 #!/bin/bash
 #
-# sudo su; apt update; apt install -y curl; apt upgrade; curl https://raw.githubusercontent.com/danie007/imx6/master/y_init.sh > ~/y_init && source ~/y_init
+# It must be run as root
+# apt update; apt install -y curl; apt upgrade; curl https://raw.githubusercontent.com/danie007/imx6/master/y_init.sh > ~/y_init && source ~/y_init
 # Install Yocto dependencies and perform a initial build
 # Created on 17.07.2020
 # Daniel, Jasmin Infotech
 #
 mkdir -p /yocto
 
-curl https://raw.githubusercontent.com/danie007/imx6/master/yocto_req_check.sh >/yocto/yocto_req_check.sh && chmod 700 /yocto/yocto_req_check.sh && source /yocto/yocto_req_check.sh
+if [ ! -f "/yocto/yocto_req_check.sh" ]; then
+    curl https://raw.githubusercontent.com/danie007/imx6/master/yocto_req_check.sh >/yocto/yocto_req_check.sh
+fi
+chmod 700 /yocto/yocto_req_check.sh && source /yocto/yocto_req_check.sh
 
 if test $status -eq 0; then
 
