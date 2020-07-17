@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# It must be run as root
+# It must be run as root (sudo su)
 # apt update; apt install -y curl; apt -y upgrade; curl https://raw.githubusercontent.com/danie007/imx6/master/y_init.sh > ~/y_init && source ~/y_init
 # Install Yocto dependencies and perform a initial build
 # Created on 17.07.2020
