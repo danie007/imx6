@@ -50,7 +50,6 @@ k_DEPEN_LIST=(
     dblatex
     xmlto
     u-boot-tools
-    repo
 )
 
 # Exit Status
