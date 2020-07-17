@@ -112,6 +112,13 @@ if [ "$available_space" -lt $k_RECOM_SPACE ]; then
 fi
 
 update_dependencies() {
+
+    # Checking & installing repo tool
+    if [ "$(which repo)" = "" ]; then
+        curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/bin/repo
+        chmod 755 /usr/bin/repo
+    fi
+
     echo -ne "\n${BI}Checking dependencies...${RS} "
 
     update_depen=()
