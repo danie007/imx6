@@ -25,6 +25,7 @@ YELLOW='\e[1;33m'
 RED='\e[1;31m'
 GREEN='\e[1;32m'
 NC='\e[0m'
+
 echo -e "${YELLOW}**WARNING** Script contains hard coded file names/directories, update them before execution.${NC}"
 
 if [ ! -e $KERNEL_IMG ]; then
@@ -36,31 +37,31 @@ if [ ! -e $KERNEL_IMG ]; then
     exit 1
 fi
 
-size=$(hexdump $KERNEL_IMG | tail -n 1)
+KERNEL_SIZE=$(hexdump $KERNEL_IMG | tail -n 1)
 
 rm -rf $OP_DIR
 mkdir $OP_DIR
 cd $OP_DIR
 
-rem=$(printf '%x\n' $(($(printf "%d\n" 0x$size) % 4096))) # Getting reminder ( / 0x1000)
+rem=$(printf '%x\n' $(($(printf "%d\n" 0x$KERNEL_SIZE) % 4096))) # Getting reminder ( / 0x1000)
 if [ $rem != 0 ]; then
-    size=$(printf '%X\n' $((0x$size - 0x$rem + 0x1000))) # Padding to next 0x1000
+    KERNEL_SIZE=$(printf '%X\n' $((0x$KERNEL_SIZE - 0x$rem + 0x1000))) # Padding to next 0x1000
 fi
 
+ivt_pad_size=20
+CSF_pad_size=2000
 load_address=80800000
-ivt=$(printf '%X\n' $((0x$load_address + 0x$size)))
-img_size=$(printf '%X\n' $((0x$size + 0x20)))
+ivt=$(printf '%X\n' $((0x$load_address + 0x$KERNEL_SIZE)))
+img_size=$(printf '%X\n' $((0x$KERNEL_SIZE + 0x$ivt_pad_size)))
 csf=$(printf '%X\n' $((0x$load_address + 0x$img_size)))
 
 echo "Creating IVT generator script"
 
 cat <<EOT >genIVT.pl
 #! /usr/bin/perl -w
-
 ##############################################
 #   Automatically created by sign_zImage.sh  #
 ##############################################
-
 use strict;
 open(my \$out, '>:raw', 'ivt.bin') or die "Unable to open: ";
 print \$out pack("V", 0x412000D1); # Signature
@@ -115,57 +116,61 @@ echo "Creating File habzImagegen.sh"
 
 cat <<EOT >habzImagegen.sh
 #!/bin/bash
-
 ##############################################
 #   Automatically created by sign_zImage.sh  #
 ##############################################
-
 YELLOW='$YELLOW'
 RED='$RED'
 GREEN='$GREEN'
 NC='$NC'
-
 if [ ! -e ../$KERNEL_IMG ]; then
 echo ""
 echo -e "\${YELLOW}Copy the \"$KERNEL_IMG\" to the parent folder\${NC}"
 echo ""
 echo -e "\${RED}Stopping...\${NC}"
-
 exit 1
 fi
-
 # Removing old data, if any
 rm -f csf_zImage.bin ivt.bin zImage_pad.bin zImage_pad_ivt.bin zImage_signed
-
-echo "Extend $KERNEL_IMG to 0x$size..."
-objcopy -I binary -O binary --pad-to 0x$size --gap-fill=0x00 ../$KERNEL_IMG zImage_pad.bin
+echo "Extend $KERNEL_IMG to 0x$KERNEL_SIZE..."
+objcopy -I binary -O binary --pad-to 0x$KERNEL_SIZE --gap-fill=0x00 ../$KERNEL_IMG zImage_pad.bin
 echo "Length of (generated) padded $KERNEL_IMG: \$(hexdump zImage_pad.bin | tail -n 1)"
 echo ""
-
 echo "generate IVT"
 perl genIVT.pl
 echo "ivt.bin dump:"
 hexdump ivt.bin
-echo ""
 
-echo "Appending the ivt.bin file at the end of the padded $KERNEL_IMG..."
-cat zImage_pad.bin ivt.bin > zImage_pad_ivt.bin
+echo "Padding ivt.bin to 0x$ivt_pad_size ..."
+objcopy -I binary -O binary --pad-to 0x$ivt_pad_size --gap-fill=0x00 ivt.bin ivt_padded.bin
+echo "Length of CSF binary: \$(hexdump ivt_padded.bin | tail -n 1)"
+
+echo ""
+echo "Appending the ivt_padded.bin file at the end of the padded $KERNEL_IMG..."
+cat zImage_pad.bin ivt_padded.bin > zImage_pad_ivt.bin
 echo "Length of padded $KERNEL_IMG with ivt: \$(hexdump zImage_pad_ivt.bin | tail -n 1)"
-echo ""
 
-echo "Calling CST with the CSF input file..."
-$CST/linux64/bin/cst --o csf_zImage.bin --i csf_zImage.txt
-echo "Length of CSF binary: \$(hexdump csf_zImage.bin | tail -n 1)"
 echo ""
+echo "Calling CST with the CSF input file ..."
+csf_status=\$($CST/linux64/bin/cst -o csf_zImage.bin -i csf_zImage.txt)
+if echo "\$csf_status" | grep -qi 'invalid\|error'; then
+    echo -e "\${RED}\$csf_status\${NC}"
 
+    exit 1
+fi
+echo -e "\${GREEN}\$csf_status\${NC}"
+
+echo "Padding CSF to 0x$CSF_pad_size ..."
+objcopy -I binary -O binary --pad-to 0x$CSF_pad_size --gap-fill=0xff csf_zImage.bin csf_zImage_padded.bin
+echo "Length of CSF binary: \$(hexdump csf_zImage_padded.bin | tail -n 1)"
+
+echo ""
 echo "Attaching the CSF binary to the end of the image..."
-cat zImage_pad_ivt.bin csf_zImage.bin > zImage_signed
+cat zImage_pad_ivt.bin csf_zImage_padded.bin > zImage_signed
 echo "Length of signed $KERNEL_IMG: \$(hexdump zImage_signed | tail -n 1)"
-
 echo ""
 if [[ -d "/media/$(whoami)/boot" ]]; then
-    echo "Copying the U-boot to SD Card..."
-
+    echo "Copying the U-boot to SD Card ..."
     echo "Removing the original $KERNEL_IMG"
     sudo rm -f /media/$(whoami)/boot/$KERNEL_IMG
     
@@ -174,9 +179,9 @@ if [[ -d "/media/$(whoami)/boot" ]]; then
 else
     echo "Command to copy U-boot to SD Card:"
     echo "sudo rm -f /media/$(whoami)/boot/$KERNEL_IMG"
-    echo "sudo cp zImage_signed /media/$(whoami)/boot/$KERNEL_IMG"
+    echo "sudo cp \$(pwd)/zImage_signed /media/$(whoami)/boot/$KERNEL_IMG"
 fi
-echo -e "\${GREEN}The provided $KERNEL_IMG signed succesfully\${NC}"
+echo -e "\${GREEN}The provided $KERNEL_IMG signed successfully\${NC}"
 EOT
 
 echo "Signing $KERNEL_IMG..."
