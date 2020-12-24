@@ -114,8 +114,8 @@ update_dependencies() {
 
     # Checking & installing repo tool
     if [ "$(which repo)" = "" ]; then
-        curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/bin/repo
-        chmod 755 /usr/bin/repo
+        curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/local/bin/repo
+        chmod 755 /usr/local/bin/repo
     fi
 
     echo -ne "\n${BI}Checking dependencies...${RS} "
